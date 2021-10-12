@@ -23,6 +23,7 @@ const ColorProperty: React.FC<ColorPropertyProps> = ({ layerColors }) => {
         if (item.gradient) {
           return <Gradient gradient={item.gradient} key={index} />;
         }
+        return null;
       })}
     </div>
   );

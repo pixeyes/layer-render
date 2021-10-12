@@ -19,7 +19,7 @@ export const toNoScalePx = (value: any) => {
 export const computeShowMarginTopStyle = (current:any, hoverItem:any) => {
   let left, height, top;
   //const { current, hoverLayer: hoverItem } = this.state;
-  if (hoverItem.y >= current.y + current.height || hoverItem.y == current.y) {
+  if (hoverItem.y >= current.y + current.height || hoverItem.y === current.y) {
     /*this.setState({
       top: null,
     });*/
@@ -31,9 +31,9 @@ export const computeShowMarginTopStyle = (current:any, hoverItem:any) => {
     top = Math.min(current.y, hoverItem.y);
   }
 
-  if (hoverItem.x + hoverItem.width == current.x) {
+  if (hoverItem.x + hoverItem.width === current.x) {
     left = current.x;
-  } else if (current.x + current.width == hoverItem.x) {
+  } else if (current.x + current.width === hoverItem.x) {
     left = hoverItem.x;
   } else {
     left = current.x + current.width / 2;
@@ -59,7 +59,7 @@ export const computeShowMarginTopStyle = (current:any, hoverItem:any) => {
 
   if (top < current.y) {
     height = current.y - top;
-  } else if (top == current.y) {
+  } else if (top === current.y) {
     height = hoverItem.y - top;
     left = hoverItem.x + hoverItem.width / 2;
   }
@@ -74,7 +74,7 @@ export const computeShowMarginTopStyle = (current:any, hoverItem:any) => {
     top: { left, height, top, value: toUnit(height) },
   });*/
   //this.marginInfo.top = {left, height, top, value:toUnit(height)}
-  /*if (top == hoverItem.y) {
+  /*if (top === hoverItem.y) {
     //处理压线
     top += 1;
     // @ts-ignore
@@ -92,7 +92,7 @@ export const computeShowMarginBottomStyle = (current:any, hoverItem:any) => {
     !current ||
     !hoverItem ||
     hoverItem.y + hoverItem.height <= current.y ||
-    hoverItem.y == current.y + current.height
+    hoverItem.y === current.y + current.height
   ) {
     /* this.setState({
        bottom: null,
@@ -126,9 +126,9 @@ export const computeShowMarginBottomStyle = (current:any, hoverItem:any) => {
     //return {display:'none'}
   }
 
-  if (current.x + current.width == hoverItem.x) {
+  if (current.x + current.width === hoverItem.x) {
     left = hoverItem.x;
-  } else if (hoverItem.x + hoverItem.width == current.x) {
+  } else if (hoverItem.x + hoverItem.width === current.x) {
     left = current.x;
   } else {
     left = current.x + current.width / 2;
@@ -162,7 +162,7 @@ export const computeShowMarginBottomStyle = (current:any, hoverItem:any) => {
    });*/
 
   //还有一点小瑕疵，有些情况还是会压线 暂时不处理
-  /*if (top + height == hoverItem.y + hoverItem.height) {
+  /*if (top + height === hoverItem.y + hoverItem.height) {
     //处理压线
     height -= 1;
   }
@@ -182,9 +182,9 @@ export const computeShowMarginRightStyle = (current:any, hoverItem:any) => {
   if (
     !current ||
     !hoverItem ||
-    hoverItem.x + hoverItem.width == current.x + current.width ||
+    hoverItem.x + hoverItem.width === current.x + current.width ||
     hoverItem.x + hoverItem.width <= current.x ||
-    current.x + current.width == hoverItem.x
+    current.x + current.width === hoverItem.x
   ) {
     /*this.setState({
       right: null
@@ -201,7 +201,7 @@ export const computeShowMarginRightStyle = (current:any, hoverItem:any) => {
     top = hoverItem.y + hoverItem.height / 2;
   } else if (hoverItem.y <= current.y) {
     if (
-      current.y == hoverItem.y + hoverItem.height &&
+      current.y === hoverItem.y + hoverItem.height &&
       hoverItem.x > current.x + current.width
     ) {
       top = current.y;
@@ -258,9 +258,9 @@ export const computeShowMarginLeftStyle = (current:any, hoverItem:any) => {
   if (
     !current ||
     !hoverItem ||
-    hoverItem.x == current.x ||
+    hoverItem.x === current.x ||
     hoverItem.x >= current.x + current.width ||
-    hoverItem.x + hoverItem.width == current.x
+    hoverItem.x + hoverItem.width === current.x
   ) {
     /*this.setState({
       left: null
@@ -279,7 +279,7 @@ export const computeShowMarginLeftStyle = (current:any, hoverItem:any) => {
   } else if (hoverItem.y <= current.y) {
     // 底顶一致，但左右分离
     if (
-      current.y == hoverItem.y + hoverItem.height &&
+      current.y === hoverItem.y + hoverItem.height &&
       hoverItem.x + hoverItem.width < current.x
     ) {
       top = current.y;
@@ -293,7 +293,7 @@ export const computeShowMarginLeftStyle = (current:any, hoverItem:any) => {
     }
   } else {
     if (
-      hoverItem.y == current.y + current.height &&
+      hoverItem.y === current.y + current.height &&
       current.x > hoverItem.x + hoverItem.width
     ) {
       top = hoverItem.y;

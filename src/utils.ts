@@ -21,7 +21,7 @@ export function J(e: any, t: any) {
 export function normalizr(t: any) {
   // eslint-disable-next-line prefer-rest-params
   const e = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [],
-      i = "group" == t.type;
+      i = "group" === t.type;
   return (
       (!i || (i && t.image) || (i && t.children && t.children.length > 1)) &&
       e.push(t),

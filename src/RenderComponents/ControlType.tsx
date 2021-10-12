@@ -5,7 +5,7 @@ interface ControlTypeProps {
   xx?: string;
 }
 
-const ControlType: React.FC<ControlTypeProps> = ({}) => {
+const ControlType: React.FC<ControlTypeProps> = () => {
   return (
     <div className="control-type">
       设计稿截取方式

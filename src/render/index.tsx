@@ -391,7 +391,7 @@ this.context.stroke();
     ) {
       return null;
     }
-    if (current.y + current.height == hoverItem.y + hoverItem.height) {
+    if (current.y + current.height === hoverItem.y + hoverItem.height) {
       return null;
     }
 
@@ -624,6 +624,7 @@ this.context.stroke();
             width: "100vw",
             height: "100vh",
             position: "relative",
+            overflow:'hidden'
           }}
           // @ts-ignore
           onWheel={this.onWheel}
