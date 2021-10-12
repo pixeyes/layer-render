@@ -1,0 +1,29 @@
+@mixin ellipsis(){
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin line-clamp($line){
+  overflow : hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}
+
+@mixin flex(){
+  display: flex;
+}
+
+@mixin center(){
+  @include just-center();
+  @include align-center();
+}
+
+@mixin just-center(){
+  justify-content: center;
+}
+
+@mixin align-center(){
+  align-items: center;
+}

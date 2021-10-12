@@ -1,0 +1,164 @@
+*,:after, :before {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+.border{
+  box-sizing: content-box;
+}
+.border:before {
+  position: absolute;
+  display: block;
+  left: 50%;
+  top: -23px;
+  transform: translateX(-50%);
+  content: attr(data-width);
+  font-size: 12px;
+  color: #fff;
+  line-height: 12px;
+  padding: 4px;
+  background: #f53914;
+  border-radius: 2px;
+  font-weight: bolder;
+}
+
+.border:after {
+  position: absolute;
+  content: attr(data-height);
+  left: auto;
+  right: 0;
+  top: 50%;
+  transform: translateX(calc(100% + 3px)) translateY(-50%);
+  display: block;
+  font-size: 12px;
+  color: #fff;
+  line-height: 12px;
+  padding: 4px;
+  background: #f53914;
+  border-radius: 2px;
+  font-weight: bolder;
+}
+.canvas{
+  //transition: background-size ease .3s;
+}
+.distance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden
+}
+
+.distance > div {
+  position: absolute;
+  overflow: hidden
+}
+
+.distance .left, .distance .right {
+  width: 1px;
+  border-left: 1px dashed #5393ff;
+  box-sizing: content-box;
+}
+
+.distance .bottom, .distance .top {
+  height: 1px;
+  border-top: 1px dashed #5393ff;
+  box-sizing: content-box;
+}
+
+.margin .bottom:after, .margin .bottom:before, .margin .top:after, .margin .top:before {
+  font-weight: bolder;
+  position: absolute;
+  content: "";
+  top: 0;
+  left: -2px;
+  width: 5px;
+  height: 1px;
+  background: #f53914;
+}
+
+.margin .bottom:before, .margin .top:before {
+  top: 100%;
+}
+
+.margin > div .info:before {
+  font-weight: bolder;
+  position: absolute;
+  display: block;
+  left: 50%;
+  top: -23px;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  content: attr(data-value);
+  font-size: 12px;
+  color: #fff;
+  height: 20px;
+  line-height: 12px;
+  padding: 4px;
+  background: #f53914;
+  border-radius: 2px;
+}
+
+.margin .bottom, .margin .top {
+  width: 1px;
+}
+
+.margin > div {
+  background: #f53914;
+  position: absolute;
+}
+
+.margin .left, .margin .right {
+  height: 1px;
+}
+
+.margin .bottom .info:before, .margin .top .info:before {
+  left: auto;
+  right: 0;
+  top: 50%;
+  -webkit-transform: translateX(calc(100% + 3px)) translateY(-50%);
+  transform: translateX(calc(100% + 3px)) translateY(-50%);
+}
+
+.line {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0
+}
+
+.line > div {
+  position: absolute;
+  border: 1px dashed #5393ff;
+  overflow: hidden;
+  box-sizing: content-box;
+}
+
+.line .x {
+  height: 100%;
+  border-top: 0;
+  border-bottom: 0
+}
+
+.line .y {
+  width: 100%;
+  border-left: 0;
+  border-right: 0
+}
+
+.hover-item {
+  position: absolute;
+  border: 1px solid #5393ff;
+  overflow: hidden;
+  box-sizing: content-box;
+}
+.wrap {
+  position:absolute;
+  z-index:1;
+  //transition: all ease .3s;
+  box-shadow:0 2px 4px 1px rgba(40,120,255,.08),0 0 6px 1px rgba(0,0,0,.08)
+}
