@@ -1,6 +1,8 @@
 # layer-render
 sketch、figma、PS通用图层渲染器
 
+# 预览效果
+![gif](https://storage.360buyimg.com/imgtools/cced120583-b8d18c70-2bd2-11ec-a7e2-3f485095ac48.gif)
 
 # RoadMap
 
