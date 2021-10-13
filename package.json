@@ -15,7 +15,7 @@
     "start": "PORT=3003 yep-tools dev",
     "compile": "yep-tools compile",
     "dist": "yep-tools dist",
-    "build:demo": "yep-tools build:demo",
+    "build:demo": "CI=false yep-tools build:demo",
     "clean": "rimraf dist lib es",
     "clear": "rimraf node_modules",
     "prepub": "npm run clean && npm run compile && npm run dist && npm run release",
