@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./operation.scss";
 import ZoomIn from "./icons/ZoomIn";
 import ZoomOut from "./icons/ZoomOut";
 import Primitive from "./icons/Primitive";

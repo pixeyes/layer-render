@@ -15,16 +15,17 @@ import {
   computeShowMarginRightStyle,
   computeShowMarginLeftStyle,
 } from "./renderUtils";
-import "./canvas.scss";
 import Operation from "../Operation";
 import Property, { Layer } from "../property/Property";
 
 import ControlType from "../RenderComponents/ControlType";
-import "./canvas.scss";
 
 export interface LayerRenderProps {
   data: any;
   goNext?: () => void;
+  mountCallback?: (that?: any) => void;
+  onMouseDown?: (current?: Layer) => void;
+  canvasWidth: number;
 }
 
 interface State {
@@ -54,6 +55,11 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   offsetX: number;
   offsetY: number;
   moving: boolean;
+  currentLayerPoint: any;
+
+  static defaultProps = {
+    canvasWidth: window.innerWidth,
+  };
 
   constructor(props: LayerRenderProps) {
     super(props);
@@ -66,6 +72,10 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     this.offsetX = 0;
     this.offsetY = 0;
     this.moving = false;
+    this.currentLayerPoint = {
+      x: 0,
+      y: 0,
+    };
 
     this.state = {
       current: null,
@@ -87,7 +97,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     const e = this.state;
     t.forEach(function (t: any) {
       t.frame.rx = t.frame.x + t.frame.width;
-        t.frame.ry = t.frame.y + t.frame.height;
+      t.frame.ry = t.frame.y + t.frame.height;
       const i = e.scale * t.frame.x,
         n = e.scale * t.frame.y,
         a = e.scale * t.frame.width,
@@ -118,7 +128,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     //this.buildCanvas();
     window.addEventListener("resize", this.onResize);
     //document.addEventListener("click", this.onWhiteSpaceClick);
-
+    this.props.mountCallback?.(this);
     console.log("emitEvent getContentCurrentLayer");
   }
 
@@ -148,7 +158,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
 
   getPosition = (): { x: number; y: number } => {
     const { scale, data, x, y } = this.state;
-    const canvasWidth = window.innerWidth;
+    const canvasWidth = this.props.canvasWidth;
     //const canvasHeight = window.innerHeight;
     // @ts-ignore
     const imgWidth = data.width * data.artboard_scale;
@@ -272,9 +282,12 @@ this.context.stroke();
       true
     ) as any[];
     let index = 0;
-    if (currentLayer != null) {
-      index = layers.findIndex((t) => t.id === currentLayer.id) + 1;
-    }
+    const a =
+      this.currentLayerPoint.x != this.tempX ||
+      this.currentLayerPoint.y != this.tempY;
+    null == currentLayer ||
+      a ||
+      (index = layers.findIndex((t) => t.id === currentLayer.id) + 1);
     if (index >= layers.length) {
       index = 0;
     }
@@ -283,10 +296,12 @@ this.context.stroke();
     this.setState({
       current,
     });
+    this.props.onMouseDown?.(current);
+    this.currentLayerPoint.x = this.tempX;
+    this.currentLayerPoint.y = this.tempY;
   };
 
   // @ts-ignore
-
   showMarginTopStyle = () => {
     let { current, hoverLayer: hoverItem } = this.state;
     if (!current || !hoverItem) {
@@ -620,20 +635,13 @@ this.context.stroke();
     return (
       <>
         <div
-          style={{
-            width: "100vw",
-            height: "100vh",
-            position: "relative",
-            overflow:'hidden'
-          }}
+          className="layer-render-wrap"
           // @ts-ignore
           onWheel={this.onWheel}
         >
           <canvas
             className="canvas"
             ref={this.imageRef}
-            width={window.innerWidth}
-            height={window.innerHeight}
             style={style}
             onClick={this.onWhiteSpaceClick}
           >

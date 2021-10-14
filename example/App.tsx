@@ -7,9 +7,16 @@ function App() {
     return (
         <LayerRender
             data={data}
+            mountCallback={(that) => {
+                console.log(that)
+            }}
+            onMouseDown={(current => {
+                console.log(current)
+            })}
             goNext={() => {
                 console.log("goNext");
             }}
+            canvasWidth={864}
         />
     );
 }

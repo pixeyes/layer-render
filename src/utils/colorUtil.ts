@@ -1,5 +1,5 @@
 // @ts-ignore
-import { Color } from "./colz.js";
+import { Color } from "./colz";
 
 
 

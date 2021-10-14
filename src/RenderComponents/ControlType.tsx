@@ -1,6 +1,5 @@
 import { Radio, Tooltip } from "antd";
 import * as React from "react";
-import "./ControlType.scss";
 interface ControlTypeProps {
   xx?: string;
 }

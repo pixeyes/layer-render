@@ -1,6 +1,5 @@
 import * as React from "react";
 import classNames from "classnames";
-import "./Property.scss";
 import FontProperty from "./FontProperty";
 import ColorProperty from "./ColorProperty";
 import { RightCloseIcon } from "../svgIcons";

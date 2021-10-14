@@ -1,4 +1,4 @@
-# layer-render
+# layer-render[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/vft-aurora/layer-render)
 sketch、figma、PS通用图层渲染器
 
 # 预览效果

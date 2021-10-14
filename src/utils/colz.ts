@@ -21,7 +21,10 @@ const round = Math.round;
 */
 
 export class Rgb {
-  constructor(col) {
+  protected r: any;
+  protected g : any;
+  protected b : any;
+  constructor(col:any) {
     this.r = col[0];
     this.g = col[1];
     this.b = col[2];
@@ -33,7 +36,8 @@ export class Rgb {
 }
 
 export class Rgba extends Rgb {
-  constructor(col) {
+  protected a: any;
+  constructor(col:any) {
     super(col);
     this.a = col[3];
   }
@@ -44,7 +48,10 @@ export class Rgba extends Rgb {
 }
 
 export class Hsl {
-  constructor(col) {
+  protected h : any;
+  protected s : any;
+  protected l : any;
+  constructor(col:any) {
     this.h = col[0];
     this.s = col[1];
     this.l = col[2];
@@ -56,7 +63,8 @@ export class Hsl {
 }
 
 export class Hsla extends Hsl {
-  constructor(col) {
+  protected a :any;
+  constructor(col:any) {
     super(col);
     this.a = col[3];
   }
@@ -72,7 +80,24 @@ export class Hsla extends Hsl {
  ==================================
 */
 export class Color {
-  constructor(r, g, b, a = 1.0) {
+  private r: any;
+  private g : any;
+  private b : any;
+  private a : any;
+  private astr : any;
+  private rgb : any;
+  private rgba : any;
+  private hex : any;
+  // @ts-ignore
+  private hexa : any;
+  // @ts-ignore
+  private ahex : any;
+  private hsl : any;
+  private h : any;
+  private s : any;
+  private l : any;
+  private hsla : any;
+  constructor(r:any, g:any, b:any, a = 1.0) {
     // If args are not given in (r, g, b, [a]) format, convert
     if (typeof r === "string") {
       let str = r;
@@ -84,6 +109,7 @@ export class Color {
       if (str.length < 7) {
         str = "#" + str[1] + str[1] + str[2] + str[2] + str[3] + str[3];
       }
+      // @ts-ignore
       [r, g, b] = hexToRgb(str);
     } else if (r instanceof Array) {
       a = r[3] || a;
@@ -108,28 +134,28 @@ export class Color {
     this.l = this.hsl.l;
     this.hsla = new Hsla([this.h, this.s, this.l, this.a]);
   }
-
+// @ts-ignore
   setHue(newHue) {
     this.h = newHue;
     this.hsl.h = newHue;
     this.hsla.h = newHue;
     this.updateFromHsl();
   }
-
+// @ts-ignore
   setSat(newSat) {
     this.s = newSat;
     this.hsl.s = newSat;
     this.hsla.s = newSat;
     this.updateFromHsl();
   }
-
+// @ts-ignore
   setLum(newLum) {
     this.l = newLum;
     this.hsl.l = newLum;
     this.hsla.l = newLum;
     this.updateFromHsl();
   }
-
+// @ts-ignore
   setAlpha(newAlpha) {
     this.a = newAlpha;
     this.hsla.a = newAlpha;
@@ -150,9 +176,11 @@ export class Color {
 
     // Updates Hex
     this.hex = null;
+    // @ts-ignore
     this.hex = rgbToHex([this.r, this.g, this.b]);
   }
 }
+// @ts-ignore
 export const Gr = function (t) {
   return Math.round(255 * t)
     .toString(16)
@@ -166,9 +194,10 @@ export const Gr = function (t) {
 
 export const randomColor = function () {
   const r = "#" + Math.random().toString(16).slice(2, 8);
+  // @ts-ignore
   return new Color(r);
 };
-
+// @ts-ignore
 export const hexToRgb = function (hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
@@ -179,13 +208,14 @@ export const hexToRgb = function (hex) {
       ]
     : null;
 };
-
+// @ts-ignore
 export const componentToHex = function (c) {
   const hex = c.toString(16);
   return hex.length === 1 ? "0" + hex : hex;
 };
 
 // You can pass 3 numeric values or 1 Array
+// @ts-ignore
 export const rgbToHex = function (r, g, b) {
   if (r instanceof Array) {
     b = r[2];
@@ -204,6 +234,7 @@ export const rgbToHex = function (r, g, b) {
  * @param {Number} b The blue color value
  * @return {Array} The HSL representation
  */
+// @ts-ignore
 export const rgbToHsl = function (r, g, b) {
   if (r instanceof Array) {
     b = r[2];
@@ -238,18 +269,19 @@ export const rgbToHsl = function (r, g, b) {
         h = (r - g) / d + 4;
         break;
     }
-
+// @ts-ignore
     h /= 6;
   }
 
   // CARLOS
+  // @ts-ignore
   h = round(h * 360);
   s = round(s * 100);
   l = round(l * 100);
 
   return [h, s, l];
 };
-
+// @ts-ignore
 export const hue2rgb = function (p, q, t) {
   if (t < 0) {
     t += 1;
@@ -278,7 +310,7 @@ export const hue2rgb = function (p, q, t) {
  * @param {Number} l The lightness
  * @return {Array} The RGB representation
  */
-
+// @ts-ignore
 export const hslToRgb = function (h, s, l) {
   if (h instanceof Array) {
     l = h[2];
@@ -312,6 +344,7 @@ export const hslToRgb = function (h, s, l) {
  * @param {Number} b The blue color value
  * @return {Array} The HSB representation
  */
+// @ts-ignore
 export const rgbToHsb = function (r, g, b) {
   let max, min, h, s, v, d;
 
@@ -340,10 +373,12 @@ export const rgbToHsb = function (r, g, b) {
         h = (r - g) / d + 4;
         break;
     }
+    // @ts-ignore
     h /= 6;
   }
 
   // map top 360,100,100
+  // @ts-ignore
   h = round(h * 360);
   s = round(s * 100);
   v = round(v * 100);
@@ -360,6 +395,7 @@ export const rgbToHsb = function (r, g, b) {
  * @param {Number} v The value
  * @return {Array} The RGB representation
  */
+// @ts-ignore
 export const hsbToRgb = function (h, s, v) {
   let r, g, b, i, f, p, q, t;
 
@@ -414,7 +450,9 @@ export const hsbToRgb = function (h, s, v) {
 export const hsvToRgb = hsbToRgb; // alias
 
 /* Convert from Hsv */
+// @ts-ignore
 export const hsbToHsl = function (h, s, b) {
+  // @ts-ignore
   return rgbToHsl(hsbToRgb(h, s, b));
 };
 
@@ -426,7 +464,9 @@ export const hsvToHsl = hsbToHsl; // alias
  ==================================
 */
 export class ColorScheme {
+  // @ts-ignore
   constructor(colorVal, angleArray) {
+    // @ts-ignore
     this.palette = [];
 
     if (angleArray === undefined && colorVal instanceof Array) {
@@ -437,57 +477,70 @@ export class ColorScheme {
       this.createFromAngles(colorVal, angleArray);
     }
   }
-
+// @ts-ignore
   createFromColors(colorVal) {
     for (let i in colorVal) {
       if (colorVal.hasOwnProperty(i)) {
         // console.log(colorVal[i]);
+        // @ts-ignore
         this.palette.push(new Color(colorVal[i]));
       }
     }
+    // @ts-ignore
     return this.palette;
   }
-
+// @ts-ignore
   createFromAngles(colorVal, angleArray) {
+    // @ts-ignore
     this.palette.push(new Color(colorVal));
 
     for (let i in angleArray) {
       if (angleArray.hasOwnProperty(i)) {
+        // @ts-ignore
         const tempHue = (this.palette[0].h + angleArray[i]) % 360;
+        // @ts-ignore
         this.palette.push(
+            // @ts-ignore
           new Color(hslToRgb(tempHue, this.palette[0].s, this.palette[0].l))
         );
       }
     }
+    // @ts-ignore
     return this.palette;
   }
 
   /* Complementary colors constructors */
+  // @ts-ignore
   static Compl(colorVal) {
     return new this(colorVal, [180]);
   }
 
   /* Triad */
+  // @ts-ignore
   static Triad(colorVal) {
     return new this(colorVal, [120, 240]);
   }
 
   /* Tetrad */
+  // @ts-ignore
   static Tetrad(colorVal) {
     return new this(colorVal, [60, 180, 240]);
   }
 
   /* Analogous */
+  // @ts-ignore
   static Analog(colorVal) {
     return new this(colorVal, [-45, 45]);
   }
 
   /* Split complementary */
+  // @ts-ignore
   static Split(colorVal) {
     return new this(colorVal, [150, 210]);
   }
 
   /* Accented Analogous */
+  // @ts-ignore
   static Accent(colorVal) {
     return new this(colorVal, [-45, 45, 180]);
   }

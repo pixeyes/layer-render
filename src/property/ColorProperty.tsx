@@ -114,7 +114,8 @@ export const Gradient: React.FC<{ gradient: TGradient }> = ({ gradient }) => {
 export const ColorHint:React.FC<{color:any}> = ({ color }) => {
   const [colorType, setColorType] = useState("hex");
 
-  const menu = (
+  // @ts-ignore
+    const menu = (
     <Menu>
       {jo.map((item) => (
         <Menu.Item
@@ -124,7 +125,11 @@ export const ColorHint:React.FC<{color:any}> = ({ color }) => {
         >
           <div>{item}</div>
           <div>
-            {toColor(color)[item.toLowerCase()].toString().toUpperCase()}
+
+            {
+                // @ts-ignore
+                toColor(color)[item.toLowerCase()].toString().toUpperCase()
+            }
           </div>
         </Menu.Item>
       ))}
@@ -134,7 +139,10 @@ export const ColorHint:React.FC<{color:any}> = ({ color }) => {
     <div className="r color-combo">
       <div className="color-hint" style={{ background: color.value }} />
       <div className="color-text overflow-text">
-        {toColor(color)[colorType].toString().toUpperCase()}
+        {
+            // @ts-ignore
+             toColor(color)[colorType].toString().toUpperCase()
+        }
       </div>
       {colorType === "hex" && (
         <div className="percent-text">{Math.round(100 * color.a)}%</div>
