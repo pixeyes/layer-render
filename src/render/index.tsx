@@ -169,42 +169,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     };
   };
 
-  buildCanvas = () => {
-    const { scale, data } = this.state;
-    const imgWidth = data.width * 4;
-    const imgHeight = data.height * 4;
-    const { x, y } = this.getPosition();
-    this.canvas = this.imageRef.current;
-    const ctx = this.canvas.getContext("2d");
-    //this.context = ctx;
-    const img = new Image();
-    img.onload = function () {
-      ctx.clearRect(x, y, imgWidth * scale, imgHeight * scale);
-      ctx.drawImage(img, x, y, imgWidth * scale, imgHeight * scale);
-    };
-    img.src =
-      "//bimg1-local.jd.com/b/1cd06af6c7d8569560d06530d740de3a6d04b54bb2daed76e067b9393d0eed96.png";
-    //this.context.strokeStyle = 'rgba(255,255,255,0)';
-    //this.context.lineWidth = 1;
-    /*var img = new Image();
-const that = this
-img.onload = function(){
-that.context.drawImage(img,0,0);
-}
-img.src = 'http://bimg1-local.jd.com/b/1cd06af6c7d8569560d06530d740de3a6d04b54bb2daed76e067b9393d0eed96.png';*/
-    /*const {info} = JSON.parse(pageInfo.data.data)
-//left":0,"top":0,"width":750,"height":1334
-info.forEach(item => {
-this.drawRect(item.left, item.top, item.width, item.height)
-this.context.stroke();
-})*/
-    //this.drawRect( 50,50,50,50)
-  };
-
-  /*drawRect = (x: number, y: number, w: number, h: number) => {
-    this.context.beginPath();
-    this.context.rect(x, y, w, h);
-  };*/
   getCanvasPoint = (x: number, y: number) => {
     const canvasOffset = this.imageRef.current.getBoundingClientRect();
     return {
@@ -612,7 +576,7 @@ this.context.stroke();
     //const data = JSON.parse(pageInfo.data.data)
     const style = {
       border: "1px solid #d3d3d3",
-      backgroundImage: `url('https://bimg1-local.jd.com/${this.props.data.image}')`,
+      backgroundImage: `url('https://storage.360buyimg.com/relay/${this.props.data.image}')`,
       backgroundRepeat: "no-repeat",
       backgroundPosition: `${x}px ${y}px`,
       backgroundSize: `${scale * data.width * data.artboard_scale}px ${
