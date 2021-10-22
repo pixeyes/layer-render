@@ -19,6 +19,8 @@ import Operation from "../Operation";
 import Property, { Layer } from "../property/Property";
 
 import ControlType from "../RenderComponents/ControlType";
+import SpecificationModal from "../RenderComponents/SpecificationModal";
+import Context from "../context";
 
 export interface LayerRenderProps {
   data: any;
@@ -39,6 +41,15 @@ interface State {
   x: number;
   y: number;
   data: any;
+  platform: string;
+  ratio: number;
+  colorType: string;
+  specificationModalVisible: boolean;
+}
+
+export interface Specification {
+  platform: string;
+  colorType: string;
 }
 
 class LayerRender extends React.Component<LayerRenderProps, State> {
@@ -76,7 +87,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       x: 0,
       y: 0,
     };
-
+    const [platform, ratio] = props.data.device.split(" @");
     this.state = {
       current: null,
       hoverLayer: null,
@@ -88,6 +99,10 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       x: 0,
       y: 0,
       data: props.data,
+      platform: platform,
+      ratio: parseInt(ratio),
+      colorType: "HEX",
+      specificationModalVisible: false,
     };
     //this.layers = props.data.data.info;
   }
@@ -161,7 +176,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     const canvasWidth = this.props.canvasWidth;
     //const canvasHeight = window.innerHeight;
     // @ts-ignore
-    const imgWidth = data.width * data.artboard_scale;
+    const imgWidth = data.width;
     //const imgHeight = data.height * data.artboard_scale;
     return {
       x: (canvasWidth - imgWidth * scale) / 2 - x,
@@ -564,8 +579,34 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     }
   };
 
+  onSpecificationModalVisibleChange = () => {
+    this.setState({
+      specificationModalVisible: !this.state.specificationModalVisible,
+    });
+  };
+
+  onChangeSpecification = (value: Specification) => {
+    this.setState(value);
+    this.onSpecificationModalVisibleChange();
+  };
+
+  onChangeColorType = (colorType:string) =>{
+    this.setState({
+      colorType
+    })
+  }
+
   render() {
-    const { current, hoverLayer, scale, data } = this.state;
+    const {
+      current,
+      hoverLayer,
+      scale,
+      data,
+      specificationModalVisible,
+      platform,
+      ratio,
+      colorType,
+    } = this.state;
     // console.log("current", current);
     const { x, y } = this.getPosition();
     const top = this.toRatioPX(this.showMarginTopStyle());
@@ -575,13 +616,11 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     const showDistance = !(left && right && top && bottom);
     //const data = JSON.parse(pageInfo.data.data)
     const style = {
-      border: "1px solid #d3d3d3",
+      border: 0,
       backgroundImage: `url('https://storage.360buyimg.com/relay/${this.props.data.image}')`,
       backgroundRepeat: "no-repeat",
       backgroundPosition: `${x}px ${y}px`,
-      backgroundSize: `${scale * data.width * data.artboard_scale}px ${
-        scale * data.height * data.artboard_scale
-      }px`,
+      backgroundSize: `${scale * data.width}px ${scale * data.height}px`,
     };
 
     const currentStyle: React.CSSProperties = current
@@ -595,168 +634,187 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
           border: "1px solid #f53914",
         }
       : {};
-
     return (
-      <>
-        <div
-          className="layer-render-wrap"
-          // @ts-ignore
-          onWheel={this.onWheel}
-        >
-          <canvas
-            className="canvas"
-            ref={this.imageRef}
-            style={style}
-            onClick={this.onWhiteSpaceClick}
-          >
-            123
-          </canvas>
+      <Context.Provider
+        value={{
+          colorType,
+          onChangeColorType:this.onChangeColorType
+        }}
+      >
+        <div className="layer-render-container">
           <div
-            className="wrap"
+            className="layer-render-wrap"
             // @ts-ignore
-            onMouseMove={this.onMouseMove}
-            // @ts-ignore
-            onMouseDown={this.onMouseDown}
-            onMouseLeave={this.onMouseleave}
-            onMouseUp={this.onMouseUp}
-            style={{
-              left: x,
-              top: y,
-              width: data.width * scale * data.artboard_scale,
-              height: data.height * scale * data.artboard_scale,
-            }}
+            onWheel={this.onWheel}
           >
-            {(current && !hoverLayer) ||
-            (current && isEqual(hoverLayer, current)) ? (
-              <div
-                className="border"
-                style={currentStyle}
-                data-width={current ? current.frame.width + "px" : ""}
-                data-height={current ? current.frame.height + "px" : ""}
-              />
-            ) : (
-              current && <div className="current-item" style={currentStyle} />
-            )}
-
-            {hoverLayer && (
-              <div
-                className="hover-item"
-                style={this.toRatioPX({
-                  left: hoverLayer.frame.x,
-                  top: hoverLayer.frame.y,
-                  width: hoverLayer.frame.width,
-                  height: hoverLayer.frame.height,
-                })}
-              />
-            )}
-            {hoverLayer && !current && (
-              <div className="line">
+            <canvas
+              className="canvas"
+              ref={this.imageRef}
+              style={style}
+              onClick={this.onWhiteSpaceClick}
+            >
+              123
+            </canvas>
+            <div
+              className="wrap"
+              // @ts-ignore
+              onMouseMove={this.onMouseMove}
+              // @ts-ignore
+              onMouseDown={this.onMouseDown}
+              onMouseLeave={this.onMouseleave}
+              onMouseUp={this.onMouseUp}
+              style={{
+                left: x,
+                top: y,
+                width: data.width * scale,
+                height: data.height * scale,
+              }}
+            >
+              {(current && !hoverLayer) ||
+              (current && isEqual(hoverLayer, current)) ? (
                 <div
-                  className="x"
+                  className="border"
+                  style={currentStyle}
+                  data-width={current ? current.frame.width + "px" : ""}
+                  data-height={current ? current.frame.height + "px" : ""}
+                />
+              ) : (
+                current && <div className="current-item" style={currentStyle} />
+              )}
+
+              {hoverLayer && (
+                <div
+                  className="hover-item"
                   style={this.toRatioPX({
                     left: hoverLayer.frame.x,
-                    width: hoverLayer.frame.width,
-                  })}
-                />
-                <div
-                  className="y"
-                  style={this.toRatioPX({
                     top: hoverLayer.frame.y,
+                    width: hoverLayer.frame.width,
                     height: hoverLayer.frame.height,
                   })}
                 />
-              </div>
-            )}
+              )}
+              {hoverLayer && !current && (
+                <div className="line">
+                  <div
+                    className="x"
+                    style={this.toRatioPX({
+                      left: hoverLayer.frame.x,
+                      width: hoverLayer.frame.width,
+                    })}
+                  />
+                  <div
+                    className="y"
+                    style={this.toRatioPX({
+                      top: hoverLayer.frame.y,
+                      height: hoverLayer.frame.height,
+                    })}
+                  />
+                </div>
+              )}
 
-            {current && hoverLayer && !isEqual(current, hoverLayer) && (
-              <>
-                {showDistance && (
-                  <div className="distance">
-                    {this.showDistanceTopStyle() && (
-                      <div
-                        className="top"
-                        style={this.showDistanceTopStyle()}
-                      />
+              {current && hoverLayer && !isEqual(current, hoverLayer) && (
+                <>
+                  {showDistance && (
+                    <div className="distance">
+                      {this.showDistanceTopStyle() && (
+                        <div
+                          className="top"
+                          style={this.showDistanceTopStyle()}
+                        />
+                      )}
+                      {this.showDistanceRightStyle() && (
+                        <div
+                          className="right"
+                          style={this.showDistanceRightStyle()}
+                        />
+                      )}
+                      {this.showDistanceBottomStyle() && (
+                        <div
+                          className="bottom"
+                          style={this.showDistanceBottomStyle()}
+                        />
+                      )}
+                      {this.showDistanceLeftStyle() && (
+                        <div
+                          className="left"
+                          style={this.showDistanceLeftStyle()}
+                        />
+                      )}
+                    </div>
+                  )}
+                  <div ref={this.marginRef} className="margin">
+                    {top && (
+                      <div className="top" style={top}>
+                        {top.value && (
+                          <div
+                            className="info"
+                            data-value={toUnit(top.value, "px")}
+                          />
+                        )}
+                      </div>
                     )}
-                    {this.showDistanceRightStyle() && (
-                      <div
-                        className="right"
-                        style={this.showDistanceRightStyle()}
-                      />
+                    {right && (
+                      <div className="right" style={right}>
+                        {right.value && (
+                          <div
+                            className="info"
+                            data-value={toUnit(right.value, "px")}
+                          />
+                        )}
+                      </div>
                     )}
-                    {this.showDistanceBottomStyle() && (
-                      <div
-                        className="bottom"
-                        style={this.showDistanceBottomStyle()}
-                      />
+
+                    {bottom && (
+                      <div className="bottom" style={bottom}>
+                        {bottom.value && (
+                          <div
+                            className="info"
+                            data-value={toUnit(bottom.value, "px")}
+                          />
+                        )}
+                      </div>
                     )}
-                    {this.showDistanceLeftStyle() && (
-                      <div
-                        className="left"
-                        style={this.showDistanceLeftStyle()}
-                      />
+                    {left && (
+                      <div className="left" style={left}>
+                        {left.value && (
+                          <div
+                            className="info"
+                            data-value={toUnit(left.value, "px")}
+                          />
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
-                <div ref={this.marginRef} className="margin">
-                  {top && (
-                    <div className="top" style={top}>
-                      {top.value && (
-                        <div
-                          className="info"
-                          data-value={toUnit(top.value, "px")}
-                        />
-                      )}
-                    </div>
-                  )}
-                  {right && (
-                    <div className="right" style={right}>
-                      {right.value && (
-                        <div
-                          className="info"
-                          data-value={toUnit(right.value, "px")}
-                        />
-                      )}
-                    </div>
-                  )}
-
-                  {bottom && (
-                    <div className="bottom" style={bottom}>
-                      {bottom.value && (
-                        <div
-                          className="info"
-                          data-value={toUnit(bottom.value, "px")}
-                        />
-                      )}
-                    </div>
-                  )}
-                  {left && (
-                    <div className="left" style={left}>
-                      {left.value && (
-                        <div
-                          className="info"
-                          data-value={toUnit(left.value, "px")}
-                        />
-                      )}
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
+                </>
+              )}
+            </div>
           </div>
+          <ControlType />
+          <Operation
+            scale={scale}
+            zoomIn={this.zoomIn}
+            zoomOut={this.zoomOut}
+            zoomToPrimitive={this.zoomToPrimitive}
+            zoomNext={this.zoomNext}
+          />
+          {current && (
+            <Property
+              current={current}
+              width={data.width}
+              height={data.height}
+              platform={platform}
+              ratio={ratio}
+              colorType={colorType}
+              onModalVisibleChange={this.onSpecificationModalVisibleChange}
+            />
+          )}
+          <SpecificationModal
+            visible={specificationModalVisible}
+            onChangeSpecification={this.onChangeSpecification}
+            onVisibleChange={this.onSpecificationModalVisibleChange}
+          />
         </div>
-        <ControlType />
-        <Operation
-          scale={scale}
-          zoomIn={this.zoomIn}
-          zoomOut={this.zoomOut}
-          zoomToPrimitive={this.zoomToPrimitive}
-          zoomNext={this.zoomNext}
-        />
-        {current && (
-          <Property current={current} width={data.width} height={data.height} />
-        )}
-      </>
+      </Context.Provider>
     );
   }
 }

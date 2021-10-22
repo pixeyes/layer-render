@@ -2,11 +2,11 @@ import * as React from "react";
 import classNames from "classnames";
 import FontProperty from "./FontProperty";
 import ColorProperty from "./ColorProperty";
-import { RightCloseIcon } from "../svgIcons";
+import { RightCloseIcon, SetIcon } from "../svgIcons";
 import BordersProperty from "./BordersProperty";
 import ShadowProperty from "./ShadowProperty";
 import BlurProperty from "./BlurProperty";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 export type Color = {
   r: number;
   g: number;
@@ -72,18 +72,30 @@ interface PropertyProps {
   current: Layer;
   width: number;
   height: number;
+  platform: string;
+  ratio: number;
+  onModalVisibleChange: () => void;
+  colorType: string;
 }
-
-
-const getLayerAttr = (style:any, key:any) => (style && style[key] ? style[key] : []);
-const Property: React.FC<PropertyProps> = ({ current }) => {
+const toUnit = (value:number,platform:string) => {
+  switch (platform) {
+    case 'iOS':
+      return value +'pt';
+    case 'android':
+      return value +'dp';
+    default:
+      return value+'px'
+  }
+}
+const getLayerAttr = (style: any, key: any) =>
+  style && style[key] ? style[key] : [];
+const Property: React.FC<PropertyProps> = ({ current,platform,ratio,width,height,onModalVisibleChange,colorType }) => {
   const layerColors = getLayerAttr(current.style, "fills");
   const layerBorders = getLayerAttr(current.style, "borders");
   const layerShadows = getLayerAttr(current.style, "shadows");
   const layerBlurs = getLayerAttr(current.style, "blurs");
-
   const [visible, setVisible] = useState<boolean>(true);
-
+  const unitResult =  "".concat(toUnit(width,platform), " x ").concat(toUnit(height,platform))
   useEffect(() => {
     if (!current) {
       setVisible(false);
@@ -107,6 +119,24 @@ const Property: React.FC<PropertyProps> = ({ current }) => {
             onClick={() => setVisible(false)}
           >
             <RightCloseIcon />
+          </button>
+        </div>
+      </div>
+      <div className="page-unit-info">
+        <div className="left_title">
+          <span title="iOS@1x" className="unit_name overflow-text">
+            {platform}
+            <span className="unit_device">@{ratio}x</span>
+          </span>
+        </div>
+        <div className="right_title">
+          <span className="unit_result overflow-text">{unitResult}</span>
+          <button
+            className="button-module base_set_icon rel-btn--icon rel-btn--medium"
+            data-guide="page-set_project"
+            onClick={onModalVisibleChange}
+          >
+            <SetIcon />
           </button>
         </div>
       </div>
@@ -155,18 +185,18 @@ const Property: React.FC<PropertyProps> = ({ current }) => {
             <div>
               <div className="property-title">样式信息</div>
               <div>
-                {current.font && <FontProperty font={current.font} />}
+                {current.font && <FontProperty font={current.font} colorType={colorType}/>}
                 {layerColors.length > 0 && (
-                  <ColorProperty layerColors={layerColors} />
+                  <ColorProperty layerColors={layerColors}  colorType={colorType}/>
                 )}
                 {layerBorders.length > 0 && (
-                  <BordersProperty layerBorders={layerBorders} />
+                  <BordersProperty layerBorders={layerBorders} colorType={colorType}/>
                 )}
                 {layerShadows.length > 0 && (
-                  <ShadowProperty layerShadows={layerShadows} />
+                  <ShadowProperty layerShadows={layerShadows} colorType={colorType}/>
                 )}
                 {layerBlurs.length > 0 && (
-                  <BlurProperty layerBlurs={layerBlurs} />
+                  <BlurProperty layerBlurs={layerBlurs}/>
                 )}
               </div>
             </div>

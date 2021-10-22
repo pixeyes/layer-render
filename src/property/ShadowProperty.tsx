@@ -12,9 +12,10 @@ type layerShadow = {
 };
 interface ShadowPropertyProps {
   layerShadows: layerShadow[];
+  colorType:string
 }
 
-const ShadowProperty: React.FC<ShadowPropertyProps> = ({ layerShadows }) => {
+const ShadowProperty: React.FC<ShadowPropertyProps> = ({ layerShadows,colorType }) => {
   return (
     <div className="property-shadow property-item-warp group">
       {layerShadows.map((layerShadow, index) => (
@@ -40,7 +41,7 @@ const ShadowProperty: React.FC<ShadowPropertyProps> = ({ layerShadows }) => {
               </div>
             </div>
             <div>
-              <ColorItem color={layerShadow.color} />
+              <ColorItem color={layerShadow.color} colorType={colorType}/>
             </div>
           </div>
         </div>

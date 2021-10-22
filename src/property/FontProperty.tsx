@@ -5,9 +5,10 @@ import { ALIGN, VerticalAlignment } from "./constants";
 
 interface FontPropertyProps {
   font: Font;
+  colorType:string
 }
 
-const FontProperty: React.FC<FontPropertyProps> = ({ font }) => {
+const FontProperty: React.FC<FontPropertyProps> = ({ font,colorType }) => {
   return (
     <div className="property-font group">
       <div className="property-font-item">
@@ -29,7 +30,7 @@ const FontProperty: React.FC<FontPropertyProps> = ({ font }) => {
             <div className="r text">{font.size}px</div>
           </li>
           <li>
-            <ColorItem color={font.color} />
+            <ColorItem color={font.color} colorType={colorType}/>
           </li>
           <li style={{ height: "auto", flexWrap: "wrap" }}>
             <div className="l">对齐</div>
