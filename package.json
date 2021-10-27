@@ -1,6 +1,6 @@
 {
   "name": "layer-render",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -19,7 +19,7 @@
     "build:demo": "CI=false yep-tools build:demo",
     "clean": "rimraf dist lib es",
     "clear": "rimraf node_modules",
-    "prepub": "npm run clean && npm run compile && npm run dist && npm run release",
+    "prepub": "npm run clean && npm run release && npm run compile && npm run dist",
     "pub": "npm publish --registry https://registry.npmjs.org/",
     "release": "standard-version",
     "deploy": "gh-pages -d build"

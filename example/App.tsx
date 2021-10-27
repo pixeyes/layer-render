@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from "react";
 import LayerRender, { doSomeThing } from "../src";
+import relay from './data'
 
 function App() {
   const [res, setRes] = useState();
   useEffect(() => {
-    fetch(
-      "/v1/relay/api/page/info?unique_page_id=9a83fa5b-acc5-4468-a4c4-dd386ad192a5",
-      {
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        method: "GET",
-      }
-    )
-      .then((res) => res.json())
-      .then((resp) => {
-        const data = doSomeThing(resp.data);
+    if (/jd.com/.test(window.location.hostname)) {
+      fetch(
+        "/v1/relay/api/page/info?unique_page_id=9a83fa5b-acc5-4468-a4c4-dd386ad192a5",
+        {
+          credentials: "include",
+          mode: "cors",
+          cache: "no-cache",
+          method: "GET",
+        }
+      )
+        .then((res) => res.json())
+        .then((resp) => {
+          const data = doSomeThing(resp.data);
+          setRes(data);
+        });
+    }else {
+        const data = doSomeThing(relay);
         setRes(data);
-      });
+    }
   }, []);
   if (!res) return null;
   return (
@@ -26,13 +32,13 @@ function App() {
       mountCallback={(that) => {
         console.log(that);
       }}
-      onMouseDown={(current) => {
-        console.log(current);
-      }}
       goNext={() => {
         console.log("goNext");
       }}
-      canvasWidth={864}
+      canvasWidth={1264}
+      onChange={(data) => {
+        console.log(data);
+      }}
     />
   );
 }
