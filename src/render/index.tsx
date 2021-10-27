@@ -3,22 +3,23 @@ import { isEqual } from "lodash-es";
 import {
   getLayersByPosition,
   MAX_SCALE,
-  MIN_SCALE, toUnitNB,
+  MIN_SCALE,
+  toUnitNB,
   WHEEL_HOLD,
   WHEEL_SCALE_STEP,
   ZOOM_SCALE_STEP,
 } from "../utils";
 import {
-  toUnit,
-  computeShowMarginTopStyle,
   computeShowMarginBottomStyle,
-  computeShowMarginRightStyle,
   computeShowMarginLeftStyle,
+  computeShowMarginRightStyle,
+  computeShowMarginTopStyle,
+  toUnit,
 } from "./renderUtils";
 import Operation from "../Operation";
 import Property, { Layer } from "../property/Property";
 
-import ControlType from "../RenderComponents/ControlType";
+import ControlType, { CROP_TYPE } from "../RenderComponents/ControlType";
 import SpecificationModal from "../RenderComponents/SpecificationModal";
 import Context, { IContext } from "../context";
 import { artSizeList } from "../constants/unit";
@@ -46,6 +47,11 @@ interface State {
   ratio: number;
   colorType: string;
   specificationModalVisible: boolean;
+  cropElementVisible: boolean;
+  cropType: CROP_TYPE;
+  cropStartX: number;
+  cropStartY: number;
+  cropMoving: boolean;
 }
 
 export interface Specification {
@@ -68,6 +74,12 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   offsetY: number;
   moving: boolean;
   currentLayerPoint: any;
+  cropWrap: any;
+  cropElement: any;
+  cropTop: any;
+  cropRight: any;
+  cropBottom: any;
+  cropLeft: any;
 
   static defaultProps = {
     canvasWidth: window.innerWidth,
@@ -104,6 +116,11 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       ratio: parseInt(ratio),
       colorType: "HEX",
       specificationModalVisible: false,
+      cropElementVisible: false,
+      cropType: CROP_TYPE.CLICK,
+      cropStartX: 0,
+      cropStartY: 0,
+      cropMoving: false,
     };
     //this.layers = props.data.data.info;
   }
@@ -194,10 +211,40 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   };
 
   onMouseMove = (e: MouseEvent) => {
-    const { data } = this.state;
+    const { data, cropType, cropMoving, cropStartX, cropStartY } = this.state;
     const { x, y } = this.getPosition();
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
+    if (cropType === CROP_TYPE.CROP) {
+      if (cropMoving) {
+        if (point.x >= cropStartX) {
+          this.cropElement.style.left = cropStartX + "px";
+        } else {
+          this.cropElement.style.left = point.x + "px";
+        }
+        if (point.y >= cropStartY) {
+          this.cropElement.style.top = cropStartY + "px";
+        } else {
+          this.cropElement.style.top = point.y + "px";
+        }
+
+        this.cropElement.style.width = Math.abs(point.x - cropStartX) + "px";
+        this.cropElement.style.height = Math.abs(point.y - cropStartY) + "px";
+
+        this.cropTop.style.width = point.x + "px";
+        this.cropTop.style.height = cropStartY + "px";
+        //
+        this.cropRight.style.width = Math.abs(data.width - point.x) + "px";
+        this.cropRight.style.height = point.y + "px";
+        //
+        this.cropBottom.style.width = Math.abs(data.width - cropStartX) + "px";
+        this.cropBottom.style.height = data.height - point.y + "px";
+        //
+        this.cropLeft.style.width = Math.abs(cropStartX) + "px";
+        this.cropLeft.style.height = data.height - cropStartY + "px";
+      }
+      return;
+    }
     const currentHoverLayer = getLayersByPosition(this.validLayers(), point);
 
     this.setState({
@@ -241,8 +288,26 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     });
   };
 
-  onMouseUp = () => {
+  onMouseUp = (e: MouseEvent) => {
     this.moving = false;
+    const { cropStartX, cropStartY, cropType } = this.state;
+    if (cropType === CROP_TYPE.CROP) {
+      const { x, y } = this.getPosition();
+      //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
+      const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
+      const position = {
+        x: cropStartX,
+        y: cropStartY,
+        w: Math.abs(point.x - cropStartX),
+        h: Math.abs(point.y - cropStartY),
+      };
+
+      console.log(position);
+      // this.setState({
+      //   cropMoving: false,
+      //   cropElementVisible: false,
+      // });
+    }
   };
 
   onMouseDown = async (e: MouseEvent) => {
@@ -251,11 +316,21 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     this.tempY = e.clientY;
     this.offsetX = this.offsetY = 0;
 
-    const { current: currentLayer } = this.state;
     e.stopPropagation();
     const { x, y } = this.getPosition();
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
+    if (this.state.cropType === CROP_TYPE.CROP) {
+      this.setState({
+        cropMoving: true,
+        cropElementVisible: true,
+        cropStartX: point.x,
+        cropStartY: point.y,
+      });
+      return;
+    }
+    const { current: currentLayer } = this.state;
+
     const layers = getLayersByPosition(
       this.validLayers(),
       point,
@@ -597,6 +672,12 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     });
   };
 
+  onChangeCropType = (cropType: CROP_TYPE) => {
+    this.setState({
+      cropType,
+    });
+  };
+
   render() {
     const {
       current,
@@ -607,6 +688,10 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       platform,
       ratio,
       colorType,
+      cropElementVisible,
+      cropType,
+      cropStartX,
+      cropStartY,
     } = this.state;
     // console.log("current", current);
     const { x, y } = this.getPosition();
@@ -628,18 +713,18 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       ? {
           width: toUnit(current.frame.width, "px", scale),
           height: toUnit(current.frame.height, "px", scale),
-          left: toUnit(current.frame.x-1, "px", scale),
-          top: toUnit(current.frame.y-1, "px", scale),
+          left: toUnit(current.frame.x - 1, "px", scale),
+          top: toUnit(current.frame.y - 1, "px", scale),
           position: "absolute",
           zIndex: 1,
           border: "1px solid #f53914",
         }
       : {};
-    const artSize =  artSizeList.find((i) => i.platform === platform)
+    const artSize = artSizeList.find((i) => i.platform === platform);
     const contextValue: IContext = {
       colorType,
       onChangeColorType: this.onChangeColorType,
-      artSize
+      artSize,
     };
     return (
       <Context.Provider value={contextValue}>
@@ -657,141 +742,209 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
             >
               123
             </canvas>
-            <div
-              className="wrap"
-              // @ts-ignore
-              onMouseMove={this.onMouseMove}
-              // @ts-ignore
-              onMouseDown={this.onMouseDown}
-              onMouseLeave={this.onMouseleave}
-              onMouseUp={this.onMouseUp}
-              style={{
-                left: x,
-                top: y,
-                width: data.width * scale,
-                height: data.height * scale,
-              }}
-            >
-              {(current && !hoverLayer) ||
-              (current && isEqual(hoverLayer, current)) ? (
-                <div
-                  className="border"
-                  style={currentStyle}
-                  data-width={current ? toUnitNB(current.frame.width, artSize!) : ""}
-                  data-height={current ? toUnitNB(current.frame.height, artSize!) : ""}
-                />
-              ) : (
-                current && <div className="current-item" style={currentStyle} />
-              )}
-
-              {hoverLayer &&  !isEqual(hoverLayer,current) &&  (
-                <div
-                  className="hover-item"
-                  style={this.toRatioPX({
-                    left: hoverLayer.frame.x-1,
-                    top: hoverLayer.frame.y-1,
-                    width: hoverLayer.frame.width,
-                    height: hoverLayer.frame.height,
-                  })}
-                />
-              )}
-              {hoverLayer && !current && (
-                <div className="line">
+            {cropType === CROP_TYPE.CROP ? (
+              <div
+                className="vft-crop"
+                // @ts-ignore
+                onMouseUp={this.onMouseUp}
+                // @ts-ignore
+                onMouseMove={this.onMouseMove}
+                // @ts-ignore
+                onMouseDown={this.onMouseDown}
+                onMouseLeave={this.onMouseleave}
+                ref={(node) => (this.cropWrap = node)}
+                style={{
+                  ...{
+                    left: x,
+                    top: y,
+                    width: data.width * scale,
+                    height: data.height * scale,
+                  },
+                  ...(cropElementVisible
+                    ? {
+                        backgroundColor: "rgba(0, 0, 0, 0)",
+                      }
+                    : {}),
+                }}
+              >
+                {cropElementVisible && (
+                  <>
+                    <div
+                      className="vft-crop-mask vft-crop-top"
+                      ref={(node) => (this.cropTop = node)}
+                    />
+                    <div
+                      className="vft-crop-mask vft-crop-right"
+                      ref={(node) => (this.cropRight = node)}
+                    />
+                    <div
+                      className="vft-crop-mask vft-crop-bottom"
+                      ref={(node) => (this.cropBottom = node)}
+                    />
+                    <div
+                      className="vft-crop-mask vft-crop-left"
+                      ref={(node) => (this.cropLeft = node)}
+                    />
+                    <div
+                      className="vft-crop-rectangle"
+                      style={{
+                        left: cropStartX,
+                        top: cropStartY,
+                        width: 0,
+                        height: 0,
+                      }}
+                      ref={(node) => (this.cropElement = node)}
+                    />
+                  </>
+                )}
+              </div>
+            ) : (
+              <div
+                className="wrap"
+                // @ts-ignore
+                onMouseMove={this.onMouseMove}
+                // @ts-ignore
+                onMouseDown={this.onMouseDown}
+                onMouseLeave={this.onMouseleave}
+                // @ts-ignore
+                onMouseUp={this.onMouseUp}
+                style={{
+                  left: x,
+                  top: y,
+                  width: data.width * scale,
+                  height: data.height * scale,
+                }}
+              >
+                {(current && !hoverLayer) ||
+                (current && isEqual(hoverLayer, current)) ? (
                   <div
-                    className="x"
-                    style={this.toRatioPX({
-                      left: hoverLayer.frame.x,
-                      width: hoverLayer.frame.width,
-                    })}
+                    className="border"
+                    style={currentStyle}
+                    data-width={
+                      current ? toUnitNB(current.frame.width, artSize!) : ""
+                    }
+                    data-height={
+                      current ? toUnitNB(current.frame.height, artSize!) : ""
+                    }
                   />
+                ) : (
+                  current && (
+                    <div className="current-item" style={currentStyle} />
+                  )
+                )}
+
+                {hoverLayer && !isEqual(hoverLayer, current) && (
                   <div
-                    className="y"
+                    className="hover-item"
                     style={this.toRatioPX({
-                      top: hoverLayer.frame.y,
+                      left: hoverLayer.frame.x - 1,
+                      top: hoverLayer.frame.y - 1,
+                      width: hoverLayer.frame.width,
                       height: hoverLayer.frame.height,
                     })}
                   />
-                </div>
-              )}
+                )}
+                {hoverLayer && !current && (
+                  <div className="line">
+                    <div
+                      className="x"
+                      style={this.toRatioPX({
+                        left: hoverLayer.frame.x,
+                        width: hoverLayer.frame.width,
+                      })}
+                    />
+                    <div
+                      className="y"
+                      style={this.toRatioPX({
+                        top: hoverLayer.frame.y,
+                        height: hoverLayer.frame.height,
+                      })}
+                    />
+                  </div>
+                )}
 
-              {current && hoverLayer && !isEqual(current, hoverLayer) && (
-                <>
-                  {showDistance && (
-                    <div className="distance">
-                      {this.showDistanceTopStyle() && (
-                        <div
-                          className="top"
-                          style={this.showDistanceTopStyle()}
-                        />
+                {current && hoverLayer && !isEqual(current, hoverLayer) && (
+                  <>
+                    {showDistance && (
+                      <div className="distance">
+                        {this.showDistanceTopStyle() && (
+                          <div
+                            className="top"
+                            style={this.showDistanceTopStyle()}
+                          />
+                        )}
+                        {this.showDistanceRightStyle() && (
+                          <div
+                            className="right"
+                            style={this.showDistanceRightStyle()}
+                          />
+                        )}
+                        {this.showDistanceBottomStyle() && (
+                          <div
+                            className="bottom"
+                            style={this.showDistanceBottomStyle()}
+                          />
+                        )}
+                        {this.showDistanceLeftStyle() && (
+                          <div
+                            className="left"
+                            style={this.showDistanceLeftStyle()}
+                          />
+                        )}
+                      </div>
+                    )}
+                    <div ref={this.marginRef} className="margin">
+                      {top && (
+                        <div className="top" style={top}>
+                          {top.value && (
+                            <div
+                              className="info"
+                              data-value={toUnitNB(top.value, artSize!)}
+                            />
+                          )}
+                        </div>
                       )}
-                      {this.showDistanceRightStyle() && (
-                        <div
-                          className="right"
-                          style={this.showDistanceRightStyle()}
-                        />
+                      {right && (
+                        <div className="right" style={right}>
+                          {right.value && (
+                            <div
+                              className="info"
+                              data-value={toUnitNB(right.value, artSize!)}
+                            />
+                          )}
+                        </div>
                       )}
-                      {this.showDistanceBottomStyle() && (
-                        <div
-                          className="bottom"
-                          style={this.showDistanceBottomStyle()}
-                        />
+
+                      {bottom && (
+                        <div className="bottom" style={bottom}>
+                          {bottom.value && (
+                            <div
+                              className="info"
+                              data-value={toUnitNB(bottom.value, artSize!)}
+                            />
+                          )}
+                        </div>
                       )}
-                      {this.showDistanceLeftStyle() && (
-                        <div
-                          className="left"
-                          style={this.showDistanceLeftStyle()}
-                        />
+                      {left && (
+                        <div className="left" style={left}>
+                          {left.value && (
+                            <div
+                              className="info"
+                              data-value={toUnitNB(left.value, artSize!)}
+                            />
+                          )}
+                        </div>
                       )}
                     </div>
-                  )}
-                  <div ref={this.marginRef} className="margin">
-                    {top && (
-                      <div className="top" style={top}>
-                        {top.value && (
-                          <div
-                            className="info"
-                            data-value={toUnitNB(top.value, artSize!)}
-                          />
-                        )}
-                      </div>
-                    )}
-                    {right && (
-                      <div className="right" style={right}>
-                        {right.value && (
-                          <div
-                            className="info"
-                            data-value={toUnitNB(right.value, artSize!)}
-                          />
-                        )}
-                      </div>
-                    )}
-
-                    {bottom && (
-                      <div className="bottom" style={bottom}>
-                        {bottom.value && (
-                          <div
-                            className="info"
-                            data-value={toUnitNB(bottom.value, artSize!)}
-                          />
-                        )}
-                      </div>
-                    )}
-                    {left && (
-                      <div className="left" style={left}>
-                        {left.value && (
-                          <div
-                            className="info"
-                            data-value={toUnitNB(left.value, artSize!)}
-                          />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
-          <ControlType />
+          <ControlType
+            cropType={cropType}
+            onChangeCropType={this.onChangeCropType}
+          />
           <Operation
             scale={scale}
             zoomIn={this.zoomIn}
