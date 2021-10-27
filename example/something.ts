@@ -4,7 +4,7 @@ export function doSomeThing(res:any){
     const t = res;
     let c :any= null;
     try {
-        t.name = decodeURIComponent(t.name);
+        t.name = decodeStr(t.name);
         t.width *= 1;
         t.height *= 1;
         1 == t.data_version &&

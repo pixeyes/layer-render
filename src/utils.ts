@@ -1,3 +1,5 @@
+import { ART_SIZE } from "./constants/unit";
+
 export function J(e: any, t: any) {
   let n, o, i, a, c;
   return (
@@ -21,26 +23,26 @@ export function J(e: any, t: any) {
 export function normalizr(t: any) {
   // eslint-disable-next-line prefer-rest-params
   const e = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [],
-      i = "group" === t.type;
+    i = "group" === t.type;
   return (
-      (!i || (i && t.image) || (i && t.children && t.children.length > 1)) &&
+    (!i || (i && t.image) || (i && t.children && t.children.length > 1)) &&
       e.push(t),
-      Array.isArray(t.children) &&
-      (t.children.some(function (t:any) {
+    Array.isArray(t.children) &&
+      (t.children.some(function (t: any) {
         return t.hasOwnProperty("index");
       }) &&
-      t.children.sort(function (t:any, e:any) {
-        return t.index > e.index ? 1 : t.index < e.index ? -1 : 0;
-      }),
-          t.children.forEach(function (t:any) {
-            // @ts-ignore
-            normalizr(t, e);
-          })),
-          e
+        t.children.sort(function (t: any, e: any) {
+          return t.index > e.index ? 1 : t.index < e.index ? -1 : 0;
+        }),
+      t.children.forEach(function (t: any) {
+        // @ts-ignore
+        normalizr(t, e);
+      })),
+    e
   );
 }
 
-function H(t:any, e:any) {
+function H(t: any, e: any) {
   let i,
     n,
     a,
@@ -57,7 +59,7 @@ function H(t:any, e:any) {
 }
 export const getLayersByPosition = function (
   validLayers: any[],
-  t:any,
+  t: any,
   findAll?: boolean
 ) {
   const n = {
@@ -81,7 +83,7 @@ export const getLayersByPosition = function (
   return findAll ? a : null;
 };
 
-export const getLayersByAI = function (validLayers: any[], point:any) {
+export const getLayersByAI = function (validLayers: any[], point: any) {
   const a = [];
   for (const validLayer of validLayers) {
     console.log(validLayer);
@@ -134,3 +136,70 @@ export const zoomOutNext = (currentScale: number) => {
   }
   return SCALE_STEPS[nextIndex] / 100;
 };
+
+export function toUnitNB(
+  value: number,
+  designUnit: ART_SIZE,
+  isRound = true,
+  scale = 1
+): string | number {
+  const unit = designUnit.unit;
+  if (
+    value == null ||
+    value === 0 ||
+    (typeof value === "number" && isNaN(value))
+  )
+    return 0;
+  try {
+    if (Array.isArray(value)) {
+      return value
+        .map((v) => toUnitNB(v, designUnit, isRound, scale))
+        .join(" ");
+    }
+    let newValue = value / designUnit.ratio;
+    let fractionDigits = 1;
+    if (unit == "rem" || unit == "pt") {
+      isRound = false;
+      fractionDigits = 2;
+    }
+    return (
+      (isRound
+        ? Math.round(newValue * scale) / scale
+        : parseFloat(newValue.toFixed(fractionDigits))) + (unit || 0)
+    );
+  } catch (e) {}
+  return value;
+}
+export function toUnitFont(
+  value: number,
+  designUnit: ART_SIZE,
+  isRound = true,
+  scale = 1
+): string | number {
+  const fontUnit = designUnit.fontUnit;
+  if (
+    value == null ||
+    value === 0 ||
+    (typeof value === "number" && isNaN(value))
+  )
+    return 0;
+  try {
+    if (Array.isArray(value)) {
+      return value
+        .map((v) => toUnitNB(v, designUnit, isRound, scale))
+        .join(" ");
+    }
+    let newValue = value / designUnit.ratio;
+    let fractionDigits = 1;
+    if (fontUnit == "rem" || fontUnit == "pt") {
+      isRound = false;
+      fractionDigits = 2;
+    }
+    return (
+      (isRound
+        ? Math.round(newValue * scale) / scale
+        : parseFloat(newValue.toFixed(fractionDigits))) + (fontUnit || 0)
+    );
+  } catch (e) {}
+  return value;
+}

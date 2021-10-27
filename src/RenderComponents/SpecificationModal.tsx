@@ -1,76 +1,23 @@
 import * as React from "react";
 import { Button, Form, Modal, Select } from "antd";
 import { jo } from "../property/constants";
-import {Specification} from "../render";
+import { Specification } from "../render";
+import { artSizeList } from "../constants/unit";
 
 interface SpecificationModalProps {
   visible: boolean;
   onChangeSpecification: (values: any) => void;
   onVisibleChange: () => void;
+  platform: string;
+  colorType: string;
 }
-const artSizeList = [
-  {
-    platform: "iOS",
-    unit: "pt",
-    fontUnit: "pt",
-    ratio: 1,
-    picType: "svg",
-    leftTip: {
-      type: "icon",
-      icon: "//s1-relay.360buyimg.com/relay/release/platform/web/img/ios_platform_icon.ee53ffd5.svg",
-    },
-    name: "iOS/pt（上传默认单位）",
-    selected: true,
-    clstag: "h|keycount|web_page_equipment|2",
-  },
-  {
-    platform: "Android",
-    unit: "dp",
-    fontUnit: "sp",
-    ratio: 1,
-    picType: "svg",
-    leftTip: {
-      type: "icon",
-      icon: "//s1-relay.360buyimg.com/relay/release/platform/web/img/android_platform_icon.80ba33c0.svg",
-    },
-    name: "Android/dp",
-    selected: false,
-    clstag: "h|keycount|web_page_equipment|3",
-  },
-  {
-    platform: "Web",
-    unit: "px",
-    fontUnit: "px",
-    ratio: 1,
-    picType: "svg",
-    leftTip: {
-      type: "icon",
-      icon: "//s1-relay.360buyimg.com/relay/release/platform/web/img/pc_platform_icon.ded3b163.svg",
-    },
-    name: "Web/px",
-    selected: false,
-    clstag: "h|keycount|web_page_equipment|4",
-  },
-  {
-    platform: "像素",
-    unit: "px",
-    fontUnit: "px",
-    ratio: 1,
-    picType: "svg",
-    leftTip: {
-      type: "icon",
-      icon: "//s1-relay.360buyimg.com/relay/release/platform/web/img/other_platform_icon.08f4efc5.svg",
-    },
-    name: "像素/px",
-    selected: false,
-    clstag: "h|keycount|web_page_equipment|5",
-  },
-];
 
 const SpecificationModal: React.FC<SpecificationModalProps> = ({
   visible,
   onChangeSpecification,
   onVisibleChange,
+  platform,
+  colorType,
 }) => {
   const [form] = Form.useForm();
 
@@ -90,10 +37,10 @@ const SpecificationModal: React.FC<SpecificationModalProps> = ({
       <Form
         form={form}
         labelCol={{ span: 6 }}
-        initialValues={{ model: "Android", colorType: "RGBA" }}
+        initialValues={{ platform: platform, colorType: colorType }}
         onFinish={onFinish}
       >
-        <Form.Item name="model" label="文档设置">
+        <Form.Item name="platform" label="文档设置">
           <Select>
             {artSizeList.map((artSize) => (
               <Select.Option value={artSize.platform} key={artSize.platform}>

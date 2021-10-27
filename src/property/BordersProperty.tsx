@@ -1,9 +1,6 @@
 import * as React from "react";
 import { Border_Types } from "./constants";
-import {
-  ColorItem,
-  Gradient,
-} from "./ColorProperty";
+import { ColorItem, Gradient } from "./ColorProperty";
 import { Color } from "./Property";
 
 interface BordersPropertyProps {
@@ -13,10 +10,9 @@ interface BordersPropertyProps {
     thickness: number;
     type: "inner" | "center" | "outer";
   }[];
-  colorType:string
 }
 
-const BordersProperty: React.FC<BordersPropertyProps> = ({ layerBorders,colorType }) => {
+const BordersProperty: React.FC<BordersPropertyProps> = ({ layerBorders }) => {
   return (
     <div className="property-border property-item-warp group">
       {layerBorders.map((layerBorder, index) => (
@@ -28,9 +24,9 @@ const BordersProperty: React.FC<BordersPropertyProps> = ({ layerBorders,colorTyp
               <div className="r text">{layerBorder.thickness}px</div>
             </div>
             <div>
-              {layerBorder.color && <ColorItem color={layerBorder.color} colorType={colorType} />}
+              {layerBorder.color && <ColorItem color={layerBorder.color} />}
               {layerBorder.gradient && (
-                <Gradient gradient={layerBorder.gradient} colorType={colorType} />
+                <Gradient gradient={layerBorder.gradient} />
               )}
             </div>
           </div>

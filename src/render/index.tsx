@@ -3,7 +3,7 @@ import { isEqual } from "lodash-es";
 import {
   getLayersByPosition,
   MAX_SCALE,
-  MIN_SCALE,
+  MIN_SCALE, toUnitNB,
   WHEEL_HOLD,
   WHEEL_SCALE_STEP,
   ZOOM_SCALE_STEP,
@@ -20,7 +20,8 @@ import Property, { Layer } from "../property/Property";
 
 import ControlType from "../RenderComponents/ControlType";
 import SpecificationModal from "../RenderComponents/SpecificationModal";
-import Context from "../context";
+import Context, { IContext } from "../context";
+import { artSizeList } from "../constants/unit";
 
 export interface LayerRenderProps {
   data: any;
@@ -590,11 +591,11 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     this.onSpecificationModalVisibleChange();
   };
 
-  onChangeColorType = (colorType:string) =>{
+  onChangeColorType = (colorType: string) => {
     this.setState({
-      colorType
-    })
-  }
+      colorType,
+    });
+  };
 
   render() {
     const {
@@ -627,20 +628,21 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       ? {
           width: toUnit(current.frame.width, "px", scale),
           height: toUnit(current.frame.height, "px", scale),
-          left: toUnit(current.frame.x, "px", scale),
-          top: toUnit(current.frame.y, "px", scale),
+          left: toUnit(current.frame.x-1, "px", scale),
+          top: toUnit(current.frame.y-1, "px", scale),
           position: "absolute",
           zIndex: 1,
           border: "1px solid #f53914",
         }
       : {};
+    const artSize =  artSizeList.find((i) => i.platform === platform)
+    const contextValue: IContext = {
+      colorType,
+      onChangeColorType: this.onChangeColorType,
+      artSize
+    };
     return (
-      <Context.Provider
-        value={{
-          colorType,
-          onChangeColorType:this.onChangeColorType
-        }}
-      >
+      <Context.Provider value={contextValue}>
         <div className="layer-render-container">
           <div
             className="layer-render-wrap"
@@ -675,19 +677,19 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                 <div
                   className="border"
                   style={currentStyle}
-                  data-width={current ? current.frame.width + "px" : ""}
-                  data-height={current ? current.frame.height + "px" : ""}
+                  data-width={current ? toUnitNB(current.frame.width, artSize!) : ""}
+                  data-height={current ? toUnitNB(current.frame.height, artSize!) : ""}
                 />
               ) : (
                 current && <div className="current-item" style={currentStyle} />
               )}
 
-              {hoverLayer && (
+              {hoverLayer &&  !isEqual(hoverLayer,current) &&  (
                 <div
                   className="hover-item"
                   style={this.toRatioPX({
-                    left: hoverLayer.frame.x,
-                    top: hoverLayer.frame.y,
+                    left: hoverLayer.frame.x-1,
+                    top: hoverLayer.frame.y-1,
                     width: hoverLayer.frame.width,
                     height: hoverLayer.frame.height,
                   })}
@@ -748,7 +750,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                         {top.value && (
                           <div
                             className="info"
-                            data-value={toUnit(top.value, "px")}
+                            data-value={toUnitNB(top.value, artSize!)}
                           />
                         )}
                       </div>
@@ -758,7 +760,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                         {right.value && (
                           <div
                             className="info"
-                            data-value={toUnit(right.value, "px")}
+                            data-value={toUnitNB(right.value, artSize!)}
                           />
                         )}
                       </div>
@@ -769,7 +771,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                         {bottom.value && (
                           <div
                             className="info"
-                            data-value={toUnit(bottom.value, "px")}
+                            data-value={toUnitNB(bottom.value, artSize!)}
                           />
                         )}
                       </div>
@@ -779,7 +781,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                         {left.value && (
                           <div
                             className="info"
-                            data-value={toUnit(left.value, "px")}
+                            data-value={toUnitNB(left.value, artSize!)}
                           />
                         )}
                       </div>
@@ -804,11 +806,12 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
               height={data.height}
               platform={platform}
               ratio={ratio}
-              colorType={colorType}
               onModalVisibleChange={this.onSpecificationModalVisibleChange}
             />
           )}
           <SpecificationModal
+            platform={platform}
+            colorType={colorType}
             visible={specificationModalVisible}
             onChangeSpecification={this.onChangeSpecification}
             onVisibleChange={this.onSpecificationModalVisibleChange}

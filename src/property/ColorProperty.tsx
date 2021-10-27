@@ -4,27 +4,34 @@ import { toColor } from "../utils/colorUtil";
 import { Dropdown, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { GRADIENT, jo } from "./constants";
+import { useContext } from "react";
+import Context from "../context";
 type LayerColor = {
   color: any;
   gradient: any;
 };
 interface ColorPropertyProps {
   layerColors: LayerColor[];
-  colorType: string;
 }
 
 const ColorProperty: React.FC<ColorPropertyProps> = ({
   layerColors,
-  colorType,
 }) => {
   return (
     <div className="property-color group">
       {layerColors.map((item, index) => {
         if (item.color) {
-          return <ColorItem key={index} color={item.color} colorType={colorType} />;
+          return (
+            <ColorItem key={index} color={item.color}  />
+          );
         }
         if (item.gradient) {
-          return <Gradient gradient={item.gradient} key={index} colorType={colorType}/>;
+          return (
+            <Gradient
+              gradient={item.gradient}
+              key={index}
+            />
+          );
         }
         return null;
       })}
@@ -36,15 +43,14 @@ export default ColorProperty;
 
 interface ColorItemProps {
   color: Color;
-    colorType: string;
 }
 
-export const ColorItem: React.FC<ColorItemProps> = ({ color,colorType }) => {
+export const ColorItem: React.FC<ColorItemProps> = ({ color }) => {
   return (
     <div className="property-color-item relay-common-dropdown-warp">
       <div className="color-wrap">
         <div className="l">颜色</div>
-        <ColorHint color={color} colorType={colorType} />
+        <ColorHint color={color} />
       </div>
     </div>
   );
@@ -73,7 +79,9 @@ function toDeg(t: any) {
   return D(t) + "deg";
 }
 
-export const Gradient: React.FC<{ gradient: TGradient ,colorType:string}> = ({ gradient,colorType }) => {
+export const Gradient: React.FC<{ gradient: TGradient}> = ({
+  gradient,
+}) => {
   return (
     <div className="property-gradient-item relay-common-dropdown-warp">
       <div className="color-wrap">
@@ -94,7 +102,10 @@ export const Gradient: React.FC<{ gradient: TGradient ,colorType:string}> = ({ g
             ></div>
             <div className="color-item">
               {gradient.points.map((point, index) => (
-                <ColorHint key={index} color={point.color} colorType={colorType}/>
+                <ColorHint
+                  key={index}
+                  color={point.color}
+                />
               ))}
             </div>
             <div className="line">
@@ -115,7 +126,8 @@ export const Gradient: React.FC<{ gradient: TGradient ,colorType:string}> = ({ g
   );
 };
 
-export const ColorHint: React.FC<{ color: any,colorType:string }> = ({ color,colorType }) => {
+export const ColorHint: React.FC<{ color: any }> = ({ color }) => {
+  const { colorType, onChangeColorType } = useContext(Context);
   // @ts-ignore
   const menu = (
     <Menu>
@@ -123,7 +135,7 @@ export const ColorHint: React.FC<{ color: any,colorType:string }> = ({ color,col
         <Menu.Item
           key={item}
           className="color-type"
-          //onClick={() => setColorType(item.toLowerCase())}
+          onClick={() => onChangeColorType(item.toLowerCase())}
         >
           <div>{item}</div>
           <div>

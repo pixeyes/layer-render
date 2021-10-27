@@ -2,13 +2,16 @@ import * as React from "react";
 import { Font } from "./Property";
 import { ColorItem } from "./ColorProperty";
 import { ALIGN, VerticalAlignment } from "./constants";
+import { useContext } from "react";
+import Context from "../context";
+import { toUnitFont } from "../utils";
 
 interface FontPropertyProps {
   font: Font;
-  colorType:string
 }
 
-const FontProperty: React.FC<FontPropertyProps> = ({ font,colorType }) => {
+const FontProperty: React.FC<FontPropertyProps> = ({ font }) => {
+  const { artSize } = useContext(Context);
   return (
     <div className="property-font group">
       <div className="property-font-item">
@@ -27,10 +30,10 @@ const FontProperty: React.FC<FontPropertyProps> = ({ font,colorType }) => {
           </li>
           <li>
             <div className="l">字号</div>
-            <div className="r text">{font.size}px</div>
+            <div className="r text">{toUnitFont(font.size, artSize!)}</div>
           </li>
           <li>
-            <ColorItem color={font.color} colorType={colorType}/>
+            <ColorItem color={font.color} />
           </li>
           <li style={{ height: "auto", flexWrap: "wrap" }}>
             <div className="l">对齐</div>
@@ -57,7 +60,8 @@ const FontProperty: React.FC<FontPropertyProps> = ({ font,colorType }) => {
               className="r text"
               style={{ marginLeft: 16 }}
             >
-              行间距 {font.lineHeight}px
+              行间距 {font.lineHeight}
+              {artSize!.fontUnit}
             </div>
             <div
               data-title="段落"

@@ -6,7 +6,10 @@ import { RightCloseIcon, SetIcon } from "../svgIcons";
 import BordersProperty from "./BordersProperty";
 import ShadowProperty from "./ShadowProperty";
 import BlurProperty from "./BlurProperty";
-import {useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
+import { decodeStr } from "../utils/decodeStr";
+import Context from "../context";
+import { toUnitNB } from "../utils";
 export type Color = {
   r: number;
   g: number;
@@ -75,27 +78,25 @@ interface PropertyProps {
   platform: string;
   ratio: number;
   onModalVisibleChange: () => void;
-  colorType: string;
-}
-const toUnit = (value:number,platform:string) => {
-  switch (platform) {
-    case 'iOS':
-      return value +'pt';
-    case 'android':
-      return value +'dp';
-    default:
-      return value+'px'
-  }
 }
 const getLayerAttr = (style: any, key: any) =>
   style && style[key] ? style[key] : [];
-const Property: React.FC<PropertyProps> = ({ current,platform,ratio,width,height,onModalVisibleChange,colorType }) => {
+const Property: React.FC<PropertyProps> = ({
+  current,
+  platform,
+  ratio,
+  width,
+  height,
+  onModalVisibleChange,
+}) => {
+  const { artSize } = useContext(Context);
   const layerColors = getLayerAttr(current.style, "fills");
   const layerBorders = getLayerAttr(current.style, "borders");
   const layerShadows = getLayerAttr(current.style, "shadows");
   const layerBlurs = getLayerAttr(current.style, "blurs");
   const [visible, setVisible] = useState<boolean>(true);
-  const unitResult =  "".concat(toUnit(width,platform), " x ").concat(toUnit(height,platform))
+  const unitResult =
+    toUnitNB(width, artSize!) + " x " + toUnitNB(height, artSize!);
   useEffect(() => {
     if (!current) {
       setVisible(false);
@@ -111,7 +112,7 @@ const Property: React.FC<PropertyProps> = ({ current,platform,ratio,width,height
       })}
     >
       <div className="page-design-info">
-        <div className="left_title">{decodeURIComponent(current.name)}</div>
+        <div className="left_title">{decodeStr(current.name)}</div>
         <div className="close_icon">
           <button
             className="button-module base_set_icon rel-btn--icon rel-btn--medium"
@@ -126,7 +127,9 @@ const Property: React.FC<PropertyProps> = ({ current,platform,ratio,width,height
         <div className="left_title">
           <span title="iOS@1x" className="unit_name overflow-text">
             {platform}
-            <span className="unit_device">@{ratio}x</span>
+            {platform === "iOS" && (
+              <span className="unit_device">@{ratio}x</span>
+            )}
           </span>
         </div>
         <div className="right_title">
@@ -147,22 +150,22 @@ const Property: React.FC<PropertyProps> = ({ current,platform,ratio,width,height
               <div className="l">位置</div>
               <div title="210px" className="r text">
                 <span className="text-tip">X</span>
-                {current.frame.x}px
+                {toUnitNB(current.frame.x, artSize!)}
               </div>
               <div title="158px" className="r text" style={{ marginLeft: 16 }}>
                 <span className="text-tip">Y</span>
-                {current.frame.y}px
+                {toUnitNB(current.frame.y, artSize!)}
               </div>
             </div>
             <div>
               <div className="l">大小</div>
               <div title="192px" className="r text">
                 <span className="text-tip">宽</span>
-                {current.frame.width}px
+                {toUnitNB(current.frame.width, artSize!)}
               </div>
               <div title="32px" className="r text" style={{ marginLeft: 16 }}>
                 <span className="text-tip">高</span>
-                {current.frame.height}px
+                {toUnitNB(current.frame.height, artSize!)}
               </div>
             </div>
             {current.style?.opacity && (
@@ -176,7 +179,9 @@ const Property: React.FC<PropertyProps> = ({ current,platform,ratio,width,height
               <div>
                 <div className="l ">圆角</div>
                 <div className="r text overflow-text">
-                  {current.style.radius.map((i) => i + "px")}
+                  {current.style.radius
+                    .map((i) => toUnitNB(i, artSize!))
+                    .join(" ")}
                 </div>
               </div>
             )}
@@ -185,18 +190,18 @@ const Property: React.FC<PropertyProps> = ({ current,platform,ratio,width,height
             <div>
               <div className="property-title">样式信息</div>
               <div>
-                {current.font && <FontProperty font={current.font} colorType={colorType}/>}
+                {current.font && <FontProperty font={current.font} />}
                 {layerColors.length > 0 && (
-                  <ColorProperty layerColors={layerColors}  colorType={colorType}/>
+                  <ColorProperty layerColors={layerColors} />
                 )}
                 {layerBorders.length > 0 && (
-                  <BordersProperty layerBorders={layerBorders} colorType={colorType}/>
+                  <BordersProperty layerBorders={layerBorders} />
                 )}
                 {layerShadows.length > 0 && (
-                  <ShadowProperty layerShadows={layerShadows} colorType={colorType}/>
+                  <ShadowProperty layerShadows={layerShadows} />
                 )}
                 {layerBlurs.length > 0 && (
-                  <BlurProperty layerBlurs={layerBlurs}/>
+                  <BlurProperty layerBlurs={layerBlurs} />
                 )}
               </div>
             </div>
