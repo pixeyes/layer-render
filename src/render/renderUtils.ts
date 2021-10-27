@@ -5,7 +5,6 @@ export const toUnit = (obj: any, px: any = null, scale = 1) => {
         if (value == null ||
             value === 0 ||
             (typeof value === "number" && isNaN(value))){
-          console.log(obj)
           obj[key] = 0;
         }else {
           obj[key] = toUnit(value, px, scale);
