@@ -94,6 +94,35 @@
   border-radius: 20px;
   color: #F04632;
 }
+.control-type {
+  width: 322px;
+  height: 60px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 9px 20px 0 rgba(37, 37, 37, 0.25);
+  display: flex;
+  position: fixed;
+  z-index: 2;
+  bottom: 24px;
+  left: calc(50vw - 161px);
+  justify-content: center;
+  align-items: center;
+  opacity: 0.3;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.control-type:hover {
+  opacity: 1;
+}
+
+.control-type .ant-radio-group {
+  margin-left: 24px;
+}
+.layer-specification-modal .label-img,
+.ant-select-dropdown .label-img {
+  margin-right: 8px;
+}
 .property {
   position: absolute;
   top: 0;
@@ -827,35 +856,6 @@
   box-shadow: 0 2px 4px 1px rgba(40, 120, 255, 0.08), 0 0 6px 1px rgba(0, 0, 0, 0.08);
 }
 
-.control-type {
-  width: 322px;
-  height: 60px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 9px 20px 0 rgba(37, 37, 37, 0.25);
-  display: flex;
-  position: fixed;
-  z-index: 2;
-  bottom: 24px;
-  left: calc(50vw - 161px);
-  justify-content: center;
-  align-items: center;
-  opacity: 0.3;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-
-.control-type:hover {
-  opacity: 1;
-}
-
-.control-type .ant-radio-group {
-  margin-left: 24px;
-}
-.layer-specification-modal .label-img,
-.ant-select-dropdown .label-img {
-  margin-right: 8px;
-}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -878,4 +878,4 @@ code {
 }
 
 
-/*# sourceMappingURL=main.1f7f3b42.chunk.css.map*/
+/*# sourceMappingURL=main.6e500b1b.chunk.css.map*/
