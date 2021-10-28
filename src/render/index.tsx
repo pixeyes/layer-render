@@ -30,6 +30,7 @@ export interface LayerRenderProps {
   mountCallback?: (that?: any) => void;
   onMouseDown?: (current?: Layer) => void;
   canvasWidth: number;
+  onChange: (data:any) => void;
 }
 
 interface State {
@@ -210,8 +211,14 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     };
   };
 
+  computedScaleUnit = (value: number) => {
+    const { scale } = this.state;
+    return value * scale;
+  };
+
   onMouseMove = (e: MouseEvent) => {
-    const { data, cropType, cropMoving, cropStartX, cropStartY } = this.state;
+    const { data, cropType, cropMoving, cropStartX, cropStartY, scale } =
+      this.state;
     const { x, y } = this.getPosition();
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
@@ -221,19 +228,22 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
           this.cropElement.style.left = cropStartX + "px";
           this.cropTop.style.width = point.x + "px";
           //
-          this.cropRight.style.width = Math.abs(data.width - point.x) + "px";
+          this.cropRight.style.width =
+            Math.abs(data.width * scale - point.x) + "px";
           //
           this.cropBottom.style.width =
-            Math.abs(data.width - cropStartX) + "px";
+            Math.abs(data.width * scale - cropStartX) + "px";
           //
           this.cropLeft.style.width = Math.abs(cropStartX) + "px";
         } else {
           this.cropElement.style.left = point.x + "px";
           this.cropTop.style.width = cropStartX + "px";
           //
-          this.cropRight.style.width = Math.abs(data.width - cropStartX) + "px";
+          this.cropRight.style.width =
+            Math.abs(data.width * scale - cropStartX) + "px";
           //
-          this.cropBottom.style.width = Math.abs(data.width - point.x) + "px";
+          this.cropBottom.style.width =
+            Math.abs(data.width * scale - point.x) + "px";
           //
           this.cropLeft.style.width = Math.abs(point.x) + "px";
         }
@@ -241,14 +251,15 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
           this.cropElement.style.top = cropStartY + "px";
           this.cropTop.style.height = cropStartY + "px";
           this.cropRight.style.height = point.y + "px";
-          this.cropBottom.style.height = data.height - point.y + "px";
-          this.cropLeft.style.height = data.height - cropStartY + "px";
+          this.cropBottom.style.height = data.height * scale - point.y + "px";
+          this.cropLeft.style.height = data.height * scale - cropStartY + "px";
         } else {
           this.cropElement.style.top = point.y + "px";
           this.cropTop.style.height = point.y + "px";
           this.cropRight.style.height = cropStartY + "px";
-          this.cropBottom.style.height = data.height - cropStartY + "px";
-          this.cropLeft.style.height = data.height - point.y + "px";
+          this.cropBottom.style.height =
+            data.height * scale - cropStartY + "px";
+          this.cropLeft.style.height = data.height * scale - point.y + "px";
         }
         this.cropElement.style.width = Math.abs(point.x - cropStartX) + "px";
         this.cropElement.style.height = Math.abs(point.y - cropStartY) + "px";
@@ -300,23 +311,30 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
 
   onMouseUp = (e: MouseEvent) => {
     this.moving = false;
-    const { cropStartX, cropStartY, cropType } = this.state;
+    const { cropStartX, cropStartY, cropType, scale } = this.state;
     if (cropType === CROP_TYPE.CROP) {
       const { x, y } = this.getPosition();
       //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
       const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
       const position = {
-        x: Math.min(point.x, cropStartX),
-        y: Math.min(cropStartY, point.y),
-        w: Math.abs(point.x - cropStartX),
-        h: Math.abs(point.y - cropStartY),
+        x: Math.round(Math.min(point.x, cropStartX) / scale),
+        y: Math.round(Math.min(cropStartY, point.y) / scale),
+        width: Math.round(Math.abs(point.x - cropStartX) / scale),
+        height: Math.round(Math.abs(point.y - cropStartY) / scale),
       };
 
-      console.log(position);
       this.setState({
         cropMoving: false,
         cropElementVisible: false,
       });
+      const data = {
+        url: `https://storage.360buyimg.com/relay/${this.props.data.image}`,
+        relayPageId: this.props.data.id,
+        current:{
+          frame:position
+        },
+      }
+      this.props.onChange?.(data)
     }
   };
 
@@ -361,7 +379,13 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     this.setState({
       current,
     });
-    this.props.onMouseDown?.(current);
+    //this.props.onMouseDown?.(current);
+    const data = {
+      url: `https://storage.360buyimg.com/relay/${this.props.data.image}`,
+      relayPageId: this.props.data.id,
+      current,
+    }
+    this.props.onChange?.(data);
     this.currentLayerPoint.x = this.tempX;
     this.currentLayerPoint.y = this.tempY;
   };

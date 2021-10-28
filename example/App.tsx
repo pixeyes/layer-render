@@ -26,13 +26,13 @@ function App() {
       mountCallback={(that) => {
         console.log(that);
       }}
-      onMouseDown={(current) => {
-        console.log(current);
-      }}
       goNext={() => {
         console.log("goNext");
       }}
-      canvasWidth={864}
+      canvasWidth={1264}
+      onChange={(data => {
+          console.log(data)
+      })}
     />
   );
 }
