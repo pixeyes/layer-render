@@ -219,29 +219,39 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       if (cropMoving) {
         if (point.x >= cropStartX) {
           this.cropElement.style.left = cropStartX + "px";
+          this.cropTop.style.width = point.x + "px";
+          //
+          this.cropRight.style.width = Math.abs(data.width - point.x) + "px";
+          //
+          this.cropBottom.style.width =
+            Math.abs(data.width - cropStartX) + "px";
+          //
+          this.cropLeft.style.width = Math.abs(cropStartX) + "px";
         } else {
           this.cropElement.style.left = point.x + "px";
+          this.cropTop.style.width = cropStartX + "px";
+          //
+          this.cropRight.style.width = Math.abs(data.width - cropStartX) + "px";
+          //
+          this.cropBottom.style.width = Math.abs(data.width - point.x) + "px";
+          //
+          this.cropLeft.style.width = Math.abs(point.x) + "px";
         }
         if (point.y >= cropStartY) {
           this.cropElement.style.top = cropStartY + "px";
+          this.cropTop.style.height = cropStartY + "px";
+          this.cropRight.style.height = point.y + "px";
+          this.cropBottom.style.height = data.height - point.y + "px";
+          this.cropLeft.style.height = data.height - cropStartY + "px";
         } else {
           this.cropElement.style.top = point.y + "px";
+          this.cropTop.style.height = point.y + "px";
+          this.cropRight.style.height = cropStartY + "px";
+          this.cropBottom.style.height = data.height - cropStartY + "px";
+          this.cropLeft.style.height = data.height - point.y + "px";
         }
-
         this.cropElement.style.width = Math.abs(point.x - cropStartX) + "px";
         this.cropElement.style.height = Math.abs(point.y - cropStartY) + "px";
-
-        this.cropTop.style.width = point.x + "px";
-        this.cropTop.style.height = cropStartY + "px";
-        //
-        this.cropRight.style.width = Math.abs(data.width - point.x) + "px";
-        this.cropRight.style.height = point.y + "px";
-        //
-        this.cropBottom.style.width = Math.abs(data.width - cropStartX) + "px";
-        this.cropBottom.style.height = data.height - point.y + "px";
-        //
-        this.cropLeft.style.width = Math.abs(cropStartX) + "px";
-        this.cropLeft.style.height = data.height - cropStartY + "px";
       }
       return;
     }
@@ -296,17 +306,17 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
       const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
       const position = {
-        x: cropStartX,
-        y: cropStartY,
+        x: Math.min(point.x, cropStartX),
+        y: Math.min(cropStartY, point.y),
         w: Math.abs(point.x - cropStartX),
         h: Math.abs(point.y - cropStartY),
       };
 
       console.log(position);
-      // this.setState({
-      //   cropMoving: false,
-      //   cropElementVisible: false,
-      // });
+      this.setState({
+        cropMoving: false,
+        cropElementVisible: false,
+      });
     }
   };
 
