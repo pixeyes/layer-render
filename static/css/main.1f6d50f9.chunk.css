@@ -94,80 +94,6 @@
   border-radius: 20px;
   color: #F04632;
 }
-.vft-crop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 3;
-  background-color: rgba(0, 0, 0, 0);
-  background-repeat: no-repeat;
-  background-size: 100%;
-  cursor: crosshair;
-}
-
-.vft-crop-mask {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.3);
-  cursor: crosshair;
-}
-
-.vft-crop-top {
-  top: 0;
-  left: 0;
-}
-
-.vft-crop-right {
-  top: 0;
-  right: 0;
-}
-
-.vft-crop-bottom {
-  right: 0;
-  bottom: 0;
-}
-
-.vft-crop-left {
-  bottom: 0;
-  left: 0;
-}
-
-.vft-crop-rectangle {
-  position: absolute;
-  background: transparent;
-  border: 1px solid #252525;
-  cursor: crosshair;
-}
-.control-type {
-  width: 322px;
-  height: 60px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 9px 20px 0 rgba(37, 37, 37, 0.25);
-  display: flex;
-  position: fixed;
-  z-index: 10;
-  bottom: 24px;
-  left: calc(50vw - 161px);
-  justify-content: center;
-  align-items: center;
-  opacity: 0.3;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-
-.control-type:hover {
-  opacity: 1;
-}
-
-.control-type .ant-radio-group {
-  margin-left: 24px;
-}
-.layer-specification-modal .label-img,
-.ant-select-dropdown .label-img {
-  margin-right: 8px;
-}
 .property {
   position: absolute;
   top: 0;
@@ -705,6 +631,7 @@
 .scrollbar::-webkit-scrollbar {
   width: 6px;
 }
+
 *,
 :after,
 :before {
@@ -900,7 +827,80 @@
   z-index: 1;
   box-shadow: 0 2px 4px 1px rgba(40, 120, 255, 0.08), 0 0 6px 1px rgba(0, 0, 0, 0.08);
 }
+.vft-crop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  cursor: crosshair;
+}
 
+.vft-crop-mask {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: crosshair;
+}
+
+.vft-crop-top {
+  top: 0;
+  left: 0;
+}
+
+.vft-crop-right {
+  top: 0;
+  right: 0;
+}
+
+.vft-crop-bottom {
+  right: 0;
+  bottom: 0;
+}
+
+.vft-crop-left {
+  bottom: 0;
+  left: 0;
+}
+
+.vft-crop-rectangle {
+  position: absolute;
+  background: transparent;
+  border: 1px solid #252525;
+  cursor: crosshair;
+}
+.control-type {
+  width: 322px;
+  height: 60px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 9px 20px 0 rgba(37, 37, 37, 0.25);
+  display: flex;
+  position: fixed;
+  z-index: 10;
+  bottom: 24px;
+  left: calc(50vw - 161px);
+  justify-content: center;
+  align-items: center;
+  opacity: 0.3;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.control-type:hover {
+  opacity: 1;
+}
+
+.control-type .ant-radio-group {
+  margin-left: 24px;
+}
+.layer-specification-modal .label-img,
+.ant-select-dropdown .label-img {
+  margin-right: 8px;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -923,4 +923,4 @@ code {
 }
 
 
-/*# sourceMappingURL=main.4ecf0097.chunk.css.map*/
+/*# sourceMappingURL=main.1f6d50f9.chunk.css.map*/
