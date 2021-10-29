@@ -933,7 +933,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                           {top.value && (
                             <div
                               className="info"
-                              data-value={toUnitNB(top.value, artSize!)}
+                              data-value={toUnitNB(top.value, artSize!,false)}
                             />
                           )}
                         </div>
@@ -943,7 +943,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                           {right.value && (
                             <div
                               className="info"
-                              data-value={toUnitNB(right.value, artSize!)}
+                              data-value={toUnitNB(right.value, artSize!,false)}
                             />
                           )}
                         </div>
@@ -954,7 +954,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                           {bottom.value && (
                             <div
                               className="info"
-                              data-value={toUnitNB(bottom.value, artSize!)}
+                              data-value={toUnitNB(bottom.value, artSize!,false)}
                             />
                           )}
                         </div>
@@ -964,7 +964,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                           {left.value && (
                             <div
                               className="info"
-                              data-value={toUnitNB(left.value, artSize!)}
+                              data-value={toUnitNB(left.value, artSize!,false)}
                             />
                           )}
                         </div>
