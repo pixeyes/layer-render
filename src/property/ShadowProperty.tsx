@@ -1,6 +1,9 @@
 import * as React from "react";
 import { ColorItem } from "./ColorProperty";
 import { ShadowTypes } from "./constants";
+import {useContext} from "react";
+import Context from "../context";
+import {toUnitNB} from "../utils";
 
 type layerShadow = {
   type: "inner" | "outer";
@@ -15,6 +18,7 @@ interface ShadowPropertyProps {
 }
 
 const ShadowProperty: React.FC<ShadowPropertyProps> = ({ layerShadows }) => {
+  const { artSize } = useContext(Context);
   return (
     <div className="property-shadow property-item-warp group">
       {layerShadows.map((layerShadow, index) => (
@@ -24,19 +28,19 @@ const ShadowProperty: React.FC<ShadowPropertyProps> = ({ layerShadows }) => {
             <div>
               <div className="l">偏移</div>
               <div data-title="x" className="r text">
-                X: {layerShadow.offsetX}px
+                X: {toUnitNB(layerShadow.offsetX, artSize!, false)}
               </div>
               <div data-title="y" className="r text" style={{ marginLeft: 16 }}>
-                Y: {layerShadow.offsetY}px
+                Y: {toUnitNB(layerShadow.offsetY, artSize!, false)}
               </div>
             </div>
             <div>
               <div className="l">效果</div>
               <div data-title="x" className="r text">
-                模糊: {layerShadow.blurRadius}px
+                模糊: {toUnitNB(layerShadow.blurRadius, artSize!, false)}
               </div>
               <div data-title="y" className="r text" style={{ marginLeft: 16 }}>
-                扩展: {layerShadow.spread}px
+                扩展: {toUnitNB(layerShadow.spread, artSize!, false)}
               </div>
             </div>
             <div>

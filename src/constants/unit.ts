@@ -38,9 +38,9 @@
 // };
 export type ART_SIZE = {
   platform: "iOS" | "Android" | "Web" | "像素";
-  unit: "pt" | "dp" | "px"|"rem";
-  fontUnit: "pt" | "sp" | "px"|"rem";
-  ratio: 1|2;
+  unit: "pt" | "dp" | "px" | "rem";
+  fontUnit: "pt" | "sp" | "px" | "rem";
+  ratio: 1 | 2;
   picType: "svg";
   leftTip: any;
   name: string;

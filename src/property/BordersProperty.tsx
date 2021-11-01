@@ -2,6 +2,9 @@ import * as React from "react";
 import { Border_Types } from "./constants";
 import { ColorItem, Gradient } from "./ColorProperty";
 import { Color } from "./Property";
+import {toUnitNB} from "../utils";
+import {useContext} from "react";
+import Context from "../context";
 
 interface BordersPropertyProps {
   layerBorders: {
@@ -13,6 +16,7 @@ interface BordersPropertyProps {
 }
 
 const BordersProperty: React.FC<BordersPropertyProps> = ({ layerBorders }) => {
+  const { artSize } = useContext(Context);
   return (
     <div className="property-border property-item-warp group">
       {layerBorders.map((layerBorder, index) => (
@@ -21,7 +25,7 @@ const BordersProperty: React.FC<BordersPropertyProps> = ({ layerBorders }) => {
           <div className="content">
             <div>
               <div className="l">粗细</div>
-              <div className="r text">{layerBorder.thickness}px</div>
+              <div className="r text">{toUnitNB(layerBorder.thickness, artSize!, false)}</div>
             </div>
             <div>
               {layerBorder.color && <ColorItem color={layerBorder.color} />}
