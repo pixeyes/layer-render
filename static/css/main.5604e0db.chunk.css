@@ -631,7 +631,6 @@
 .scrollbar::-webkit-scrollbar {
   width: 6px;
 }
-
 *,
 :after,
 :before {
@@ -872,6 +871,7 @@
   border: 1px solid #252525;
   cursor: crosshair;
 }
+
 .control-type {
   width: 322px;
   height: 60px;
@@ -923,4 +923,4 @@ code {
 }
 
 
-/*# sourceMappingURL=main.1f6d50f9.chunk.css.map*/
+/*# sourceMappingURL=main.5604e0db.chunk.css.map*/
