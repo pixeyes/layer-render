@@ -1,5 +1,5 @@
 /*!
- * layer-render v0.0.3 (/layer-render)
+ * layer-render v0.0.4 (/layer-render)
  * Copyright 2021 JDF2E, Inc.
  * Licensed under the MIT license
  */
@@ -75,7 +75,71 @@
 .button-module:not(.disabled) .icon-wrap:hover {
   background: rgba(0, 0, 0, 0.05);
   border-radius: 20px;
-  color: #F04632;
+  color: #f04632;
+}
+.control-type {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.control-type .title {
+  color: rgba(37, 37, 37, 0.5);
+}
+
+.control-type .ant-radio-group {
+  margin-left: 10px;
+  padding: 2px;
+  background: rgba(14, 36, 57, 0.1);
+}
+
+.control-type .ant-radio-group .ant-radio-button-wrapper {
+  height: 24px;
+  line-height: 24px;
+  padding: 0 13px;
+  background: rgba(14, 36, 57, 0.1);
+  font-size: 12px;
+}
+
+.control-type .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  color: #252525;
+  background: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.control-type .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):before {
+  background: unset;
+}
+
+.control-type .ant-radio-button-wrapper:hover {
+  color: unset;
+}
+.layer-specification-modal .label-img,
+.ant-select-dropdown .label-img {
+  margin-right: 8px;
+}
+.bottom-ctrl-space {
+  position: fixed;
+  padding: 0 8px;
+  z-index: 10;
+  bottom: 0;
+  -webkit-transform: translate(-50%);
+  transform: translate(-50%);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  background: rgba(247, 249, 250, 0.9);
+  box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.05);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: 4px 4px 0 0;
+}
+
+.bottom-ctrl-space .ant-divider-vertical {
+  height: 16px;
+  border-color: rgba(37, 37, 37, 0.3);
+  top: unset;
 }
 .property {
   position: absolute;
@@ -855,65 +919,6 @@
   cursor: crosshair;
 }
 
-.control-type {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.control-type .title {
-  color: rgba(37, 37, 37, 0.5);
-}
-
-.control-type .ant-radio-group {
-  margin-left: 10px;
-  padding: 2px;
-  background: rgba(14, 36, 57, 0.1);
-}
-
-.control-type .ant-radio-group .ant-radio-button-wrapper {
-  height: 24px;
-  line-height: 24px;
-  padding: 0 13px;
-  background: rgba(14, 36, 57, 0.1);
-  font-size: 12px;
-}
-
-.control-type .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-  color: #252525;
-  background: #FFFFFF;
-  border-color: #FFFFFF;
-}
-
-.control-type .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):before {
-  background: unset;
-}
-
-.control-type .ant-radio-button-wrapper:hover {
-  color: unset;
-}
-.layer-specification-modal .label-img,
-.ant-select-dropdown .label-img {
-  margin-right: 8px;
-}
-.bottom-ctrl-space {
-  position: fixed;
-  padding: 0 8px;
-  z-index: 10;
-  bottom: 0;
-  -webkit-transform: translate(-50%);
-  transform: translate(-50%);
-  left: 50%;
-  display: flex;
-  height: 48px;
-  background: rgba(247, 249, 250, 0.9);
-  box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.05);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  /* Note: backdrop-filter has minimal browser support */
-  border-radius: 4px 4px 0px 0px;
-}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -936,4 +941,4 @@ code {
 }
 
 
-/*# sourceMappingURL=main.f8caee71.chunk.css.map*/
+/*# sourceMappingURL=main.2c0a6cf5.chunk.css.map*/
