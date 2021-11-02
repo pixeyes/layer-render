@@ -1,28 +1,14 @@
 /*!
- * layer-render v0.0.2 (/layer-render)
+ * layer-render v0.0.3 (/layer-render)
  * Copyright 2021 JDF2E, Inc.
  * Licensed under the MIT license
  */
 .page-operation-module {
-  padding: 0 12px;
-  position: fixed;
-  z-index: 10;
-  right: 24px;
-  bottom: 24px;
-  height: 60px;
   line-height: 32px;
   display: flex;
   align-items: center;
   font-size: 14px;
   font-weight: 700;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 9px 20px 0 rgba(37, 37, 37, 0.25);
-  opacity: 0.3;
-}
-
-.page-operation-module:hover {
-  opacity: 1;
 }
 
 .page-operation-module .zoom-in-out {
@@ -43,12 +29,10 @@
 }
 
 .button-module.rel-btn--medium {
-  height: 60px;
   line-height: 32px;
 }
 
 .button-module.rel-btn--icon {
-  width: 52px;
   border-radius: 50%;
 }
 
@@ -63,7 +47,6 @@
   -ms-user-select: none;
   user-select: none;
   border-radius: 20px;
-  height: 40px;
   line-height: 40px;
   position: relative;
   cursor: pointer;
@@ -81,8 +64,8 @@
 }
 
 .button-module .icon-wrap {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -873,33 +856,63 @@
 }
 
 .control-type {
-  width: 322px;
-  height: 60px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 9px 20px 0 rgba(37, 37, 37, 0.25);
   display: flex;
-  position: fixed;
-  z-index: 10;
-  bottom: 24px;
-  left: calc(50vw - 161px);
   justify-content: center;
   align-items: center;
-  opacity: 0.3;
   cursor: pointer;
-  transition: opacity 0.3s ease;
 }
 
-.control-type:hover {
-  opacity: 1;
+.control-type .title {
+  color: rgba(37, 37, 37, 0.5);
 }
 
 .control-type .ant-radio-group {
-  margin-left: 24px;
+  margin-left: 10px;
+  padding: 2px;
+  background: rgba(14, 36, 57, 0.1);
+}
+
+.control-type .ant-radio-group .ant-radio-button-wrapper {
+  height: 24px;
+  line-height: 24px;
+  padding: 0 13px;
+  background: rgba(14, 36, 57, 0.1);
+  font-size: 12px;
+}
+
+.control-type .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  color: #252525;
+  background: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.control-type .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):before {
+  background: unset;
+}
+
+.control-type .ant-radio-button-wrapper:hover {
+  color: unset;
 }
 .layer-specification-modal .label-img,
 .ant-select-dropdown .label-img {
   margin-right: 8px;
+}
+.bottom-ctrl-space {
+  position: fixed;
+  padding: 0 8px;
+  z-index: 10;
+  bottom: 0;
+  -webkit-transform: translate(-50%);
+  transform: translate(-50%);
+  left: 50%;
+  display: flex;
+  height: 48px;
+  background: rgba(247, 249, 250, 0.9);
+  box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.05);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 4px 4px 0px 0px;
 }
 body {
   margin: 0;
@@ -923,4 +936,4 @@ code {
 }
 
 
-/*# sourceMappingURL=main.5604e0db.chunk.css.map*/
+/*# sourceMappingURL=main.f8caee71.chunk.css.map*/
