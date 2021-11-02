@@ -15,10 +15,7 @@ const ControlType: React.FC<ControlTypeProps> = ({
 }) => {
   return (
     <div className="control-type">
-        <span className="title">
-                 截图方式
-        </span>
-
+      <span className="title">截图方式</span>
       <Radio.Group
         optionType="button"
         options={[

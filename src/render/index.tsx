@@ -1,5 +1,5 @@
 import * as React from "react";
-import {isEqual} from "lodash-es";
+import { isEqual } from "lodash-es";
 import {
   getLayersByPosition,
   MAX_SCALE,
@@ -17,12 +17,13 @@ import {
   toUnit,
 } from "./renderUtils";
 import Operation from "../Operation";
-import Property, {Layer} from "../property/Property";
+import Property, { Layer } from "../property/Property";
 
-import ControlType, {CROP_TYPE} from "../RenderComponents/ControlType";
+import ControlType, { CROP_TYPE } from "../RenderComponents/ControlType";
 import SpecificationModal from "../RenderComponents/SpecificationModal";
-import Context, {IContext} from "../context";
-import {artSizeList} from "../constants/unit";
+import Context, { IContext } from "../context";
+import { artSizeList } from "../constants/unit";
+import { Divider } from "antd";
 
 export interface LayerRenderProps {
   data: any;
@@ -995,11 +996,16 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
             )}
           </div>
           <div className="bottom-ctrl-space">
-            {navigatorSpace}
+            {navigatorSpace && (
+              <>
+                {navigatorSpace} <Divider type="vertical" />
+              </>
+            )}
             <ControlType
               cropType={cropType}
               onChangeCropType={this.onChangeCropType}
             />
+            <Divider type="vertical" />
             <Operation
               scale={scale}
               zoomIn={this.zoomIn}

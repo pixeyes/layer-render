@@ -2,7 +2,7 @@ import * as React from "react";
 import ZoomIn from "./icons/ZoomIn";
 import ZoomOut from "./icons/ZoomOut";
 import Primitive from "./icons/Primitive";
-import {Divider, Tooltip} from "antd";
+import {Tooltip} from "antd";
 
 export interface OperationProps {
   scale: number;
@@ -15,7 +15,7 @@ function Operation(props: OperationProps) {
   const { zoomIn, zoomOut, zoomToPrimitive } = props;
   return (
     <div className="page-operation-module">
-      <Divider type="vertical" />
+
       <div className="white-board-module zoom-in-out">
         <Tooltip title="放大">
           <button
