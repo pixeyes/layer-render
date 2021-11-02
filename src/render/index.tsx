@@ -1,5 +1,5 @@
 import * as React from "react";
-import { isEqual } from "lodash-es";
+import {isEqual} from "lodash-es";
 import {
   getLayersByPosition,
   MAX_SCALE,
@@ -17,20 +17,30 @@ import {
   toUnit,
 } from "./renderUtils";
 import Operation from "../Operation";
-import Property, { Layer } from "../property/Property";
+import Property, {Layer} from "../property/Property";
 
-import ControlType, { CROP_TYPE } from "../RenderComponents/ControlType";
+import ControlType, {CROP_TYPE} from "../RenderComponents/ControlType";
 import SpecificationModal from "../RenderComponents/SpecificationModal";
-import Context, { IContext } from "../context";
-import { artSizeList } from "../constants/unit";
+import Context, {IContext} from "../context";
+import {artSizeList} from "../constants/unit";
 
 export interface LayerRenderProps {
   data: any;
-  goNext?: () => void;
   mountCallback?: (that?: any) => void;
   onMouseDown?: (current?: Layer) => void;
+  /**
+   *  canvas渲染区域的宽度，必须给
+   */
   canvasWidth: number;
-  onChange: (data:any) => void;
+  /**
+   * 点击选择图层或者划热区选择区域后的回调
+   * @param data
+   */
+  onChange: (data: any) => void;
+  /**
+   * 底部左右上一个下一页控件
+   */
+  navigatorSpace?: React.ReactNode;
 }
 
 interface State {
@@ -330,11 +340,11 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       const data = {
         url: `https://storage.360buyimg.com/relay/${this.props.data.image}`,
         relayPageId: this.props.data.id,
-        current:{
-          frame:position
+        current: {
+          frame: position,
         },
-      }
-      this.props.onChange?.(data)
+      };
+      this.props.onChange?.(data);
     }
   };
 
@@ -384,7 +394,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       url: `https://storage.360buyimg.com/relay/${this.props.data.image}`,
       relayPageId: this.props.data.id,
       current,
-    }
+    };
     this.props.onChange?.(data);
     this.currentLayerPoint.x = this.tempX;
     this.currentLayerPoint.y = this.tempY;
@@ -727,6 +737,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       cropStartX,
       cropStartY,
     } = this.state;
+    const { navigatorSpace } = this.props;
     // console.log("current", current);
     const { x, y } = this.getPosition();
     const top = this.toRatioPX(this.showMarginTopStyle());
@@ -933,7 +944,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                           {top.value && (
                             <div
                               className="info"
-                              data-value={toUnitNB(top.value, artSize!,false)}
+                              data-value={toUnitNB(top.value, artSize!, false)}
                             />
                           )}
                         </div>
@@ -943,7 +954,11 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                           {right.value && (
                             <div
                               className="info"
-                              data-value={toUnitNB(right.value, artSize!,false)}
+                              data-value={toUnitNB(
+                                right.value,
+                                artSize!,
+                                false
+                              )}
                             />
                           )}
                         </div>
@@ -954,7 +969,11 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                           {bottom.value && (
                             <div
                               className="info"
-                              data-value={toUnitNB(bottom.value, artSize!,false)}
+                              data-value={toUnitNB(
+                                bottom.value,
+                                artSize!,
+                                false
+                              )}
                             />
                           )}
                         </div>
@@ -964,7 +983,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                           {left.value && (
                             <div
                               className="info"
-                              data-value={toUnitNB(left.value, artSize!,false)}
+                              data-value={toUnitNB(left.value, artSize!, false)}
                             />
                           )}
                         </div>
@@ -975,17 +994,20 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
               </div>
             )}
           </div>
-          <ControlType
-            cropType={cropType}
-            onChangeCropType={this.onChangeCropType}
-          />
-          <Operation
-            scale={scale}
-            zoomIn={this.zoomIn}
-            zoomOut={this.zoomOut}
-            zoomToPrimitive={this.zoomToPrimitive}
-            zoomNext={this.zoomNext}
-          />
+          <div className="bottom-ctrl-space">
+            {navigatorSpace}
+            <ControlType
+              cropType={cropType}
+              onChangeCropType={this.onChangeCropType}
+            />
+            <Operation
+              scale={scale}
+              zoomIn={this.zoomIn}
+              zoomOut={this.zoomOut}
+              zoomToPrimitive={this.zoomToPrimitive}
+            />
+          </div>
+
           {current && (
             <Property
               current={current}

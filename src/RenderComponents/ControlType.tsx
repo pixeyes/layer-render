@@ -9,14 +9,26 @@ interface ControlTypeProps {
   onChangeCropType: (cropType: CROP_TYPE) => void;
 }
 
-const ControlType: React.FC<ControlTypeProps> = ({ cropType,onChangeCropType }) => {
+const ControlType: React.FC<ControlTypeProps> = ({
+  cropType,
+  onChangeCropType,
+}) => {
   return (
     <div className="control-type">
-      设计稿截取方式
-      <Radio.Group value={cropType} onChange={e => onChangeCropType(e.target.value)}>
-        <Radio value={CROP_TYPE.CLICK}>选图层</Radio>
-        <Radio value={CROP_TYPE.CROP}>划热区</Radio>
-      </Radio.Group>
+        <span className="title">
+                 截图方式
+        </span>
+
+      <Radio.Group
+        optionType="button"
+        options={[
+          { label: "选图层", value: CROP_TYPE.CLICK },
+          { label: "划热区", value: CROP_TYPE.CROP },
+        ]}
+        buttonStyle="solid"
+        value={cropType}
+        onChange={(e) => onChangeCropType(e.target.value)}
+      />
     </div>
   );
 };

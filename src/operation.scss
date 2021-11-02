@@ -1,22 +1,9 @@
 .page-operation-module {
-  padding: 0 12px;
-  position: fixed;
-  z-index: 10;
-  right: 24px;
-  bottom: 24px;
-  height: 60px;
   line-height: 32px;
   display: flex;
   align-items: center;
   font-size: 14px;
   font-weight: 700;
-  background: rgba(255,255,255,1);
-  border-radius: 8px;
-  box-shadow:  0 9px 20px 0 rgba(37,37,37,0.25);
-  opacity: 0.3;
-  &:hover{
-    opacity: 1;
-  }
   .zoom-in-out {
     position: relative;
   }
@@ -33,11 +20,9 @@
 
 
 .button-module.rel-btn--medium {
-  height: 60px;
   line-height: 32px;
 }
 .button-module.rel-btn--icon {
-  width: 52px;
   border-radius: 50%;
 }
 .white-board-module {
@@ -48,7 +33,6 @@
   outline: none;
   user-select: none;
   border-radius: 20px;
-  height: 40px;
   line-height: 40px;
   position: relative;
   cursor: pointer;
@@ -63,8 +47,8 @@
     opacity: .3;
   }
   .icon-wrap{
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;

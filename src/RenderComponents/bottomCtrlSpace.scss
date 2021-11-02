@@ -1,0 +1,15 @@
+.bottom-ctrl-space{
+  position: fixed;
+  padding: 0 8px;
+  z-index: 10;
+  bottom: 0;
+  transform: translate(-50%);
+  left:50%;
+  display: flex;
+  height: 48px;
+  background: rgba(247, 249, 250, 0.9);
+  box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 4px 4px 0px 0px;
+}

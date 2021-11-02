@@ -2,21 +2,20 @@ import * as React from "react";
 import ZoomIn from "./icons/ZoomIn";
 import ZoomOut from "./icons/ZoomOut";
 import Primitive from "./icons/Primitive";
-import { Tooltip } from "antd";
-import Next from "./icons/Next";
+import {Divider, Tooltip} from "antd";
 
 export interface OperationProps {
   scale: number;
   zoomIn: () => void;
   zoomOut: () => void;
   zoomToPrimitive: () => void;
-  zoomNext: () => void;
 }
 
 function Operation(props: OperationProps) {
-  const { zoomIn, zoomOut, zoomToPrimitive, zoomNext } = props;
+  const { zoomIn, zoomOut, zoomToPrimitive } = props;
   return (
     <div className="page-operation-module">
+      <Divider type="vertical" />
       <div className="white-board-module zoom-in-out">
         <Tooltip title="放大">
           <button
@@ -45,16 +44,6 @@ function Operation(props: OperationProps) {
           >
             <div className="icon-wrap">
               <Primitive />
-            </div>
-          </button>
-        </Tooltip>
-        <Tooltip title="下一页">
-          <button
-            className="button-module page-zoom_in_btn rel-btn--icon rel-btn--medium "
-            onClick={zoomNext}
-          >
-            <div className="icon-wrap">
-              <Next />
             </div>
           </button>
         </Tooltip>
