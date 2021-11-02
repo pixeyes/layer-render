@@ -10,3 +10,4 @@ yarn.lock
 .gitignore
 tsconfig.json
 build
+.github
