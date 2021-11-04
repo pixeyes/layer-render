@@ -23,7 +23,8 @@ import ControlType, { CROP_TYPE } from "../RenderComponents/ControlType";
 import SpecificationModal from "../RenderComponents/SpecificationModal";
 import Context, { IContext } from "../context";
 import { artSizeList } from "../constants/unit";
-import { Divider } from "antd";
+import { Divider, Spin } from "antd";
+import { base64Encode } from "../utils/imgUtil";
 
 export interface LayerRenderProps {
   data: any;
@@ -64,6 +65,7 @@ interface State {
   cropStartX: number;
   cropStartY: number;
   cropMoving: boolean;
+  progress: number;
 }
 
 export interface Specification {
@@ -133,6 +135,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       cropStartX: 0,
       cropStartY: 0,
       cropMoving: false,
+      progress: 0,
     };
     //this.layers = props.data.data.info;
   }
@@ -169,7 +172,48 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     });
   };
 
+  loadImg = () => {
+    const that = this;
+    const request = new XMLHttpRequest();
+    request.onloadstart = showProgressBar;
+    request.onprogress = updateProgressBar;
+    request.onload = showImage;
+    request.onloadend = hideProgressBar;
+    request.open(
+      "GET",
+      `https://storage.360buyimg.com/relay/${this.props.data.image}`,
+      true
+    );
+    request.overrideMimeType("text/plain; charset=x-user-defined");
+    request.send(null);
+    function showProgressBar() {
+      that.setState({
+        progress: 0,
+      });
+    }
+    function updateProgressBar(e: ProgressEvent) {
+      if (e.lengthComputable) {
+        that.setState({
+          progress: Math.round((e.loaded / e.total) * 100),
+        });
+      }
+    }
+    function showImage() {
+      const imageElement =
+        "data:image/jpeg;base64," + base64Encode(request.responseText);
+      that.imageRef.current.style.backgroundImage =
+        'url("' + imageElement + '")';
+    }
+
+    function hideProgressBar() {
+      that.setState({
+        progress: 100,
+      });
+    }
+  };
+
   async componentDidMount() {
+    this.loadImg();
     //this.buildCanvas();
     window.addEventListener("resize", this.onResize);
     //document.addEventListener("click", this.onWhiteSpaceClick);
@@ -749,7 +793,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     //const data = JSON.parse(pageInfo.data.data)
     const style = {
       border: 0,
-      backgroundImage: `url('https://storage.360buyimg.com/relay/${this.props.data.image}')`,
+      //backgroundImage: `url('https://storage.360buyimg.com/relay/${this.props.data.image}')`,
       backgroundRepeat: "no-repeat",
       backgroundPosition: `${x}px ${y}px`,
       backgroundSize: `${scale * data.width}px ${scale * data.height}px`,
@@ -788,6 +832,12 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
             >
               123
             </canvas>
+            {this.state.progress < 100 && (
+              <Spin
+                className="load-progress"
+                tip={`${this.state.progress} %`}
+              />
+            )}
             {cropType === CROP_TYPE.CROP ? (
               <div
                 className="vft-crop"
