@@ -1,35 +1,37 @@
-*,:after, :before {
+*,
+:after,
+:before {
   padding: 0;
   margin: 0;
   border: 0;
   vertical-align: baseline;
   box-sizing: border-box;
 }
-.layer-render-container{
+.layer-render-container {
   position: relative;
   width: 100%;
   height: 100%;
 }
-.layer-render-wrap{
+.layer-render-wrap {
   width: 100%;
   height: 100%;
   position: relative;
-  overflow:hidden;
+  overflow: hidden;
 
-  .canvas{
+  .canvas {
     width: 100%;
     height: 100%;
   }
-  .load-progress{
+  .load-progress {
     position: absolute;
     top: 50%;
     left: 50%;
     z-index: 100;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
   }
 }
 
-.border{
+.border {
   box-sizing: content-box;
 }
 .border:before {
@@ -64,36 +66,80 @@
   border-radius: 2px;
   font-weight: bolder;
 }
-.canvas{
+.canvas {
   //transition: background-size ease .3s;
 }
+
+.corner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  &.l:before {
+    left: -4px;
+    top: -4px;
+  }
+  &.l:after {
+    right: -4px;
+    top: -4px;
+  }
+  &.l2:before {
+    left: -4px;
+    bottom: -4px;
+  }
+  &.l2:after {
+    right: -4px;
+    bottom: -4px;
+  }
+}
+.corner:after,
+.corner:before {
+  position: absolute;
+  display: block;
+  content: " ";
+  border-radius: 50%;
+  background: #fff;
+  width: 7px;
+  height: 7px;
+  border: 1px solid #f53914;
+}
+
+
+
 .distance {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .distance > div {
   position: absolute;
-  overflow: hidden
+  overflow: hidden;
 }
 
-.distance .left, .distance .right {
+.distance .left,
+.distance .right {
   width: 1px;
   border-left: 1px dashed #5393ff;
   box-sizing: content-box;
 }
 
-.distance .bottom, .distance .top {
+.distance .bottom,
+.distance .top {
   height: 1px;
   border-top: 1px dashed #5393ff;
   box-sizing: content-box;
 }
 
-.margin .bottom:after, .margin .bottom:before, .margin .top:after, .margin .top:before {
+.margin .bottom:after,
+.margin .bottom:before,
+.margin .top:after,
+.margin .top:before {
   font-weight: bolder;
   position: absolute;
   content: "";
@@ -104,7 +150,8 @@
   background: #f53914;
 }
 
-.margin .bottom:before, .margin .top:before {
+.margin .bottom:before,
+.margin .top:before {
   top: 100%;
 }
 
@@ -126,7 +173,8 @@
   border-radius: 2px;
 }
 
-.margin .bottom, .margin .top {
+.margin .bottom,
+.margin .top {
   width: 1px;
 }
 
@@ -135,11 +183,13 @@
   position: absolute;
 }
 
-.margin .left, .margin .right {
+.margin .left,
+.margin .right {
   height: 1px;
 }
 
-.margin .bottom .info:before, .margin .top .info:before {
+.margin .bottom .info:before,
+.margin .top .info:before {
   left: auto;
   right: 0;
   top: 50%;
@@ -152,7 +202,7 @@
   height: 100%;
   position: absolute;
   top: 0;
-  left: 0
+  left: 0;
 }
 
 .line > div {
@@ -165,24 +215,28 @@
 .line .x {
   height: 100%;
   border-top: 0;
-  border-bottom: 0
+  border-bottom: 0;
 }
 
 .line .y {
   width: 100%;
   border-left: 0;
-  border-right: 0
+  border-right: 0;
 }
 
 .hover-item {
   position: absolute;
   border: 1px solid #5393ff;
-  overflow: hidden;
   box-sizing: content-box;
+  .corner:after,
+  .corner:before {
+    border-color: #5393ff;
+  }
 }
 .wrap {
-  position:absolute;
-  z-index:1;
+  position: absolute;
+  z-index: 1;
   //transition: all ease .3s;
-  box-shadow:0 2px 4px 1px rgba(40,120,255,.08),0 0 6px 1px rgba(0,0,0,.08)
+  box-shadow: 0 2px 4px 1px rgba(40, 120, 255, 0.08),
+    0 0 6px 1px rgba(0, 0, 0, 0.08);
 }

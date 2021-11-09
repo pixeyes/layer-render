@@ -1,5 +1,5 @@
 @import "../style/mixin";
-
+$inner-bg-color:rgba(238,242,246,1);
 .property {
   position: absolute;
   top: 0;
@@ -10,7 +10,8 @@
   left: 0;
   visibility: visible;
   z-index: 99;
-  background: #fff;
+  background: rgba(247,249,250,1);
+  box-shadow:  0 0 8px 0 rgba(0,0,0,0.1);
 }
 
 .property.right {
@@ -40,10 +41,8 @@
   padding: 0 24px;
   border-bottom: 1px solid rgba(0, 0, 0, .05);
   display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
-  background: rgba(37, 37, 37, 1);
+  color: rgba(37, 37, 37, 1);
   border-radius: 8px 8px 0 0;
   opacity: 90;
 
@@ -60,7 +59,6 @@
   }
 
   > div.left_title {
-    color: #FFFFFF;
     @include ellipsis()
   }
 
@@ -129,7 +127,6 @@
 }
 
 .property-base-wrap {
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .06);
 
   >.content {
     padding: 0 20px 24px 20px;
@@ -143,7 +140,6 @@
       user-select: text;
       width: 100%;
       box-sizing: border-box;
-      background: #fff;
       .item {
         .title{
           font-size: 14px;
@@ -186,8 +182,6 @@
     & > div {
       margin-bottom: 16px;
       height: 36px;
-      display: -webkit-box;
-      display: -ms-flexbox;
       display: flex;
 
       .l {
@@ -223,7 +217,7 @@
     font-size: 14px;
     font-weight: 400;
     color: #333;
-    background-color: rgba(0, 0, 0, .05);
+    background-color: $inner-bg-color;
     border-radius: 4px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -323,7 +317,7 @@
       line-height: 36px;
       position: relative;
       border-radius: 4px;
-      background-color: rgba(0, 0, 0, .05);
+      background-color: $inner-bg-color;
       padding: 6px;
 
       .color-hint {
@@ -385,7 +379,7 @@
 
       .r-box {
         position: relative;
-        background-color: rgba(0, 0, 0, .05);
+        background-color: $inner-bg-color;
         border-radius: 4px;
         padding: 6px;
         color: #252525;

@@ -922,10 +922,16 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                     data-height={
                       current ? toUnitNB(current.frame.height, artSize!) : ""
                     }
-                  />
+                  >
+                    <div className="corner l"/>
+                    <div className="corner l2"/>
+                  </div>
                 ) : (
                   current && (
-                    <div className="current-item" style={currentStyle} />
+                      <div className="current-item" style={currentStyle} >
+                        <div className="corner l"/>
+                        <div className="corner l2"/>
+                      </div>
                   )
                 )}
 
@@ -938,7 +944,10 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                       width: hoverLayer.frame.width,
                       height: hoverLayer.frame.height,
                     })}
-                  />
+                  >
+                    <div className="corner l"/>
+                    <div className="corner l2"/>
+                  </div>
                 )}
                 {hoverLayer && !current && (
                   <div className="line">
