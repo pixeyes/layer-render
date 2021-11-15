@@ -1,7 +1,9 @@
 import LayerRender from './render'
 import doSomeThing from "./utils/something";
+import {toColor} from "./utils/colorUtil";
 export {
-    doSomeThing
+    doSomeThing,
+    toColor
 }
 
 export default LayerRender;
