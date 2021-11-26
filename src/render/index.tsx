@@ -5,7 +5,7 @@ import {
   MAX_SCALE,
   MIN_SCALE,
   toUnitNB,
-  WHEEL_HOLD,
+  //WHEEL_HOLD,
   WHEEL_SCALE_STEP,
   ZOOM_SCALE_STEP,
 } from "../utils";
@@ -235,6 +235,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         y: 0,
         data: this.props.data,
       });
+      this.loadImg();
       this.forceUpdate();
     }
   }
@@ -342,15 +343,19 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       const y = this.state.y - this.offsetY;
 
       //x = Math.min(x,this.state.data.width*this.state.scale*4-20)
+      // this.setState({
+      //   x:
+      //     x > 0
+      //       ? Math.min(data.width * this.state.scale - WHEEL_HOLD, x)
+      //       : Math.max(-(data.width * this.state.scale - WHEEL_HOLD), x),
+      //   y:
+      //     y > 0
+      //       ? Math.min(data.height * this.state.scale - WHEEL_HOLD, y)
+      //       : Math.max(-(window.innerHeight - WHEEL_HOLD), y),
+      // });
       this.setState({
-        x:
-          x > 0
-            ? Math.min(data.width * this.state.scale - WHEEL_HOLD, x)
-            : Math.max(-(data.width * this.state.scale - WHEEL_HOLD), x),
-        y:
-          y > 0
-            ? Math.min(data.height * this.state.scale - WHEEL_HOLD, y)
-            : Math.max(-(window.innerHeight - WHEEL_HOLD), y),
+        x,
+        y,
       });
       this.offsetX = this.offsetY = 0;
       this.tempX = e.clientX;
@@ -715,7 +720,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   };
 
   onWheel = (e: WheelEvent) => {
-    const { data } = this.state;
+    //const { data } = this.state;
 
     if (e.ctrlKey) {
       this.setScale(
@@ -731,15 +736,19 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       const y = this.state.y + e.deltaY;
 
       //x = Math.min(x,this.state.data.width*this.state.scale*4-20)
+      // this.setState({
+      //   x:
+      //     x > 0
+      //       ? Math.min(data.width * this.state.scale - WHEEL_HOLD, x)
+      //       : Math.max(-(data.width * this.state.scale - WHEEL_HOLD), x),
+      //   y:
+      //     y > 0
+      //       ? Math.min(data.height * this.state.scale - WHEEL_HOLD, y)
+      //       : Math.max(-(window.innerHeight - WHEEL_HOLD), y),
+      // });
       this.setState({
-        x:
-          x > 0
-            ? Math.min(data.width * this.state.scale - WHEEL_HOLD, x)
-            : Math.max(-(data.width * this.state.scale - WHEEL_HOLD), x),
-        y:
-          y > 0
-            ? Math.min(data.height * this.state.scale - WHEEL_HOLD, y)
-            : Math.max(-(window.innerHeight - WHEEL_HOLD), y),
+        x,
+        y,
       });
     }
   };
@@ -923,15 +932,15 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                       current ? toUnitNB(current.frame.height, artSize!) : ""
                     }
                   >
-                    <div className="corner l"/>
-                    <div className="corner l2"/>
+                    <div className="corner l" />
+                    <div className="corner l2" />
                   </div>
                 ) : (
                   current && (
-                      <div className="current-item" style={currentStyle} >
-                        <div className="corner l"/>
-                        <div className="corner l2"/>
-                      </div>
+                    <div className="current-item" style={currentStyle}>
+                      <div className="corner l" />
+                      <div className="corner l2" />
+                    </div>
                   )
                 )}
 
@@ -945,8 +954,8 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                       height: hoverLayer.frame.height,
                     })}
                   >
-                    <div className="corner l"/>
-                    <div className="corner l2"/>
+                    <div className="corner l" />
+                    <div className="corner l2" />
                   </div>
                 )}
                 {hoverLayer && !current && (
