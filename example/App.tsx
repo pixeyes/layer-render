@@ -7,7 +7,7 @@ function App() {
   useEffect(() => {
     if (/jd.com/.test(window.location.hostname)) {
       fetch(
-        "/v1/relay/api/page/info?unique_page_id=9a83fa5b-acc5-4468-a4c4-dd386ad192a5",
+        "/v1/relay/api/page/info?unique_page_id=aee187d4-827c-421f-b12b-3be75fe1b009",
         {
           credentials: "include",
           mode: "cors",
@@ -31,9 +31,6 @@ function App() {
       data={res}
       mountCallback={(that) => {
         console.log(that);
-      }}
-      goNext={() => {
-        console.log("goNext");
       }}
       canvasWidth={1264}
       onChange={(data) => {

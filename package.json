@@ -7,12 +7,13 @@
   "types": "es/index.d.ts",
   "dependencies": {
     "@babel/runtime": "^7.0.0",
+    "@pixeyes/property": "^0.0.8",
     "antd": "^4.0.0",
     "classnames": "^2.3.1",
     "lodash-es": "^4.17.21"
   },
   "scripts": {
-    "start": "PORT=3003 yep-tools dev",
+    "start": "PORT=3008 yep-tools dev",
     "compile": "yep-tools compile",
     "dist": "yep-tools dist",
     "watch": "yep-tools watch",
@@ -49,11 +50,11 @@
     "@testing-library/user-event": "^12.1.10",
     "@types/classnames": "^2.2.10",
     "@types/jest": "^26.0.15",
+    "@types/lodash-es": "^4.17.5",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-color": "^3.0.5",
     "@types/react-dom": "^17.0.0",
-    "@types/lodash-es": "^4.17.5",
     "antd": "^4.0.0",
     "gh-pages": "^3.2.3",
     "http-proxy-middleware": "^1.0.5",

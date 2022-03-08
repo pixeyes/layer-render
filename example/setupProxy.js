@@ -4,7 +4,7 @@ module.exports = function(app) {
     app.use(
         '/v1',
         createProxyMiddleware({
-            target: 'https://flare.jd.com',
+            target: 'https://pixeye.jd.com',
             changeOrigin: true,
         })
     );

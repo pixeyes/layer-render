@@ -10,6 +10,8 @@ import { useContext, useEffect, useState } from "react";
 import { decodeStr } from "../utils/decodeStr";
 import Context from "../context";
 import { toUnitNB } from "../utils";
+import { Basic, Container, Row } from "@pixeyes/property";
+import "@pixeyes/property/dist/@pixeyes/property.css";
 export type Color = {
   r: number;
   g: number;
@@ -143,53 +145,47 @@ const Property: React.FC<PropertyProps> = ({
           </button>
         </div>
       </div>
-      <div className="property-base-wrap rel-property_content">
-        <div className="content scrollbar">
-          <div className="property-base group">
-            <div>
-              <div className="l">位置</div>
-              <div title="210px" className="r text">
-                <span className="text-tip">X</span>
-                {toUnitNB(current.frame.x, artSize!)}
-              </div>
-              <div title="158px" className="r text" style={{ marginLeft: 16 }}>
-                <span className="text-tip">Y</span>
-                {toUnitNB(current.frame.y, artSize!)}
-              </div>
-            </div>
-            <div>
-              <div className="l">大小</div>
-              <div title="192px" className="r text">
-                <span className="text-tip">宽</span>
-                {toUnitNB(current.frame.width, artSize!)}
-              </div>
-              <div title="32px" className="r text" style={{ marginLeft: 16 }}>
-                <span className="text-tip">高</span>
-                {toUnitNB(current.frame.height, artSize!)}
-              </div>
-            </div>
-            {current.style?.opacity && (
-              <div>
-                <div className="l l-opacity">不透明度</div>
-                <div className="r text">{current.style.opacity * 100}%</div>
-              </div>
-            )}
-
-            {current.style?.radius && (
-              <div>
-                <div className="l ">圆角</div>
-                <div className="r text overflow-text">
-                  {current.style.radius
+      <div className="property-base-wrap rel-property_content" >
+        <div className="content scrollbar" style={{maxHeight:window.innerHeight - 280}}>
+          <Container>
+            <Row>
+              <Basic
+                title="位置"
+                subTitle="X"
+                content={toUnitNB(current.frame.x, artSize!) + ""}
+              />
+              <Basic
+                title=""
+                subTitle="Y"
+                content={toUnitNB(current.frame.y, artSize!) + ""}
+              />
+              <Basic
+                title="大小"
+                subTitle="宽"
+                content={toUnitNB(current.frame.width, artSize!) + ""}
+              />
+              <Basic
+                title=""
+                subTitle="高"
+                content={toUnitNB(current.frame.height, artSize!) + ""}
+              />
+              {current.style?.opacity && (
+                <Basic
+                  title="不透明度"
+                  content={current.style.opacity * 100 + "%"}
+                />
+              )}
+              {current.style?.radius && (
+                <Basic
+                  title="圆角"
+                  content={current.style.radius
                     .map((i) => toUnitNB(i, artSize!))
                     .join(" ")}
-                </div>
-              </div>
-            )}
-          </div>
-          {(current.style || current.font) && (
-            <div>
-              <div className="property-title">样式信息</div>
-              <div>
+                />
+              )}
+            </Row>
+            {(current.style || current.font) && (
+              <>
                 {current.font && <FontProperty font={current.font} />}
                 {layerColors.length > 0 && (
                   <ColorProperty layerColors={layerColors} />
@@ -203,9 +199,9 @@ const Property: React.FC<PropertyProps> = ({
                 {layerBlurs.length > 0 && (
                   <BlurProperty layerBlurs={layerBlurs} />
                 )}
-              </div>
-            </div>
-          )}
+              </>
+            )}
+          </Container>
         </div>
       </div>
     </div>
