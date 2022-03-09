@@ -128,7 +128,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       data: props.data,
       platform: platform,
       ratio: parseInt(ratio),
-      colorType: "HEX",
+      colorType: "hex",
       specificationModalVisible: false,
       cropElementVisible: false,
       cropType: CROP_TYPE.CLICK,

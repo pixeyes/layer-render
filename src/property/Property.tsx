@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { decodeStr } from "../utils/decodeStr";
 import Context from "../context";
 import { toUnitNB } from "../utils";
-import { Basic, Container, Row } from "@pixeyes/property";
+import {Basic, ConfigProvider, Container, Row} from "@pixeyes/property";
 import "@pixeyes/property/dist/@pixeyes/property.css";
 export type Color = {
   r: number;
@@ -91,7 +91,7 @@ const Property: React.FC<PropertyProps> = ({
   height,
   onModalVisibleChange,
 }) => {
-  const { artSize } = useContext(Context);
+  const { artSize,colorType,onChangeColorType } = useContext(Context);
   const layerColors = getLayerAttr(current.style, "fills");
   const layerBorders = getLayerAttr(current.style, "borders");
   const layerShadows = getLayerAttr(current.style, "shadows");
@@ -147,6 +147,10 @@ const Property: React.FC<PropertyProps> = ({
       </div>
       <div className="property-base-wrap rel-property_content" >
         <div className="content scrollbar" style={{maxHeight:window.innerHeight - 280}}>
+          <ConfigProvider
+              colorType={colorType}
+              changeColorType={onChangeColorType}
+          >
           <Container>
             <Row>
               <Basic
@@ -202,6 +206,7 @@ const Property: React.FC<PropertyProps> = ({
               </>
             )}
           </Container>
+          </ConfigProvider>
         </div>
       </div>
     </div>

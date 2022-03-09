@@ -3,6 +3,7 @@ import { Button, Form, Modal, Select } from "antd";
 import { jo } from "../property/constants";
 import { Specification } from "../render";
 import { artSizeList } from "../constants/unit";
+import {useEffect} from "react";
 
 interface SpecificationModalProps {
   visible: boolean;
@@ -24,6 +25,13 @@ const SpecificationModal: React.FC<SpecificationModalProps> = ({
   const onFinish = async (values: Specification) => {
     onChangeSpecification(values);
   };
+
+  useEffect(() => {
+    form.setFieldsValue({
+      platform: platform,
+      colorType: colorType,
+    });
+  }, [platform, colorType]);
 
   return (
     <Modal
@@ -53,7 +61,7 @@ const SpecificationModal: React.FC<SpecificationModalProps> = ({
         <Form.Item name="colorType" label="颜色模式设置">
           <Select>
             {jo.map((color) => (
-              <Select.Option key={color} value={color}>
+              <Select.Option key={color} value={color.toLowerCase()}>
                 {color}
               </Select.Option>
             ))}

@@ -8,7 +8,7 @@ export interface IContext {
 }
 
 const Context = React.createContext<IContext>({
-  colorType: "HEX",
+  colorType: "hex",
   onChangeColorType: () => {},
   artSize: null,
 });
