@@ -119,9 +119,7 @@ const Property: React.FC<PropertyProps> = ({
         <div className="page-design-info">
           <div className="left">
             <Handle />
-            <div className="left_title">
-              {decodeStr(current.name)}
-            </div>
+            <div className="left_title">{decodeStr(current.name)}</div>
           </div>
 
           <div className="close_icon">
@@ -168,22 +166,22 @@ const Property: React.FC<PropertyProps> = ({
                   <Basic
                     title="位置"
                     subTitle="X"
-                    content={toUnitNB(current.frame.x, artSize!) + ""}
+                    content={toUnitNB(current.frame.x, artSize!)}
                   />
                   <Basic
                     title=""
                     subTitle="Y"
-                    content={toUnitNB(current.frame.y, artSize!) + ""}
+                    content={toUnitNB(current.frame.y, artSize!)}
                   />
                   <Basic
                     title="大小"
                     subTitle="宽"
-                    content={toUnitNB(current.frame.width, artSize!) + ""}
+                    content={toUnitNB(current.frame.width, artSize!)}
                   />
                   <Basic
                     title=""
                     subTitle="高"
-                    content={toUnitNB(current.frame.height, artSize!) + ""}
+                    content={toUnitNB(current.frame.height, artSize!)}
                   />
                   {current.style?.opacity && (
                     <Basic

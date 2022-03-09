@@ -23,7 +23,7 @@ const BordersProperty: React.FC<BordersPropertyProps> = ({ layerBorders }) => {
       {layerBorders.map((layerBorder, index) => (
         <Row key={index}>
           <Basic
-            title={Border_Types[layerBorder.type] + "线型"}
+            title={"边框"}
             content={Border_Types[layerBorder.type]}
           />
           <Basic

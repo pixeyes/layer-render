@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LayerRender, { doSomeThing } from "../src";
 import relay from './data'
 
@@ -7,7 +7,7 @@ function App() {
   useEffect(() => {
     if (/jd.com/.test(window.location.hostname)) {
       fetch(
-        "/v1/relay/api/page/info?unique_page_id=aee187d4-827c-421f-b12b-3be75fe1b009",
+        "/v1/relay/api/page/info?unique_page_id=9296a740-cfb0-4534-8226-1ca9d687da7c",
         {
           credentials: "include",
           mode: "cors",

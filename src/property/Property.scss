@@ -135,6 +135,9 @@ $inner-bg-color: rgba(238, 242, 246, 1);
     overflow-y: auto;
     overflow-x: hidden;
     color: #6e747d;
+    .pixeye-property-container{
+      padding-top: 0;
+    }
   }
 }
 
