@@ -10,8 +10,10 @@ import { useContext, useEffect, useState } from "react";
 import { decodeStr } from "../utils/decodeStr";
 import Context from "../context";
 import { toUnitNB } from "../utils";
-import {Basic, ConfigProvider, Container, Row} from "@pixeyes/property";
+import { Basic, ConfigProvider, Container, Row } from "@pixeyes/property";
+import Draggable from "react-draggable";
 import "@pixeyes/property/dist/@pixeyes/property.css";
+import Handle from "../icons/Handle";
 export type Color = {
   r: number;
   g: number;
@@ -91,7 +93,7 @@ const Property: React.FC<PropertyProps> = ({
   height,
   onModalVisibleChange,
 }) => {
-  const { artSize,colorType,onChangeColorType } = useContext(Context);
+  const { artSize, colorType, onChangeColorType } = useContext(Context);
   const layerColors = getLayerAttr(current.style, "fills");
   const layerBorders = getLayerAttr(current.style, "borders");
   const layerShadows = getLayerAttr(current.style, "shadows");
@@ -107,109 +109,120 @@ const Property: React.FC<PropertyProps> = ({
     }
   }, [current]);
   return (
-    <div
-      className={classNames("property right rel-property_index", {
-        close: !visible || !current,
-        open: !(!visible || !current),
-      })}
-    >
-      <div className="page-design-info">
-        <div className="left_title">{decodeStr(current.name)}</div>
-        <div className="close_icon">
-          <button
-            className="button-module base_set_icon rel-btn--icon rel-btn--medium"
-            data-guide="page-set_project"
-            onClick={() => setVisible(false)}
+    <Draggable handle=".drag-handle">
+      <div
+        className={classNames("property right rel-property_index", {
+          close: !visible || !current,
+          open: !(!visible || !current),
+        })}
+      >
+        <div className="page-design-info">
+          <div className="left">
+            <Handle />
+            <div className="left_title">
+              {decodeStr(current.name)}
+            </div>
+          </div>
+
+          <div className="close_icon">
+            <button
+              className="button-module base_set_icon rel-btn--icon rel-btn--medium"
+              data-guide="page-set_project"
+              onClick={() => setVisible(false)}
+            >
+              <RightCloseIcon />
+            </button>
+          </div>
+        </div>
+        <div className="page-unit-info">
+          <div className="left_title">
+            <span title="iOS@1x" className="unit_name overflow-text">
+              {platform}
+              {platform === "iOS" && (
+                <span className="unit_device">@{ratio}x</span>
+              )}
+            </span>
+          </div>
+          <div className="right_title">
+            <span className="unit_result overflow-text">{unitResult}</span>
+            <button
+              className="button-module base_set_icon rel-btn--icon rel-btn--medium"
+              data-guide="page-set_project"
+              onClick={onModalVisibleChange}
+            >
+              <SetIcon />
+            </button>
+          </div>
+        </div>
+        <div className="property-base-wrap rel-property_content">
+          <div
+            className="content scrollbar"
+            style={{ maxHeight: window.innerHeight - 280 }}
           >
-            <RightCloseIcon />
-          </button>
-        </div>
-      </div>
-      <div className="page-unit-info">
-        <div className="left_title">
-          <span title="iOS@1x" className="unit_name overflow-text">
-            {platform}
-            {platform === "iOS" && (
-              <span className="unit_device">@{ratio}x</span>
-            )}
-          </span>
-        </div>
-        <div className="right_title">
-          <span className="unit_result overflow-text">{unitResult}</span>
-          <button
-            className="button-module base_set_icon rel-btn--icon rel-btn--medium"
-            data-guide="page-set_project"
-            onClick={onModalVisibleChange}
-          >
-            <SetIcon />
-          </button>
-        </div>
-      </div>
-      <div className="property-base-wrap rel-property_content" >
-        <div className="content scrollbar" style={{maxHeight:window.innerHeight - 280}}>
-          <ConfigProvider
+            <ConfigProvider
               colorType={colorType}
               changeColorType={onChangeColorType}
-          >
-          <Container>
-            <Row>
-              <Basic
-                title="位置"
-                subTitle="X"
-                content={toUnitNB(current.frame.x, artSize!) + ""}
-              />
-              <Basic
-                title=""
-                subTitle="Y"
-                content={toUnitNB(current.frame.y, artSize!) + ""}
-              />
-              <Basic
-                title="大小"
-                subTitle="宽"
-                content={toUnitNB(current.frame.width, artSize!) + ""}
-              />
-              <Basic
-                title=""
-                subTitle="高"
-                content={toUnitNB(current.frame.height, artSize!) + ""}
-              />
-              {current.style?.opacity && (
-                <Basic
-                  title="不透明度"
-                  content={current.style.opacity * 100 + "%"}
-                />
-              )}
-              {current.style?.radius && (
-                <Basic
-                  title="圆角"
-                  content={current.style.radius
-                    .map((i) => toUnitNB(i, artSize!))
-                    .join(" ")}
-                />
-              )}
-            </Row>
-            {(current.style || current.font) && (
-              <>
-                {current.font && <FontProperty font={current.font} />}
-                {layerColors.length > 0 && (
-                  <ColorProperty layerColors={layerColors} />
+            >
+              <Container>
+                <Row>
+                  <Basic
+                    title="位置"
+                    subTitle="X"
+                    content={toUnitNB(current.frame.x, artSize!) + ""}
+                  />
+                  <Basic
+                    title=""
+                    subTitle="Y"
+                    content={toUnitNB(current.frame.y, artSize!) + ""}
+                  />
+                  <Basic
+                    title="大小"
+                    subTitle="宽"
+                    content={toUnitNB(current.frame.width, artSize!) + ""}
+                  />
+                  <Basic
+                    title=""
+                    subTitle="高"
+                    content={toUnitNB(current.frame.height, artSize!) + ""}
+                  />
+                  {current.style?.opacity && (
+                    <Basic
+                      title="不透明度"
+                      content={current.style.opacity * 100 + "%"}
+                    />
+                  )}
+                  {current.style?.radius && (
+                    <Basic
+                      title="圆角"
+                      content={current.style.radius
+                        .map((i) => toUnitNB(i, artSize!))
+                        .join(" ")}
+                    />
+                  )}
+                </Row>
+                {(current.style || current.font) && (
+                  <>
+                    {current.font && <FontProperty font={current.font} />}
+                    {layerColors.length > 0 && (
+                      <ColorProperty layerColors={layerColors} />
+                    )}
+                    {layerBorders.length > 0 && (
+                      <BordersProperty layerBorders={layerBorders} />
+                    )}
+                    {layerShadows.length > 0 && (
+                      <ShadowProperty layerShadows={layerShadows} />
+                    )}
+                    {layerBlurs.length > 0 && (
+                      <BlurProperty layerBlurs={layerBlurs} />
+                    )}
+                  </>
                 )}
-                {layerBorders.length > 0 && (
-                  <BordersProperty layerBorders={layerBorders} />
-                )}
-                {layerShadows.length > 0 && (
-                  <ShadowProperty layerShadows={layerShadows} />
-                )}
-                {layerBlurs.length > 0 && (
-                  <BlurProperty layerBlurs={layerBlurs} />
-                )}
-              </>
-            )}
-          </Container>
-          </ConfigProvider>
+              </Container>
+            </ConfigProvider>
+          </div>
         </div>
       </div>
-    </div>
+    </Draggable>
   );
 };
 

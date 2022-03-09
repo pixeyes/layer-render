@@ -27,7 +27,7 @@ const ColorProperty: React.FC<ColorPropertyProps> = ({ layerColors }) => {
               angular={D(item.gradient)}
               colorStops={item.gradient.points.map((point: any) => ({
                 color: point.color,
-                position: point.position * 100 + "%",
+                position: Math.round(point.position * 100) + "%",
               }))}
               key={index}
             />

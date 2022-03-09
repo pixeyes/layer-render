@@ -1455,10 +1455,10 @@
   dependencies:
     tinycolor2 "^1.4.1"
 
-"@pixeyes/property@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@pixeyes/property/-/property-0.0.8.tgz#cb8a082ff998587a8fd74dff55dd286dd45e1d2c"
-  integrity sha512-TeH3HKJ2zBjiyzbcYhvlGbt/jK57qDmc1w19X86T1rQollKcWx+It9FkuI1g4OfrCawBphsSRQ9KLFHrJsCsaQ==
+"@pixeyes/property@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@pixeyes/property/-/property-0.0.9.tgz#3425fd52469eb19932d0c0427e921a9d65cce35c"
+  integrity sha512-HciPZa5F2ajyjiSwIs0GlY4DP6Jz/T55NGXF39DTl1tRRE4bOei8MFDW8XYu5MCMxJ/NUQqdrusz9T+27/Rzcw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@pixeyes/css-parse" "^0.0.3"
@@ -3223,6 +3223,11 @@ cloneable-readable@^1.0.0:
     inherits "^2.0.1"
     process-nextick-args "^2.0.0"
     readable-stream "^2.3.5"
+
+clsx@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
+  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
 
 code-point-at@^1.0.0:
   version "1.1.0"
@@ -8673,7 +8678,7 @@ promise-inflight@^1.0.1:
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
   integrity sha1-mEcocL8igTL8vdhoEputEsPAKeM=
 
-prop-types@^15.8.1:
+prop-types@^15.6.0, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -9222,6 +9227,14 @@ react-dom@^17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+react-draggable@^4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-4.4.4.tgz#5b26d9996be63d32d285a426f41055de87e59b2f"
+  integrity sha512-6e0WdcNLwpBx/YIDpoyd2Xb04PB0elrDrulKUgdrIlwuYvxh5Ok9M+F8cljm8kPXXs43PmMzek9RrB1b7mLMqA==
+  dependencies:
+    clsx "^1.1.1"
+    prop-types "^15.6.0"
 
 react-error-overlay@^6.0.7:
   version "6.0.10"
