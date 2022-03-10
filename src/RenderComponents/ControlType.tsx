@@ -4,7 +4,7 @@ export enum CROP_TYPE {
   CLICK = 0,
   CROP = 1,
 }
-interface ControlTypeProps {
+export interface ControlTypeProps {
   cropType: CROP_TYPE;
   onChangeCropType: (cropType: CROP_TYPE) => void;
 }

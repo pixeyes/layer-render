@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import LayerRender, { doSomeThing } from "../src";
-import relay from './data'
-
+import LayerRender, { doSomeThing, ControlType, CROP_TYPE } from "../src";
+import relay from "./data";
+import React from "react";
 function App() {
   const [res, setRes] = useState();
+  const [cropType, setCropType] = useState(CROP_TYPE.CLICK);
+  const onChangeCropType = (cropType: CROP_TYPE) => {
+    setCropType(cropType);
+  };
   useEffect(() => {
     if (/jd.com/.test(window.location.hostname)) {
       fetch(
@@ -20,23 +24,27 @@ function App() {
           const data = doSomeThing(resp.data);
           setRes(data);
         });
-    }else {
-        const data = doSomeThing(relay);
-        setRes(data);
+    } else {
+      const data = doSomeThing(relay);
+      setRes(data);
     }
   }, []);
   if (!res) return null;
   return (
-    <LayerRender
-      data={res}
-      mountCallback={(that) => {
-        console.log(that);
-      }}
-      canvasWidth={1264}
-      onChange={(data) => {
-        console.log(data);
-      }}
-    />
+    <>
+      <ControlType cropType={cropType} onChangeCropType={onChangeCropType} />
+      <LayerRender
+        cropType={cropType}
+        data={res}
+        mountCallback={(that) => {
+          console.log(that);
+        }}
+        canvasWidth={1264}
+        onChange={(data) => {
+          console.log(data);
+        }}
+      />
+    </>
   );
 }
 

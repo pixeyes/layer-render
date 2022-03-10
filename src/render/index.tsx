@@ -5,7 +5,6 @@ import {
   MAX_SCALE,
   MIN_SCALE,
   toUnitNB,
-  //WHEEL_HOLD,
   WHEEL_SCALE_STEP,
   ZOOM_SCALE_STEP,
 } from "../utils";
@@ -19,14 +18,14 @@ import {
 import Operation from "../Operation";
 import Property, { Layer } from "../property/Property";
 
-import ControlType, { CROP_TYPE } from "../RenderComponents/ControlType";
+import { ControlTypeProps, CROP_TYPE } from "../RenderComponents/ControlType";
 import SpecificationModal from "../RenderComponents/SpecificationModal";
 import Context, { IContext } from "../context";
 import { artSizeList } from "../constants/unit";
 import { Divider, Spin } from "antd";
 import { base64Encode } from "../utils/imgUtil";
 
-export interface LayerRenderProps {
+export interface LayerRenderProps extends Partial<ControlTypeProps> {
   data: any;
   mountCallback?: (that?: any) => void;
   onMouseDown?: (current?: Layer) => void;
@@ -61,7 +60,6 @@ interface State {
   colorType: string;
   specificationModalVisible: boolean;
   cropElementVisible: boolean;
-  cropType: CROP_TYPE;
   cropStartX: number;
   cropStartY: number;
   cropMoving: boolean;
@@ -97,6 +95,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
 
   static defaultProps = {
     canvasWidth: window.innerWidth,
+    cropType: CROP_TYPE.CLICK,
   };
 
   constructor(props: LayerRenderProps) {
@@ -131,7 +130,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       colorType: "hex",
       specificationModalVisible: false,
       cropElementVisible: false,
-      cropType: CROP_TYPE.CLICK,
       cropStartX: 0,
       cropStartY: 0,
       cropMoving: false,
@@ -273,8 +271,8 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   };
 
   onMouseMove = (e: MouseEvent) => {
-    const { data, cropType, cropMoving, cropStartX, cropStartY, scale } =
-      this.state;
+    const { data, cropMoving, cropStartX, cropStartY, scale } = this.state;
+    const { cropType } = this.props;
     const { x, y } = this.getPosition();
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
@@ -371,7 +369,8 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
 
   onMouseUp = (e: MouseEvent) => {
     this.moving = false;
-    const { cropStartX, cropStartY, cropType, scale } = this.state;
+    const { cropType } = this.props;
+    const { cropStartX, cropStartY, scale } = this.state;
     if (cropType === CROP_TYPE.CROP) {
       const { x, y } = this.getPosition();
       //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
@@ -408,7 +407,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     const { x, y } = this.getPosition();
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
-    if (this.state.cropType === CROP_TYPE.CROP) {
+    if (this.props.cropType === CROP_TYPE.CROP) {
       this.setState({
         cropMoving: true,
         cropElementVisible: true,
@@ -770,12 +769,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     });
   };
 
-  onChangeCropType = (cropType: CROP_TYPE) => {
-    this.setState({
-      cropType,
-    });
-  };
-
   render() {
     const {
       current,
@@ -787,11 +780,11 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       ratio,
       colorType,
       cropElementVisible,
-      cropType,
+
       cropStartX,
       cropStartY,
     } = this.state;
-    const { navigatorSpace } = this.props;
+    const { navigatorSpace, cropType } = this.props;
     // console.log("current", current);
     const { x, y } = this.getPosition();
     const top = this.toRatioPX(this.showMarginTopStyle());
@@ -1069,11 +1062,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                 {navigatorSpace} <Divider type="vertical" />
               </>
             )}
-            <ControlType
-              cropType={cropType}
-              onChangeCropType={this.onChangeCropType}
-            />
-            <Divider type="vertical" />
             <Operation
               scale={scale}
               zoomIn={this.zoomIn}
