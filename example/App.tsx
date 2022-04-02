@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import LayerRender, { doSomeThing, ControlType, CROP_TYPE } from "../src";
 import relay from "./data";
 import React from "react";
+import Operation from "../src/Operation";
+import CtrlSpace from "../src/RenderComponents/CtrlSpace";
 function App() {
   const [res, setRes] = useState();
   const [cropType, setCropType] = useState(CROP_TYPE.CLICK);
+  const [scale, setScale] = useState(1);
+
   const onChangeCropType = (cropType: CROP_TYPE) => {
     setCropType(cropType);
   };
@@ -32,8 +36,17 @@ function App() {
   if (!res) return null;
   return (
     <>
-      <ControlType cropType={cropType} onChangeCropType={onChangeCropType} />
+      <CtrlSpace className="top">
+        <ControlType cropType={cropType} onChangeCropType={onChangeCropType} />
+        <Operation
+          scale={scale}
+          setScale={setScale}
+        />
+      </CtrlSpace>
+
       <LayerRender
+        scale={scale}
+        setScale={setScale}
         cropType={cropType}
         data={res}
         mountCallback={(that) => {

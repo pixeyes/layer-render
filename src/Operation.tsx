@@ -1,53 +1,34 @@
 import * as React from "react";
-import ZoomIn from "./icons/ZoomIn";
-import ZoomOut from "./icons/ZoomOut";
-import Primitive from "./icons/Primitive";
-import {Tooltip} from "antd";
 
+import { Dropdown, Menu } from "antd";
+import { DownOutlined, CheckOutlined } from "@ant-design/icons";
 export interface OperationProps {
   scale: number;
-  zoomIn: () => void;
-  zoomOut: () => void;
-  zoomToPrimitive: () => void;
+  setScale: (scale: number) => void;
 }
 
+const sizes = [0.5, 0.75, 1, 1.25, 1.5];
+
 function Operation(props: OperationProps) {
-  const { zoomIn, zoomOut, zoomToPrimitive } = props;
+  const menu = (
+    <Menu>
+      {sizes.map((size, index) => (
+        <Menu.Item key={index} onClick={() => props.setScale(size)}>
+          <span>
+            {size * 100}%
+          </span>
+          {size === props.scale && <CheckOutlined />}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
   return (
     <div className="page-operation-module">
-
-      <div className="white-board-module zoom-in-out">
-        <Tooltip title="放大">
-          <button
-            className="button-module page-zoom_out_btn rel-btn--icon rel-btn--medium"
-            onClick={zoomIn}
-          >
-            <div className="icon-wrap">
-              <ZoomIn />
-            </div>
-          </button>
-        </Tooltip>
-        <Tooltip title="缩小">
-          <button
-            className="button-module page-zoom_in_btn rel-btn--icon rel-btn--medium"
-            onClick={zoomOut}
-          >
-            <div className="icon-wrap">
-              <ZoomOut />
-            </div>
-          </button>
-        </Tooltip>
-        <Tooltip title="原始">
-          <button
-            className="button-module page-zoom_in_btn rel-btn--icon rel-btn--medium"
-            onClick={zoomToPrimitive}
-          >
-            <div className="icon-wrap">
-              <Primitive />
-            </div>
-          </button>
-        </Tooltip>
-      </div>
+      <Dropdown overlayClassName="scale-dropdown" overlay={menu} >
+        <span className="scale-dropdown-link">
+          {Math.round(props.scale * 100)}% <DownOutlined />
+        </span>
+      </Dropdown>
     </div>
   );
 }

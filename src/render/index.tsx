@@ -6,7 +6,6 @@ import {
   MIN_SCALE,
   toUnitNB,
   WHEEL_SCALE_STEP,
-  ZOOM_SCALE_STEP,
 } from "../utils";
 import {
   computeShowMarginBottomStyle,
@@ -15,14 +14,13 @@ import {
   computeShowMarginTopStyle,
   toUnit,
 } from "./renderUtils";
-import Operation from "../Operation";
 import Property, { Layer } from "../property/Property";
 
 import { ControlTypeProps, CROP_TYPE } from "../RenderComponents/ControlType";
 import SpecificationModal from "../RenderComponents/SpecificationModal";
 import Context, { IContext } from "../context";
 import { artSizeList } from "../constants/unit";
-import { Divider, Spin } from "antd";
+import { Spin } from "antd";
 import { base64Encode } from "../utils/imgUtil";
 
 export interface LayerRenderProps extends Partial<ControlTypeProps> {
@@ -38,10 +36,8 @@ export interface LayerRenderProps extends Partial<ControlTypeProps> {
    * @param data
    */
   onChange: (data: any) => void;
-  /**
-   * 底部左右上一个下一页控件
-   */
-  navigatorSpace?: React.ReactNode;
+  scale: number;
+  setScale: (scale: number) => void;
 }
 
 interface State {
@@ -51,7 +47,6 @@ interface State {
   right: any;
   bottom: any;
   left: any;
-  scale: number;
   x: number;
   y: number;
   data: any;
@@ -121,7 +116,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       right: null,
       bottom: null,
       left: null,
-      scale: 1,
       x: 0,
       y: 0,
       data: props.data,
@@ -140,14 +134,14 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   // @ts-ignore
   validLayers = () => {
     const t = this.props.data.data.info;
-    const e = this.state;
+    const {scale} = this.props
     t.forEach(function (t: any) {
       t.frame.rx = t.frame.x + t.frame.width;
       t.frame.ry = t.frame.y + t.frame.height;
-      const i = e.scale * t.frame.x,
-        n = e.scale * t.frame.y,
-        a = e.scale * t.frame.width,
-        s = e.scale * t.frame.height,
+      const i = scale * t.frame.x,
+        n = scale * t.frame.y,
+        a = scale * t.frame.width,
+        s = scale * t.frame.height,
         o = a / 2,
         r = s / 2;
       t._rect = {
@@ -213,6 +207,9 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   async componentDidMount() {
     this.loadImg();
     //this.buildCanvas();
+    document.addEventListener('wheel', function(event) {
+      event.preventDefault()
+    }, { passive: false })
     window.addEventListener("resize", this.onResize);
     //document.addEventListener("click", this.onWhiteSpaceClick);
     this.props.mountCallback?.(this);
@@ -228,13 +225,13 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         right: null,
         bottom: null,
         left: null,
-        scale: 1,
         x: 0,
         y: 0,
         data: this.props.data,
       });
       this.loadImg();
       this.forceUpdate();
+      this.props.setScale(1)
     }
   }
 
@@ -245,8 +242,8 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   onResize = () => {};
 
   getPosition = (): { x: number; y: number } => {
-    const { scale, data, x, y } = this.state;
-    const canvasWidth = this.props.canvasWidth;
+    const { data, x, y } = this.state;
+    const { scale, canvasWidth } = this.props;
     //const canvasHeight = window.innerHeight;
     // @ts-ignore
     const imgWidth = data.width;
@@ -266,13 +263,13 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   };
 
   computedScaleUnit = (value: number) => {
-    const { scale } = this.state;
+    const { scale } = this.props;
     return value * scale;
   };
 
   onMouseMove = (e: MouseEvent) => {
-    const { data, cropMoving, cropStartX, cropStartY, scale } = this.state;
-    const { cropType } = this.props;
+    const { data, cropMoving, cropStartX, cropStartY,  } = this.state;
+    const { cropType ,scale} = this.props;
     const { x, y } = this.getPosition();
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
@@ -369,8 +366,8 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
 
   onMouseUp = (e: MouseEvent) => {
     this.moving = false;
-    const { cropType } = this.props;
-    const { cropStartX, cropStartY, scale } = this.state;
+    const { cropType, scale } = this.props;
+    const { cropStartX, cropStartY } = this.state;
     if (cropType === CROP_TYPE.CROP) {
       const { x, y } = this.getPosition();
       //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
@@ -493,7 +490,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   };
 
   toRatioPX = (value: any) => {
-    return value ? toUnit(value, "", this.state.scale) : null;
+    return value ? toUnit(value, "", this.props.scale) : null;
   };
   showDistanceTopStyle = () => {
     const marginData = this.state.top;
@@ -679,19 +676,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     return this.toRatioPX({ left, height, top });
   };
 
-  zoomIn = () => {
-    //this.setScale(zoomInNext(this.state.scale));
-    this.setScale(this.state.scale + ZOOM_SCALE_STEP);
-  };
 
-  zoomOut = () => {
-    //this.setScale(zoomOutNext(this.state.scale));
-    this.setScale(this.state.scale - ZOOM_SCALE_STEP);
-  };
-
-  zoomToPrimitive = () => {
-    this.setScale(1);
-  };
   zoomNext = () => {
     //this.props.goNext();
   };
@@ -713,9 +698,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     // c.y = Math.max(o.y, Math.min(c.y, o.y + o.height));
     console.log(o);
     console.log(c);
-    this.setState({
-      scale: toScale,
-    });
+    this.props.setScale(toScale)
   };
 
   onWheel = (e: WheelEvent) => {
@@ -723,7 +706,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
 
     if (e.ctrlKey) {
       this.setScale(
-        this.state.scale +
+        this.props.scale +
           (e.deltaY > 0 ? -WHEEL_SCALE_STEP : WHEEL_SCALE_STEP),
         {
           x: e.clientX,
@@ -773,7 +756,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     const {
       current,
       hoverLayer,
-      scale,
       data,
       specificationModalVisible,
       platform,
@@ -784,7 +766,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       cropStartX,
       cropStartY,
     } = this.state;
-    const { navigatorSpace, cropType } = this.props;
+    const { cropType, scale} = this.props;
     // console.log("current", current);
     const { x, y } = this.getPosition();
     const top = this.toRatioPX(this.showMarginTopStyle());
@@ -1056,20 +1038,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
               </div>
             )}
           </div>
-          <div className="bottom-ctrl-space">
-            {navigatorSpace && (
-              <>
-                {navigatorSpace} <Divider type="vertical" />
-              </>
-            )}
-            <Operation
-              scale={scale}
-              zoomIn={this.zoomIn}
-              zoomOut={this.zoomOut}
-              zoomToPrimitive={this.zoomToPrimitive}
-            />
-          </div>
-
           {current && (
             <Property
               current={current}

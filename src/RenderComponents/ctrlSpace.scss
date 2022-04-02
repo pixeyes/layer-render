@@ -1,11 +1,8 @@
-.bottom-ctrl-space {
-  position: fixed;
+.pixeye-ctrl-space {
   padding: 0 8px;
-  z-index: 10;
-  bottom: 0;
   transform: translate(-50%);
-  left: 50%;
   display: flex;
+  justify-content: center;
   align-items: center;
   height: 48px;
   background: rgba(247, 249, 250, 0.9);
