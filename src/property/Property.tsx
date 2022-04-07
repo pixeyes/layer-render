@@ -123,33 +123,23 @@ const Property: React.FC<PropertyProps> = ({
           </div>
 
           <div className="close_icon">
-            <button
-              className="button-module base_set_icon rel-btn--icon rel-btn--medium"
-              data-guide="page-set_project"
-              onClick={() => setVisible(false)}
-            >
-              <RightCloseIcon />
-            </button>
+            <RightCloseIcon onClick={() => setVisible(false)} />
           </div>
         </div>
-        <div className="page-unit-info">
-          <div className="left_title">
-            <span title="iOS@1x" className="unit_name overflow-text">
-              {platform}
-              {platform === "iOS" && (
-                <span className="unit_device">@{ratio}x</span>
-              )}
-            </span>
-          </div>
-          <div className="right_title">
-            <span className="unit_result overflow-text">{unitResult}</span>
-            <button
-              className="button-module base_set_icon rel-btn--icon rel-btn--medium"
-              data-guide="page-set_project"
-              onClick={onModalVisibleChange}
-            >
-              <SetIcon />
-            </button>
+        <div className="page-unit-info-wrap">
+          <div className="page-unit-info">
+            <div className="left_title">
+              <span title="iOS@1x" className="unit_name overflow-text">
+                {platform}
+                {platform === "iOS" && (
+                  <span className="unit_device">@{ratio}x</span>
+                )}
+              </span>
+            </div>
+            <div className="right_title">
+              <span className="unit_result overflow-text">{unitResult}</span>
+              <SetIcon onClick={onModalVisibleChange} />
+            </div>
           </div>
         </div>
         <div className="property-base-wrap rel-property_content">

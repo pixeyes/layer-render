@@ -1448,20 +1448,20 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@pixeyes/css-parse@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@pixeyes/css-parse/-/css-parse-0.0.3.tgz#12d27c3102926b439d2da3c9424fd7e60d2d0761"
-  integrity sha512-IkaM/uZKwQ+jbth/EsET9lmAag2OnPqQNkaBE1wJXtQ27UZUoTCNU7r54KqMiA5hBLQ4Fx9ItCItWoum3EJrFA==
+"@pixeyes/css-parse@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@pixeyes/css-parse/-/css-parse-0.0.7.tgz#fc70f2bff8e91a19c8c4142b24ca358d6f42bfdc"
+  integrity sha512-6BQcDgHPJhihUTlzfCAJ5t75C30fdIG6z2OlSj37mHO6aRLkZupK0hLLCGmUmSsTNcHHtrNJmuziNmUKmstZyQ==
   dependencies:
     tinycolor2 "^1.4.1"
 
-"@pixeyes/property@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@pixeyes/property/-/property-0.0.9.tgz#3425fd52469eb19932d0c0427e921a9d65cce35c"
-  integrity sha512-HciPZa5F2ajyjiSwIs0GlY4DP6Jz/T55NGXF39DTl1tRRE4bOei8MFDW8XYu5MCMxJ/NUQqdrusz9T+27/Rzcw==
+"@pixeyes/property@^0.0.11-beta.0":
+  version "0.0.11-beta.0"
+  resolved "https://registry.yarnpkg.com/@pixeyes/property/-/property-0.0.11-beta.0.tgz#26356f75a95be5114f5e66beb8a9805ef7b19163"
+  integrity sha512-WBr9ZuRi8qjP8qX6rWgHD1bh0/hRTdOe06I40u+updqwrHn0XGWK6S2l2kFfU5TSowSKmgK/Gf2qo2edMCeiiQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
-    "@pixeyes/css-parse" "^0.0.3"
+    "@pixeyes/css-parse" "^0.0.7"
     antd "^4.0.0"
     classnames "^2.3.1"
     lodash-es "^4.17.21"
