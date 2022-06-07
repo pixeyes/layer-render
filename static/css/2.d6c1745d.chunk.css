@@ -1,0 +1,429 @@
+/*!
+ * @pixeyes/property v0.0.11-beta.0 ()
+ * Copyright 2022 JDF2E, Inc.
+ * Licensed under the MIT license
+ */
+.pixeye-property-block,
+.pixeye-property-two {
+  margin: 16px 0 0;
+}
+
+.pixeye-property-block .title,
+.pixeye-property-two .title {
+  font-size: 12px;
+  line-height: 12px;
+  height: 12px;
+  color: rgba(37, 37, 37, 0.5);
+}
+
+.pixeye-property-block .content,
+.pixeye-property-two .content {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #252525;
+}
+
+.pixeye-property-block .content .sub-title,
+.pixeye-property-two .content .sub-title {
+  margin-right: 3px;
+}
+
+.pixeye-property-block {
+  width: 100%;
+}
+
+.pixeye-property-two {
+  width: 50%;
+}
+.pixeye-box_wrap {
+  font-size: 10px;
+  color: #252525;
+  border-radius: 2px;
+  width: 100%;
+  height: 120px;
+}
+
+.pixeye-box_wrap .pixeye-box_margin {
+  position: relative;
+  border-radius: 2px;
+  background-color: #ffdabe;
+  width: 100%;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pixeye-box_wrap .pixeye-box_margin > span {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .margin_top {
+  position: absolute;
+  height: 16px;
+  line-height: 16px;
+  top: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .margin_right {
+  position: absolute;
+  width: 17px;
+  text-align: center;
+  right: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .margin_bottom {
+  position: absolute;
+  height: 16px;
+  line-height: 16px;
+  bottom: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .margin_left {
+  position: absolute;
+  width: 17px;
+  text-align: center;
+  left: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border {
+  position: relative;
+  background-color: #ffefc3;
+  border-radius: 2px;
+  width: 148px;
+  height: 88px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border > span {
+  position: absolute;
+  top: 1px;
+  left: 5px;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .border_top {
+  position: absolute;
+  height: 16px;
+  line-height: 16px;
+  top: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .border_right {
+  position: absolute;
+  width: 17px;
+  text-align: center;
+  right: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .border_bottom {
+  position: absolute;
+  height: 16px;
+  line-height: 16px;
+  bottom: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .border_left {
+  position: absolute;
+  width: 17px;
+  text-align: center;
+  left: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .pixeye-box_padding {
+  position: relative;
+  background-color: #d5ed65;
+  border-radius: 2px;
+  width: 114px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .pixeye-box_padding > span {
+  position: absolute;
+  top: 1px;
+  left: 5px;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .pixeye-box_padding .padding_top {
+  position: absolute;
+  height: 16px;
+  line-height: 16px;
+  top: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .pixeye-box_padding .padding_right {
+  position: absolute;
+  width: 17px;
+  text-align: center;
+  right: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .pixeye-box_padding .padding_bottom {
+  position: absolute;
+  height: 16px;
+  line-height: 16px;
+  bottom: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .pixeye-box_padding .padding_left {
+  position: absolute;
+  width: 17px;
+  text-align: center;
+  left: 0;
+}
+
+.pixeye-box_wrap .pixeye-box_margin .pixeye-box_border .pixeye-box_padding .pixeye-box_self {
+  background-color: #59acff;
+  border-radius: 2px;
+  width: 79px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+}
+.color-combo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #252525;
+  margin-left: 10px;
+}
+
+.color-combo .color-hint {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  margin-right: 8px;
+}
+
+.color-combo .combo-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  max-width: 110px;
+}
+
+.color-combo .color-text {
+  text-align: left;
+  font-weight: 400;
+  color: #333;
+}
+
+.color-combo .overflow-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.color-combo .percent-text {
+  text-align: center;
+  margin-left: 16px;
+}
+
+.color-combo .ant-dropdown-link {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #252525;
+  cursor: pointer;
+}
+
+.pixeye-color-type {
+  display: flex;
+  justify-content: space-between;
+  width: 240px;
+}
+
+.pixeye-color-type .ant-dropdown-menu-title-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+.pixeye-property-gradient {
+  position: relative;
+  width: 100%;
+  display: flex;
+  margin-top: 16px;
+}
+
+.pixeye-property-gradient .title {
+  text-align: left;
+  cursor: pointer;
+  font-weight: 400;
+  color: rgba(37, 37, 37, 0.5);
+  font-size: 12px;
+  line-height: 20px;
+  flex-shrink: 0;
+}
+
+.pixeye-property-gradient .r {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.pixeye-property-gradient .r .r-box {
+  position: relative;
+  border-radius: 4px;
+  color: #252525;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.pixeye-property-gradient .r .r-box + .r-box {
+  margin-top: 8px;
+}
+
+.pixeye-property-gradient .r .r-box.title-tip {
+  display: flex;
+}
+
+.pixeye-property-gradient .r .line {
+  position: absolute;
+  top: 0px;
+  height: 100%;
+  width: unset;
+  left: 7px;
+}
+
+.pixeye-property-gradient .r .line > i {
+  position: absolute;
+  border: 1px solid #FFFFFF;
+}
+
+.pixeye-property-gradient .r .line .top {
+  top: -2px;
+}
+
+.pixeye-property-gradient .r .line .bottom {
+  bottom: -2px;
+}
+
+.pixeye-property-gradient .r .line i {
+  left: -1px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.pixeye-property-gradient .r .line span {
+  left: 1px;
+  display: inline-block;
+  width: 2px;
+  height: 100%;
+  background-color: #fff;
+  opacity: 0.4;
+}
+
+.pixeye-property-gradient .color-hint {
+  position: absolute;
+  width: 16px;
+  height: 100%;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.pixeye-property-gradient .color-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 16px;
+}
+
+.pixeye-property-gradient .color-item .color-combo {
+  display: flex;
+  margin-left: 0;
+}
+
+.pixeye-property-gradient .color-item .color-hint {
+  width: 0;
+}
+
+.pixeye-property-gradient .color-item .color-transition {
+  font-size: 12px;
+  color: rgba(37, 37, 37, 0.5);
+  margin-top: 4px;
+  margin-left: 8px;
+}
+
+.pixeye-property-gradient .color-combo {
+  overflow: hidden;
+}
+
+.pixeye-property-gradient .color-combo > div {
+  display: flex;
+  color: #252525;
+  max-width: 118px;
+}
+
+.pixeye-property-gradient .color-combo .color-text {
+  line-height: 12px;
+  margin-left: 8px;
+  text-align: left;
+  font-weight: 400;
+  color: #333;
+}
+
+.pixeye-property-gradient .percent-text {
+  line-height: 12px;
+  text-align: center;
+}
+.pixeye-property-color {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.pixeye-property-color .title {
+  font-size: 12px;
+  line-height: 12px;
+  color: rgba(37, 37, 37, 0.5);
+  flex-shrink: 0;
+}
+
+.color-type {
+  display: flex;
+  justify-content: space-between;
+  width: 240px;
+}
+
+.color-type span {
+  display: flex;
+  justify-content: space-between;
+}
+.pixeye-property-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(14, 36, 57, 0.1);
+  margin-top: 16px;
+}
+.pixeye-property-container {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 8px;
+}
+.pixeye-property-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/*# sourceMappingURL=2.d6c1745d.chunk.css.map*/
