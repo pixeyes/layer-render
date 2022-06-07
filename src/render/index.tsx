@@ -38,6 +38,7 @@ export interface LayerRenderProps extends Partial<ControlTypeProps> {
   onChange: (data: any) => void;
   scale: number;
   setScale: (scale: number) => void;
+  preventWheelContainer?:any
 }
 
 interface State {
@@ -67,6 +68,7 @@ export interface Specification {
 }
 
 class LayerRender extends React.Component<LayerRenderProps, State> {
+  containerRef: any;
   imageRef: any;
   currentRef: any;
   distanceRef: any;
@@ -98,6 +100,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     this.imageRef = React.createRef();
     this.distanceRef = React.createRef();
     this.marginRef = React.createRef();
+    this.containerRef = React.createRef();
 
     this.tempX = 0;
     this.tempY = 0;
@@ -207,7 +210,12 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   async componentDidMount() {
     this.loadImg();
     //this.buildCanvas();
-    document.addEventListener('wheel', function(event) {
+    let preventWheelContainer = this.containerRef.current;
+    if (this.props.preventWheelContainer){
+      preventWheelContainer = this.props.preventWheelContainer
+    }
+    // @ts-ignore
+    preventWheelContainer!.addEventListener('wheel', function(event) {
       event.preventDefault()
     }, { passive: false })
     window.addEventListener("resize", this.onResize);
@@ -802,7 +810,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     };
     return (
       <Context.Provider value={contextValue}>
-        <div className="layer-render-container">
+        <div className="layer-render-container" ref={this.containerRef}>
           <div
             className="layer-render-wrap"
             // @ts-ignore
