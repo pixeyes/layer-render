@@ -22,7 +22,7 @@
     "clean": "rimraf dist lib es",
     "clear": "rimraf node_modules",
     "prepub": "npm run clean && npm run release && npm run compile && npm run dist",
-    "pub": "npm publish --registry https://registry.npmjs.org/",
+    "pub": "node_modules/@jdcfe/publish/publish.sh",
     "release": "standard-version --no-verify --prerelease beta --skip.tag --skip.changelog",
     "deploy": "gh-pages -d build"
   },
@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@jdcfe/publish": "^0.0.2",
     "@jdcfe/yep-tools": "^0.1.12",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

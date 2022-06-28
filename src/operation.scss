@@ -5,14 +5,16 @@
   @include flex();
   @include center();
   font-size: 14px;
-  font-weight: 700;
   cursor: pointer;
   color: #252525;
   .anticon{
     margin-left: 4px;
   }
 }
-
+.scale-dropdown-link{
+  @include flex();
+  @include align-center();
+}
 .scale-dropdown {
   width: 200px;
   .ant-dropdown-menu-item {

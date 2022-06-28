@@ -1,7 +1,9 @@
 import * as React from "react";
 
 import { Dropdown, Menu } from "antd";
-import { DownOutlined, CheckOutlined } from "@ant-design/icons";
+import { CheckOutlined } from "@ant-design/icons";
+import Down from "./icons/Down";
+
 export interface OperationProps {
   scale: number;
   setScale: (scale: number) => void;
@@ -14,9 +16,7 @@ function Operation(props: OperationProps) {
     <Menu>
       {sizes.map((size, index) => (
         <Menu.Item key={index} onClick={() => props.setScale(size)}>
-          <span>
-            {size * 100}%
-          </span>
+          <span>{size * 100}%</span>
           {size === props.scale && <CheckOutlined />}
         </Menu.Item>
       ))}
@@ -24,9 +24,10 @@ function Operation(props: OperationProps) {
   );
   return (
     <div className="page-operation-module">
-      <Dropdown overlayClassName="scale-dropdown" overlay={menu} >
+      <Dropdown overlayClassName="scale-dropdown" overlay={menu}>
         <span className="scale-dropdown-link">
-          {Math.round(props.scale * 100)}% <DownOutlined />
+          <span>{Math.round(props.scale * 100)}%</span>
+          <Down />
         </span>
       </Dropdown>
     </div>
