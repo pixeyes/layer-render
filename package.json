@@ -22,7 +22,7 @@
     "clean": "rimraf dist lib es",
     "clear": "rimraf node_modules",
     "prepub": "npm run clean && npm run release && npm run compile && npm run dist",
-    "pub": "node_modules/@jdcfe/publish/publish.sh",
+    "pub": "npm publish --registry https://registry.npmjs.org/",
     "release": "standard-version --no-verify --prerelease beta --skip.tag --skip.changelog",
     "deploy": "gh-pages -d build"
   },
