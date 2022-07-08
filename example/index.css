@@ -25,3 +25,11 @@ code {
   z-index: 10;
   transform: translateX(-50%);
 }
+
+.preview{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100px;
+  z-index: 10;
+}

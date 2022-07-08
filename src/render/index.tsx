@@ -38,7 +38,7 @@ export interface LayerRenderProps extends Partial<ControlTypeProps> {
   onChange: (data: any) => void;
   scale: number;
   setScale: (scale: number) => void;
-  preventWheelContainer?:any
+  preventWheelContainer?: any;
 }
 
 interface State {
@@ -137,7 +137,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   // @ts-ignore
   validLayers = () => {
     const t = this.props.data.data.info;
-    const {scale} = this.props
+    const { scale } = this.props;
     t.forEach(function (t: any) {
       t.frame.rx = t.frame.x + t.frame.width;
       t.frame.ry = t.frame.y + t.frame.height;
@@ -211,13 +211,17 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     this.loadImg();
     //this.buildCanvas();
     let preventWheelContainer = this.containerRef.current;
-    if (this.props.preventWheelContainer){
-      preventWheelContainer = this.props.preventWheelContainer
+    if (this.props.preventWheelContainer) {
+      preventWheelContainer = this.props.preventWheelContainer;
     }
     // @ts-ignore
-    preventWheelContainer!.addEventListener('wheel', function(event) {
-      event.preventDefault()
-    }, { passive: false })
+    preventWheelContainer!.addEventListener(
+      "wheel",
+      function (event: any) {
+        event.preventDefault();
+      },
+      { passive: false }
+    );
     window.addEventListener("resize", this.onResize);
     //document.addEventListener("click", this.onWhiteSpaceClick);
     this.props.mountCallback?.(this);
@@ -239,7 +243,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       });
       this.loadImg();
       this.forceUpdate();
-      this.props.setScale(1)
+      this.props.setScale(1);
     }
   }
 
@@ -276,8 +280,8 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   };
 
   onMouseMove = (e: MouseEvent) => {
-    const { data, cropMoving, cropStartX, cropStartY,  } = this.state;
-    const { cropType ,scale} = this.props;
+    const { data, cropMoving, cropStartX, cropStartY } = this.state;
+    const { cropType, scale } = this.props;
     const { x, y } = this.getPosition();
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
@@ -413,6 +417,9 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
     if (this.props.cropType === CROP_TYPE.CROP) {
+      if (this.state.cropMoving) {
+        return;
+      }
       this.setState({
         cropMoving: true,
         cropElementVisible: true,
@@ -684,7 +691,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     return this.toRatioPX({ left, height, top });
   };
 
-
   zoomNext = () => {
     //this.props.goNext();
   };
@@ -706,7 +712,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     // c.y = Math.max(o.y, Math.min(c.y, o.y + o.height));
     console.log(o);
     console.log(c);
-    this.props.setScale(toScale)
+    this.props.setScale(toScale);
   };
 
   onWheel = (e: WheelEvent) => {
@@ -774,7 +780,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       cropStartX,
       cropStartY,
     } = this.state;
-    const { cropType, scale} = this.props;
+    const { cropType, scale } = this.props;
     // console.log("current", current);
     const { x, y } = this.getPosition();
     const top = this.toRatioPX(this.showMarginTopStyle());
