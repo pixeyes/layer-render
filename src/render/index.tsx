@@ -22,6 +22,7 @@ import Context, { IContext } from "../context";
 import { artSizeList } from "../constants/unit";
 import { Spin } from "antd";
 import { base64Encode } from "../utils/imgUtil";
+import { DEFAULT_TOP } from "../constants";
 
 export interface LayerRenderProps extends Partial<ControlTypeProps> {
   data: any;
@@ -254,7 +255,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         bottom: null,
         left: null,
         x: 0,
-        y: 0,
+        y: DEFAULT_TOP,
         data: this.props.data,
       });
       this.loadImg();
