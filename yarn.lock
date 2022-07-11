@@ -1320,6 +1320,11 @@
   resolved "https://registry.yarnpkg.com/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
+"@jdcfe/publish@^0.0.2":
+  version "0.0.2"
+  resolved "http://registry.m.jd.com/@jdcfe/publish/download/@jdcfe/publish-0.0.2.tgz#dc2b861f60ff152efadf16495d1b5c6fbee8cddc"
+  integrity sha1-3CuGH2D/FS763xZJXRtcb77ozdw=
+
 "@jdcfe/yep-tools@^0.1.12":
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/@jdcfe/yep-tools/-/yep-tools-0.1.12.tgz#f37d27766fce9f541ff680dc5157efe0f6c6f03d"
@@ -1679,6 +1684,11 @@
   integrity sha512-qaIzpCuXNWomGR1Xq8SCFTtF4v8V27Y6f+b9+bzHiv087MylI/nTCqqdChNeWS7tslgROmYB7yeiruWX7WnqNg==
   dependencies:
     "@types/react" "*"
+
+"@types/resize-observer-browser@^0.1.7":
+  version "0.1.7"
+  resolved "http://registry.m.jd.com/@types/resize-observer-browser/download/@types/resize-observer-browser-0.1.7.tgz#294aaadf24ac6580b8fbd1fe3ab7b59fe85f9ef3"
+  integrity sha1-KUqq3ySsZYC4+9H+Ore1n+hfnvM=
 
 "@types/scheduler@*":
   version "0.16.2"

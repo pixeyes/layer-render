@@ -28,10 +28,6 @@ export interface LayerRenderProps extends Partial<ControlTypeProps> {
   mountCallback?: (that?: any) => void;
   onMouseDown?: (current?: Layer) => void;
   /**
-   *  canvas渲染区域的宽度，必须给
-   */
-  canvasWidth: number;
-  /**
    * 点击选择图层或者划热区选择区域后的回调
    * @param data
    */
@@ -60,6 +56,7 @@ interface State {
   cropStartY: number;
   cropMoving: boolean;
   progress: number;
+  canvasWidth: number;
 }
 
 export interface Specification {
@@ -91,7 +88,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   cropLeft: any;
 
   static defaultProps = {
-    canvasWidth: window.innerWidth,
     cropType: CROP_TYPE.CLICK,
   };
 
@@ -120,7 +116,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       bottom: null,
       left: null,
       x: 0,
-      y: 0,
+      y: -110,
       data: props.data,
       platform: platform,
       ratio: parseInt(ratio),
@@ -131,6 +127,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       cropStartY: 0,
       cropMoving: false,
       progress: 0,
+      canvasWidth: 0,
     };
     //this.layers = props.data.data.info;
   }
@@ -208,6 +205,10 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   };
 
   async componentDidMount() {
+    this.setState({
+      canvasWidth: this.containerRef.current.offsetWidth,
+    });
+    this.adjustScale();
     this.loadImg();
     //this.buildCanvas();
     let preventWheelContainer = this.containerRef.current;
@@ -225,7 +226,22 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     window.addEventListener("resize", this.onResize);
     //document.addEventListener("click", this.onWhiteSpaceClick);
     this.props.mountCallback?.(this);
+    const that = this;
     console.log("emitEvent getContentCurrentLayer");
+    const resizeObserver = new ResizeObserver(() => {
+      //const entry = entries[0];
+      //const cr = entry.contentRect;
+      // this.props.setScale(
+      //   Math.min(
+      //     (this.containerRef.current.offsetWidth - 520) / this.state.data.width,
+      //     that.containerRef.current.offsetWidth / that.state.data.width
+      //   )
+      // );
+      this.setState({
+        x: (that.state.canvasWidth - that.containerRef.current.offsetWidth) / 2,
+      });
+    });
+    resizeObserver.observe(this.containerRef.current);
   }
 
   componentDidUpdate(prevProps: Readonly<LayerRenderProps>) {
@@ -243,9 +259,22 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       });
       this.loadImg();
       this.forceUpdate();
-      this.props.setScale(1);
+      this.adjustScale();
     }
   }
+
+  adjustScale = () => {
+    console.log(
+      "hree",
+      (this.containerRef.current.offsetWidth - 520) / this.state.data.width
+    );
+    this.props.setScale(
+      Math.min(
+        1,
+        (this.containerRef.current.offsetWidth - 520) / this.state.data.width
+      )
+    );
+  };
 
   componentWillUnmount() {
     //document.removeEventListener("click", this.onWhiteSpaceClick);
@@ -254,8 +283,8 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   onResize = () => {};
 
   getPosition = (): { x: number; y: number } => {
-    const { data, x, y } = this.state;
-    const { scale, canvasWidth } = this.props;
+    const { data, x, y, canvasWidth } = this.state;
+    const { scale } = this.props;
     //const canvasHeight = window.innerHeight;
     // @ts-ignore
     const imgWidth = data.width;

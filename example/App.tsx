@@ -51,7 +51,7 @@ function App() {
   useEffect(() => {
     if (/jd.com/.test(window.location.hostname)) {
       fetch(
-        "/v1/relay/api/page/info?unique_page_id=9296a740-cfb0-4534-8226-1ca9d687da7c",
+        "/v1/relay/api/page/info?unique_page_id=1235c74e-bdf4-48fe-932e-e3dc422ec3f1",
         {
           credentials: "include",
           mode: "cors",
@@ -85,7 +85,6 @@ function App() {
         mountCallback={(that) => {
           console.log(that);
         }}
-        canvasWidth={1264}
         onChange={(data) => {
           console.log(data);
           crop(
