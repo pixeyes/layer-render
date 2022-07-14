@@ -16,7 +16,6 @@ import {
 } from "./renderUtils";
 import Property, { Layer } from "../property/Property";
 
-import { ControlTypeProps, CROP_TYPE } from "../RenderComponents/ControlType";
 import SpecificationModal from "../RenderComponents/SpecificationModal";
 import Context, { IContext } from "../context";
 import { artSizeList } from "../constants/unit";
@@ -25,7 +24,7 @@ import { base64Encode } from "../utils/imgUtil";
 import { DEFAULT_TOP } from "../constants";
 import classNames from "classnames";
 
-export interface LayerRenderProps extends Partial<ControlTypeProps> {
+export interface LayerRenderProps {
   data: any;
   mountCallback?: (that?: any) => void;
   onMouseDown?: (current?: Layer) => void;
@@ -85,10 +84,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   currentLayerPoint: any;
   cropWrap: any;
   cropElement: any;
-
-  static defaultProps = {
-    cropType: CROP_TYPE.CLICK,
-  };
 
   constructor(props: LayerRenderProps) {
     super(props);
@@ -281,10 +276,22 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   onResize = () => {};
   onKeyDown = (e: KeyboardEvent) => {
     e.preventDefault();
+    console.log(e);
     if (e.code === "Space") {
       this.setState({
         spaceDown: true,
       });
+    }
+    if (e.metaKey) {
+      if (e.code === "Equal") {
+        this.setScale(this.props.scale + WHEEL_SCALE_STEP);
+      }
+      if (e.code === "Minus") {
+        this.setScale(this.props.scale - WHEEL_SCALE_STEP);
+      }
+      if (e.code === "Digit1") {
+        this.setScale(1);
+      }
     }
   };
   onKeyUp = (e: KeyboardEvent) => {
@@ -329,7 +336,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       spaceDown,
       cropElementVisible,
     } = this.state;
-    // const { cropType } = this.props;
     const { x, y } = this.getPosition();
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
