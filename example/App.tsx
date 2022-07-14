@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import LayerRender, { doSomeThing, ControlType, CROP_TYPE } from "../src";
+import LayerRender, { doSomeThing } from "../src";
 import relay from "./data";
 import React from "react";
 import Operation from "../src/Operation";
@@ -41,13 +41,9 @@ export function crop(
 
 function App() {
   const [res, setRes] = useState();
-  const [cropType, setCropType] = useState(CROP_TYPE.CLICK);
   const [scale, setScale] = useState(1);
   const [value, setValue] = useState("");
 
-  const onChangeCropType = (cropType: CROP_TYPE) => {
-    setCropType(cropType);
-  };
   useEffect(() => {
     if (/jd.com/.test(window.location.hostname)) {
       fetch(
@@ -73,14 +69,12 @@ function App() {
   return (
     <>
       <CtrlSpace className="top">
-        <ControlType cropType={cropType} onChangeCropType={onChangeCropType} />
         <Operation scale={scale} setScale={setScale} />
       </CtrlSpace>
 
       <LayerRender
         scale={scale}
         setScale={setScale}
-        cropType={cropType}
         data={res}
         mountCallback={(that) => {
           console.log(that);
