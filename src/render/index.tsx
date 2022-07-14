@@ -282,7 +282,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         spaceDown: true,
       });
     }
-    if (e.metaKey) {
+    if (e.metaKey || e.ctrlKey) {
       if (e.code === "Equal") {
         this.setScale(this.props.scale + WHEEL_SCALE_STEP);
       }
@@ -761,7 +761,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   onWheel = (e: WheelEvent) => {
     //const { data } = this.state;
 
-    if (e.ctrlKey) {
+    if (e.ctrlKey || e.metaKey) {
       this.setScale(
         this.props.scale +
           (e.deltaY > 0 ? -WHEEL_SCALE_STEP : WHEEL_SCALE_STEP),
