@@ -27,6 +27,6 @@
 @mixin align-center(){
   align-items: center;
 }
-@mixin bullseye(){
-  cursor: crosshair;
+@mixin bullseye($cursor){
+  cursor: $cursor!important;
 }
