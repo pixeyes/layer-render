@@ -110,7 +110,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       bottom: null,
       left: null,
       x: 0,
-      y: -110,
+      y: DEFAULT_TOP,
       data: props.data,
       platform: platform,
       ratio: parseInt(ratio),
