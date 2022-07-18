@@ -52,13 +52,13 @@ interface State {
   ratio: number;
   colorType: string;
   specificationModalVisible: boolean;
-  cropElementVisible: boolean;
+  cropMoving: boolean;
   cropStartX: number;
   cropStartY: number;
-  cropMoving: boolean;
   progress: number;
   canvasWidth: number;
   spaceDown: boolean;
+  mouseDown: boolean;
 }
 
 export interface Specification {
@@ -116,13 +116,13 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       ratio: parseInt(ratio),
       colorType: "hex",
       specificationModalVisible: false,
-      cropElementVisible: false,
+      cropMoving: false,
       cropStartX: 0,
       cropStartY: 0,
-      cropMoving: false,
       progress: 0,
       canvasWidth: 0,
       spaceDown: false,
+      mouseDown: false,
     };
     //this.layers = props.data.data.info;
   }
@@ -328,24 +328,51 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     return value * scale;
   };
 
+  onMouseleave = () => {
+    this.setState({
+      hoverLayer: null,
+    });
+  };
+
+  onMouseDown = async (e: MouseEvent) => {
+    this.tempX = e.clientX;
+    this.tempY = e.clientY;
+    this.offsetX = this.offsetY = 0;
+
+    e.stopPropagation();
+    const { x, y } = this.getPosition();
+    //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
+    const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
+    if (!this.state.spaceDown) {
+      this.setState({
+        mouseDown: true,
+        cropStartX: point.x,
+        cropStartY: point.y,
+      });
+      //   return;
+    } else {
+      this.setState({
+        mouseDown: true,
+      });
+    }
+  };
+
   onMouseMove = (e: MouseEvent) => {
-    const {
-      cropMoving,
-      cropStartX,
-      cropStartY,
-      spaceDown,
-      cropElementVisible,
-    } = this.state;
+    const { cropStartX, cropStartY, spaceDown, cropMoving, mouseDown } =
+      this.state;
+    if (mouseDown) {
+      this.moving = true;
+    }
     const { x, y } = this.getPosition();
     //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
     if (!spaceDown) {
-      if (!cropElementVisible && cropMoving) {
+      if (!cropMoving && mouseDown) {
         this.setState({
-          cropElementVisible: true,
+          cropMoving: true,
         });
       }
-      if (cropMoving) {
+      if (mouseDown) {
         if (point.x >= cropStartX) {
           this.cropElement.style.left = cropStartX + "px";
         } else {
@@ -374,7 +401,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         left: this.showMarginLeftStyle(),
       });
     }
-
     if (this.moving) {
       this.offsetX += e.clientX - this.tempX;
       this.offsetY += e.clientY - this.tempY;
@@ -402,24 +428,19 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     }
   };
 
-  onMouseleave = () => {
-    this.setState({
-      hoverLayer: null,
-    });
-  };
-
   onMouseUp = (e: MouseEvent) => {
     this.moving = false;
     const { scale } = this.props;
     const { cropStartX, cropStartY, spaceDown } = this.state;
+    this.setState({
+      cropMoving: false,
+      mouseDown: false,
+    });
     if (!spaceDown) {
       const { x, y } = this.getPosition();
       //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
       const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
-      this.setState({
-        cropMoving: false,
-        cropElementVisible: false,
-      });
+
       // 如果是只点了下鼠标，不移动，则不做任何操作
       if (point.x - cropStartX == 0 || point.y - cropStartY == 0) {
         console.log("here");
@@ -473,37 +494,8 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         };
         this.props.onChange?.(data);
       }
-
-      this.setState({
-        cropMoving: false,
-        cropElementVisible: false,
-      });
     }
   };
-
-  onMouseDown = async (e: MouseEvent) => {
-    this.moving = true;
-    this.tempX = e.clientX;
-    this.tempY = e.clientY;
-    this.offsetX = this.offsetY = 0;
-
-    e.stopPropagation();
-    const { x, y } = this.getPosition();
-    //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
-    const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
-    if (!this.state.spaceDown) {
-      //   if (this.state.cropMoving) {
-      //     return;
-      //   }
-      this.setState({
-        cropMoving: true,
-        cropStartX: point.x,
-        cropStartY: point.y,
-      });
-      //   return;
-    }
-  };
-
   // @ts-ignore
   showMarginTopStyle = () => {
     let { current, hoverLayer: hoverItem } = this.state;
@@ -818,12 +810,11 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       platform,
       ratio,
       colorType,
-      cropElementVisible,
-
+      cropMoving,
+      mouseDown,
       cropStartX,
       cropStartY,
       spaceDown,
-      cropMoving,
     } = this.state;
     const { scale } = this.props;
     // console.log("current", current);
@@ -865,8 +856,8 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
           <div
             className={classNames("layer-render-wrap", {
               crop: !spaceDown && cropMoving,
-              grab: spaceDown && !cropMoving,
-              grabbing: spaceDown && cropMoving,
+              grab: spaceDown,
+              grabbing: spaceDown && mouseDown,
             })}
             // @ts-ignore
             onWheel={this.onWheel}
@@ -903,7 +894,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                   width: data.width * scale,
                   height: data.height * scale,
                 },
-                ...(cropElementVisible
+                ...(cropMoving
                   ? {
                       backgroundColor: "rgba(0, 0, 0, 0)",
                     }
@@ -918,7 +909,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
                     top: cropStartY,
                     width: 0,
                     height: 0,
-                    display: cropElementVisible ? "block" : "none",
+                    display: cropMoving ? "block" : "none",
                   }}
                   ref={(node) => (this.cropElement = node)}
                 />
