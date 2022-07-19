@@ -45,7 +45,6 @@
     ]
   },
   "devDependencies": {
-    "@jdcfe/publish": "^0.0.2",
     "@jdcfe/yep-tools": "^0.1.12",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -72,5 +71,8 @@
   "homepage": "/layer-render",
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "url": "https://github.com/pixeyes/layer-render.git"
   }
 }
