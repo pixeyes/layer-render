@@ -298,6 +298,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     if (e.code === "Space") {
       this.setState({
         spaceDown: false,
+        mouseDown:false
       });
     }
   };
@@ -386,22 +387,23 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         this.cropElement.style.width = Math.abs(point.x - cropStartX) + "px";
         this.cropElement.style.height = Math.abs(point.y - cropStartY) + "px";
       }
-      return;
-    }
-    const currentHoverLayer = getLayersByPosition(this.validLayers(), point);
+      // return;
+      const currentHoverLayer = getLayersByPosition(this.validLayers(), point);
 
-    this.setState({
-      hoverLayer: currentHoverLayer,
-    });
-    if (this.state.current && currentHoverLayer) {
       this.setState({
-        top: this.showMarginTopStyle(),
-        right: this.showMarginRightStyle(),
-        bottom: this.showMarginBottomStyle(),
-        left: this.showMarginLeftStyle(),
+        hoverLayer: currentHoverLayer,
       });
+      if (this.state.current && currentHoverLayer) {
+        this.setState({
+          top: this.showMarginTopStyle(),
+          right: this.showMarginRightStyle(),
+          bottom: this.showMarginBottomStyle(),
+          left: this.showMarginLeftStyle(),
+        });
+      }
     }
-    if (this.moving) {
+
+    if (this.moving && spaceDown) {
       this.offsetX += e.clientX - this.tempX;
       this.offsetY += e.clientY - this.tempY;
       const x = this.state.x - this.offsetX;
