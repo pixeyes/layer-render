@@ -190,6 +190,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         "data:image/jpeg;base64," + base64Encode(request.responseText);
       that.imageRef.current.style.backgroundImage =
         'url("' + imageElement + '")';
+      that.imageRef.current.style.display = 'block';
     }
 
     function hideProgressBar() {
@@ -253,10 +254,12 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         x: 0,
         y: DEFAULT_TOP,
         data: this.props.data,
+        progress:0
       });
+      this.imageRef.current.style.display = 'none'
       this.loadImg();
-      this.forceUpdate();
       this.adjustScale();
+      this.forceUpdate();
     }
   }
 
@@ -365,7 +368,6 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       this.moving = true;
     }
     const { x, y } = this.getPosition();
-    //this.context.clearRect(0, 0, pageInfo.data.width * 4, pageInfo.data.height * 4);
     const point = this.getCanvasPoint(e.pageX - x, e.pageY - y);
     if (!spaceDown) {
       if (!cropMoving && mouseDown) {
@@ -817,6 +819,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
       cropStartX,
       cropStartY,
       spaceDown,
+      progress
     } = this.state;
     const { scale } = this.props;
     // console.log("current", current);
@@ -879,10 +882,10 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
             >
               123
             </canvas>
-            {this.state.progress < 100 && (
+            {progress < 100 && (
               <Spin
                 className="load-progress"
-                tip={`${this.state.progress} %`}
+                tip={`${progress} %`}
               />
             )}
             <div

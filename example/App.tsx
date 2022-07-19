@@ -4,6 +4,7 @@ import relay from "./data";
 import React from "react";
 import Operation from "../src/Operation";
 import CtrlSpace from "../src/RenderComponents/CtrlSpace";
+import { Button } from "antd";
 
 export function crop(
   image: any,
@@ -38,16 +39,22 @@ export function crop(
     img.src = image;
   });
 }
-
+const ids = ['fe354ba4-3d1a-494f-a360-0dbf3eaa617b','61c605f2-3a5a-475d-bfe2-fb86ab2c369c','b4f25656-5da8-444a-bf70-65c687243ef1','1235c74e-bdf4-48fe-932e-e3dc422ec3f1']
 function App() {
-  const [res, setRes] = useState();
+  const [res, setRes] = useState<any>(null);
   const [scale, setScale] = useState(1);
   const [value, setValue] = useState("");
+  const [count, setCount] = useState(0);
 
-  useEffect(() => {
+  const onChangeId = () =>{
+    const temp = count>=ids.length-1?0:count+1
+    setCount(temp)
+    fetchData(ids[temp])
+  }
+  const fetchData = async (id:string) => {
     if (/jd.com/.test(window.location.hostname)) {
       fetch(
-        "/v1/relay/api/page/info?unique_page_id=1235c74e-bdf4-48fe-932e-e3dc422ec3f1",
+        "/v1/relay/api/page/info?unique_page_id="+id,
         {
           credentials: "include",
           mode: "cors",
@@ -64,11 +71,15 @@ function App() {
       const data = doSomeThing(relay);
       setRes(data);
     }
+  }
+  useEffect(() => {
+    fetchData(ids[count])
   }, []);
   if (!res) return null;
   return (
     <>
       <CtrlSpace className="top">
+        <Button onClick={onChangeId}>切换</Button>
         <Operation scale={scale} setScale={setScale} />
       </CtrlSpace>
 
@@ -89,7 +100,7 @@ function App() {
               w: data.current.frame.width,
               h: data.current.frame.height,
             },
-            data.artboard_scale
+            res!.artboard_scale!
           ).then((res) => {
             console.log(res);
             setValue(res);
