@@ -21,7 +21,7 @@ import Context, { IContext } from "../context";
 import { artSizeList } from "../constants/unit";
 import { Spin } from "antd";
 import { base64Encode } from "../utils/imgUtil";
-import { DEFAULT_TOP } from "../constants";
+import { DEFAULT_TOP, IMAGE_SERVER_URL } from "../constants";
 import classNames from "classnames";
 
 export interface LayerRenderProps {
@@ -168,7 +168,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
     request.onloadend = hideProgressBar;
     request.open(
       "GET",
-      `https://storage.360buyimg.com/relay/${this.props.data.image}`,
+      `${IMAGE_SERVER_URL}${this.props.data.image}`,
       true
     );
     request.overrideMimeType("text/plain; charset=x-user-defined");
@@ -475,7 +475,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
         });
         //this.props.onMouseDown?.(current);
         const data = {
-          url: `https://storage.360buyimg.com/relay/${this.props.data.image}`,
+          url: `${IMAGE_SERVER_URL}${this.props.data.image}`,
           relayPageId: this.props.data.id,
           current,
         };
@@ -490,7 +490,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
           height: Math.round(Math.abs(point.y - cropStartY) / scale),
         };
         const data = {
-          url: `https://storage.360buyimg.com/relay/${this.props.data.image}`,
+          url: `${IMAGE_SERVER_URL}${this.props.data.image}`,
           relayPageId: this.props.data.id,
           current: {
             frame: position,
