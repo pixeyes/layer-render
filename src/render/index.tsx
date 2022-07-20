@@ -339,6 +339,10 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
   };
 
   onMouseDown = async (e: MouseEvent) => {
+    // 只监听鼠标左键
+    if (e.buttons !== 1) {
+      return
+    }
     this.tempX = e.clientX;
     this.tempY = e.clientY;
     this.offsetX = this.offsetY = 0;
