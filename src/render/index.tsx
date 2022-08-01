@@ -482,6 +482,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
           url: `${IMAGE_SERVER_URL}${this.props.data.image}`,
           relayPageId: this.props.data.id,
           current,
+          ratio: this.props.data.artboard_scale,
         };
         this.props.onChange?.(data);
         this.currentLayerPoint.x = this.tempX;
@@ -499,6 +500,7 @@ class LayerRender extends React.Component<LayerRenderProps, State> {
           current: {
             frame: position,
           },
+          ratio: this.props.data.artboard_scale,
         };
         this.props.onChange?.(data);
       }
